@@ -8,6 +8,7 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  status: number;
   selectedItem: any;
   icons: string[];
   statuses: string[];
@@ -23,6 +24,7 @@ export class HomePage {
     this.statuses = ['Battery', 'Check', 'Good'];
 
     this.items = [];
+    this.status = Math.ceil(Math.random() * 100);
     let numItems = Math.ceil(Math.random() * 15) + 1;
 
     for (let i = 1; i < numItems; i++) {

@@ -10,8 +10,9 @@
 
 <ion-content>
   <!-- <h3>AquaSAFE Menu Starter</h3> -->
-  <div class="header-status">
-    <div id="status-text">System Status: OK</div>
+  <div class="header-status" [ngClass]="{'header-status-bad' : status % 3 == 0}">
+    <div *ngIf=" status % 3 != 0" id="status-text">System Status: OK</div>
+    <div *ngIf=" status % 3 == 0" id="status-text">System Status: BAD</div>
   </div>
   <hr class="main-page-hr"/>
   <div class="main-valve">
