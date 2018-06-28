@@ -3,17 +3,25 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <!-- <ion-title class="titleicon" style="display:inline-block">AquaSAFE</ion-title> -->
-    <img  width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <!-- <h3>AquaSAFE Menu Starter</h3> -->
-  <div class="header-status" [ngClass]="{'header-status-bad' : status % 3 == 0}">
+  <!-- <div class="header-status" [ngClass]="{'header-status-bad' : status % 3 == 0}">
     <div *ngIf=" status % 3 != 0" id="status-text">System Status: OK</div>
     <div *ngIf=" status % 3 == 0" id="status-text">System Status: BAD</div>
+  </div> -->
+
+  <div *ngIf = " status % 2 != 0; else elsetag" class="header-status">
+    <div id="status-text">System Status: OK</div>
   </div>
+  <ng-template #elsetag>
+    <div class="header-status-bad">
+      <div id="status-text">System Status: BAD</div>
+    </div>
+  </ng-template>
+
   <hr class="main-page-hr"/>
   <div class="main-valve">
     <div id="status-text">Main Valve</div>
