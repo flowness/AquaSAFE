@@ -1,3 +1,49 @@
 page-home {
 
+  .scroll-content {
+    overflow: hidden;
+  }
+
+  ion-list {
+    overflow-y: auto;
+    max-height: 72vh;
+  }
+
+  .header-status {
+      box-sizing: border-box;
+      background-color: lightgreen;
+      width: 100%;
+      min-height: 15vh;
+      max-height: 15%;
+      // position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0 auto;
+      text-align:center;
+      display: table;
+  }
+
+  .main-valve {
+      box-sizing: border-box;
+      background-color: lightgray;
+      width: 100%;
+      min-height: 10vh;
+      max-height: 10%;
+      // position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0 auto;
+      text-align:center;
+      display: table;
+  }
+
+  #status-text {
+      display: table-cell;
+      vertical-align: middle;
+  }
+
+  .main-page-hr {
+    margin-block-start:0.1em;
+    margin-block-end:0.1em;
+  }
 }

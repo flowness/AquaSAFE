@@ -3,16 +3,30 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <!-- <ion-title class="titleicon" style="display:inline-block">AquaSAFE</ion-title> -->
+    <img  width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content>
+  <!-- <h3>AquaSAFE Menu Starter</h3> -->
+  <div class="header-status">
+    <div id="status-text">System Status: OK</div>
+  </div>
+  <hr class="main-page-hr"/>
+  <div class="main-valve">
+    <div id="status-text">Main Valve</div>
+  </div>
+  <hr class="main-page-hr"/>
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <ion-icon [name]="item.icon" item-start></ion-icon>
+      {{item.title}}
+      <div class="item-note" item-end>
+        {{item.state}}
+      </div>
+    </button>
+  </ion-list>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
 </ion-content>
