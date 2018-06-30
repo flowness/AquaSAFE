@@ -8,21 +8,50 @@
 </ion-header>
 
 <ion-content>
-  <!-- <div class="header-status" [ngClass]="{'header-status-bad' : status % 3 == 0}">
-    <div *ngIf=" status % 3 != 0" id="status-text">System Status: OK</div>
-    <div *ngIf=" status % 3 == 0" id="status-text">System Status: BAD</div>
-  </div> -->
-
-  <div *ngIf = " status % 2 != 0; else elsetag" class="header-status">
-    <div id="status-text">System Status: OK</div>
+  <!-- OK status -->
+  <div *ngIf = " status % 2 != 0; else elsetag">
+    <div class="header-status">
+      <div id="status-text">System Status: OK</div>
+    </div>
+    <hr class="main-page-hr"/>
+    <div class="main-valve">
+      <div id="status-text">Main Valve</div>
+    </div>
+    <hr class="main-page-hr"/>
+    <ion-list>
+      <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+        <ion-icon [name]="item.icon" item-start></ion-icon>
+        {{item.title}}
+        <div class="item-note" item-end>
+          {{item.state}}
+        </div>
+      </button>
+    </ion-list>
   </div>
+  <!-- BAD status -->
   <ng-template #elsetag>
-    <div class="header-status-bad">
-      <div id="status-text">System Status: BAD</div>
+    <div>
+      <div class="header-status-bad">
+        <div id="status-text">System Status: BAD</div>
+      </div>
+      <hr class="main-page-hr"/>
+      <div class="main-valve">
+        <div id="status-text">Main Valve</div>
+      </div>
+      <hr class="main-page-hr"/>
+      <ion-list>
+        <button ion-item *ngFor="let item of wizardStep1" (click)="itemTapped($event, item)">
+          <ion-icon [name]="item.icon" item-start></ion-icon>
+          {{item.title}}
+          <div class="item-note" item-end>
+            {{item.action}}
+          </div>
+        </button>
+      </ion-list>
     </div>
   </ng-template>
 
-  <hr class="main-page-hr"/>
+  <!-- <hr class="main-page-hr"/>
   <div class="main-valve">
     <div id="status-text">Main Valve</div>
   </div>
@@ -35,7 +64,7 @@
         {{item.state}}
       </div>
     </button>
-  </ion-list>
+  </ion-list> -->
 
   <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
 </ion-content>
