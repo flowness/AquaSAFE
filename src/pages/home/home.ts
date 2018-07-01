@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { ListPage } from '../list/list';
+// import { ListPage } from '../list/list';
+import { MP100Page } from '../mp100/mp100';
+import { ModulePage } from '../module/module';
+import { ActionPage } from '../action/action';
 // import { NavController } from 'ionic-angular';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -8,12 +11,15 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  data = {
+    mainValve: true
+  };
   status: number;
   selectedItem: any;
   icons: string[];
   statuses: string[];
-  items: Array<{title: string, state: string, icon: string}>;
-  wizardStep1: Array<{title: string, action: string, icon: string}>;
+  items: Array<{title: string, state: string, icon: string, type: number}>;
+  wizardStep1: Array<{title: string, action: string, icon: string, type: number}>;
   // numItems: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -31,7 +37,8 @@ export class HomePage {
         title: i == 1 ? 'MP100 Leak Sensor': 'Sensor ' + i,
         // note: i == 1 ? 'Good' : 'This is item #' + i,
         state: i == 1 ? 'Good' : this.statuses[Math.floor(Math.random() * this.statuses.length)],
-        icon: i == 1 ? 'build' : this.icons[Math.floor(Math.random() * this.icons.length)]
+        icon: i == 1 ? 'build' : this.icons[Math.floor(Math.random() * this.icons.length)],
+        type: i == 1 ? 0 : 1
       });
     }
 
@@ -44,14 +51,32 @@ export class HomePage {
       this.wizardStep1.push({
         icon: wizIcons[Math.floor(Math.random() * wizIcons.length)],
         title: wizTitles[i],
-        action: wizActions[i]
+        action: wizActions[i],
+        type: 100+i
       });
     }
   }
 
   itemTapped(event, item) {
-    this.navCtrl.push(ListPage, {
-      item: item
-    });
+    console.log("item type = " + item.type);
+    if (item.type < 100) {
+      if (item.type === 0 ) {
+        this.navCtrl.push(MP100Page, {
+          item: item
+        });
+      } else {
+        this.navCtrl.push(ModulePage, {
+          item: item
+        });
+      }
+    } else {
+      this.navCtrl.push(ActionPage, {
+        item: item
+      });
+    }
+  }
+
+  change() {
+    console.log("toggle=" + this.data.mainValve);
   }
 }
