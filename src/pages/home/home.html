@@ -9,7 +9,7 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf = " status % 2 != 0; else elsetag">
+  <div *ngIf = " data.status % 2 != 0; else elsetag">
     <ion-item class="header-status">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK
@@ -22,7 +22,7 @@
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>
-      <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <button ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item)">
         <ion-icon [name]="item.icon" item-start></ion-icon>
         {{item.title}}
         <div class="item-note" item-end>
@@ -46,8 +46,8 @@
       </ion-item>
       <!-- <hr class="main-page-hr"/> -->
       <ion-list>
-        <button ion-item *ngFor="let item of wizardStep1" (click)="itemTapped($event, item)">
-          <ion-icon [name]="item.icon" item-start></ion-icon>
+        <button ion-item *ngFor="let item of data.wizardSteps" (click)="itemTapped($event, item)">
+          <ion-img src={{item.icon}} item-start></ion-img>
           {{item.title}}
           <div class="item-note" item-end>
             {{item.action}}

@@ -7,31 +7,25 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class MP100Page {
   selectedItem: any;
+  data: any;
   // icons: string[];
   // items: Array<{title: string, note: string, icon: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
-
-    // // Let's populate this page with some filler content for funzies
-    // this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    // 'american-football', 'boat', 'bluetooth', 'build'];
-    //
-    // this.items = [];
-    // for (let i = 1; i < 11; i++) {
-    //   this.items.push({
-    //     title: 'Item ' + i,
-    //     note: 'This is item #' + i,
-    //     icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-    //   });
-    // }
+    console.log("sn: " + this.selectedItem.sn);
+    this.prepareData(this.selectedItem.sn);
   }
 
-  // itemTapped(event, item) {
-  //   // That's right, we're pushing to ourselves!
-  //   this.navCtrl.push(MP100Page, {
-  //     item: item
-  //   });
-  // }
+  prepareData(serial) {
+    let data1 = {};
+    data1['sn'] = serial;
+    data1['lastReading'] = new Date();
+    data1['address'] = 'Haadarim St. Talmaz';
+    data1['batteryStatus'] = Math.floor(Math.random() * 100);
+    data1['tempC'] = Math.floor(Math.random() * 50) - 10;
+    data1['tempF'] = Math.floor(data1['tempC'] * 1.8 + 32);
+    this['data'] = data1;
+  }
 }
