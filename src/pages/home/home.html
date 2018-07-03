@@ -9,7 +9,7 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf = " data.status % 2 != 0; else elsetag">
+  <div *ngIf = " data.status % 2 < 0; else elsetag">
     <ion-item class="header-status">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK
@@ -37,12 +37,15 @@
       <ion-item class="header-status-bad">
       <!-- <div class="header-status-bad"> -->
         System Status: BAD
+        <ion-item>
+          Alert Indicator: MP100
+        </ion-item>
       </ion-item>
       <!-- <hr class="main-page-hr"/> -->
       <ion-item class="main-valve">
         <!-- <div id="status-text"></div> -->
         <ion-label>Main Valve</ion-label>
-        <ion-toggle [(ngModel)]="data.mainValve" (ionChange)="change()"></ion-toggle>
+        <ion-toggle [(ngModel)]="data.mainValve" (ionChange)="change()" item-content></ion-toggle>
       </ion-item>
       <!-- <hr class="main-page-hr"/> -->
       <ion-list>
