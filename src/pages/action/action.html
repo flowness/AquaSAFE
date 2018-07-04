@@ -17,43 +17,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-item *ngIf = " item.type == 100; else elsetag"  text-wrap>
-    Please specify the water usage for the assumed leak detection on {{alert.detectionTimes}}:
+  <ion-item>
+    {{item.title}} type: {{item.type}}
   </ion-item>
-  <ng-template #elsetag>
-    <ion-item #elsetag>
-      {{item.title}} type: {{item.type}}
-    </ion-item>
-  </ng-template>
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-col align-self-center>
-        <!-- <ion-img width="80" height="80" src='../assets/imgs/Washing-Machine.png' item-start></ion-img> -->
-        <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/Washing-Machine.png' item-start (click)="doConfirm('Washing Machine')"></ion-img>
-        <!-- <ion-label>Washing Machine</ion-label> -->
-      </ion-col>
-      <ion-col align-self-center>
-          <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/Dishwasher.png' item-start  (click)="doConfirm('Dishwasher')"></ion-img>
-          <!-- <ion-label>Dishwasher</ion-label> -->
-      </ion-col>
-      <ion-col align-self-center>
-          <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/Hose.png' item-start  (click)="doConfirm('Hose')"></ion-img>
-          <!-- <ion-label>Gardening</ion-label> -->
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col align-self-center>
-          <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/shower.png' item-start  (click)="doConfirm('Shower')"></ion-img>
-          <!-- <ion-label>Gardening</ion-label> -->
-      </ion-col>
-      <ion-col align-self-center>
-          <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/cleaning-house.png' item-start  (click)="doConfirm('House Cleaning')"></ion-img>
-          <!-- <ion-label>Gardening</ion-label> -->
-      </ion-col>
-      <ion-col align-self-center>
-          <ion-img style="height: 15vh; width: 15vh; margin: auto; display: block;" src='../assets/imgs/Pool.png' item-start (click)="doConfirm('Pool')"></ion-img>
-          <!-- <ion-label>Filling the Pool</ion-label> -->
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>

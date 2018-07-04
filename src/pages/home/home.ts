@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { MP100Page } from '../mp100/mp100';
 import { ModulePage } from '../module/module';
 import { ActionPage } from '../action/action';
+import { NotALeakPage } from '../notaleak/notaleak';
 // import { NavController } from 'ionic-angular';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -51,8 +52,8 @@ export class HomePage {
 
   prepareNotOkData(){
     let alert = {};
-    alert.indicator = 'MP100';
-    alert.detectionTime = '4/7/2018 10:13';
+    alert['indicator'] = 'MP100';
+    alert['detectionTime'] = '4/7/2018 10:13';
     this.data.alert = alert;
   }
 
@@ -94,11 +95,17 @@ export class HomePage {
         });
       }
     } else {
-      console.log("alert = " + this.data.alert);
-      this.navCtrl.push(ActionPage, {
-        item: item,
-        alert: this.data.alert
-      });
+      if (item.type === 100 ) {
+        this.navCtrl.push(NotALeakPage, {
+          item: item,
+          alert: this.data.alert
+        });
+      } else {
+        this.navCtrl.push(ActionPage, {
+          item: item,
+          alert: this.data.alert
+        });
+      }
     }
   }
 

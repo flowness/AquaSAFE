@@ -8,6 +8,7 @@ import { ListPage } from '../pages/list/list';
 import { MP100Page } from '../pages/mp100/mp100';
 import { ModulePage } from '../pages/module/module';
 import { ActionPage } from '../pages/action/action';
+import { NotALeakPage } from '../pages/notaleak/notaleak';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -19,7 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ListPage,
     MP100Page,
     ModulePage,
-    ActionPage
+    ActionPage,
+    NotALeakPage
   ],
   imports: [
     BrowserModule,
@@ -32,7 +34,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ListPage,
     MP100Page,
     ModulePage,
-    ActionPage
+    ActionPage,
+    NotALeakPage
   ],
   providers: [
     StatusBar,
