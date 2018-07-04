@@ -9,6 +9,7 @@ import { R100Page } from '../r100/r100';
 
 import { ModulePage } from '../module/module';
 import { ActionPage } from '../action/action';
+import { NotALeakPage } from '../notaleak/notaleak';
 // import { NavController } from 'ionic-angular';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -30,13 +31,14 @@ export class HomePage {
     this.selectedItem = navParams.get('item');
     this.data = {};
     this.data.mainValve =  true;
-    this.prepareData();
+    this.prepareOkData();
+    this.prepareNotOkData();
     this.prepareWizardSteps();
     this.data.status = Math.ceil(Math.random() * 100);
     
   }
 
-  prepareData(){
+  prepareOkData(){
     let items = [];
     let numItems = Math.ceil(Math.random() * 8) + 1;
     let icons = ['build', 'water','aperture','cloud-outline','wifi'];
@@ -78,6 +80,13 @@ export class HomePage {
     this.data.items = items;
   }
 
+  prepareNotOkData(){
+    let alert = {};
+    alert['indicator'] = 'MP100';
+    alert['detectionTime'] = '4/7/2018 10:13';
+    this.data.alert = alert;
+  }
+
   getRandomSN() {
     let sn = '';
     for (var i = 0; i < 8; i++) {
@@ -117,9 +126,17 @@ export class HomePage {
         });
       }
     } else {
-      this.navCtrl.push(ActionPage, {
-        item: item
-      });
+      if (item.type === 100 ) {
+        this.navCtrl.push(NotALeakPage, {
+          item: item,
+          alert: this.data.alert
+        });
+      } else {
+        this.navCtrl.push(ActionPage, {
+          item: item,
+          alert: this.data.alert
+        });
+      }
     }
   }
 

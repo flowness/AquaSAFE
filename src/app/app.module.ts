@@ -12,6 +12,7 @@ import { Bs100Page } from '../pages/bs100/bs100';
 import { R100Page } from '../pages/r100/r100';
 import { ModulePage } from '../pages/module/module';
 import { ActionPage } from '../pages/action/action';
+import { NotALeakPage } from '../pages/notaleak/notaleak';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,7 +28,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     Bs100Page,
     R100Page,
     ModulePage,
-    ActionPage
+    ActionPage,
+    NotALeakPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     Bs100Page,
     R100Page,    
     ModulePage,
-    ActionPage
+    ActionPage,
+    NotALeakPage
   ],
   providers: [
     StatusBar,
