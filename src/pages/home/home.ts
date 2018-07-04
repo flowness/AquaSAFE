@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 // import { ListPage } from '../list/list';
 import { MP100Page } from '../mp100/mp100';
+import { Fd100Page } from '../fd100/fd100';
+import { Vs100Page } from '../vs100/vs100';
+import { Bs100Page } from '../bs100/bs100';
+import { R100Page } from '../r100/r100';
+
+
 import { ModulePage } from '../module/module';
 import { ActionPage } from '../action/action';
 // import { NavController } from 'ionic-angular';
@@ -27,21 +33,45 @@ export class HomePage {
     this.prepareData();
     this.prepareWizardSteps();
     this.data.status = Math.ceil(Math.random() * 100);
-
+    
   }
 
   prepareData(){
     let items = [];
-    let numItems = Math.ceil(Math.random() * 15) + 1;
-    let icons = ['wifi', 'bluetooth'];
+    let numItems = Math.ceil(Math.random() * 8) + 1;
+    let icons = ['build', 'water','aperture','cloud-outline','wifi'];
     let statuses = ['Battery', 'Check', 'Good'];
-    for (let i = 1; i < numItems; i++) {
+    let Device = ['MP100 Leak Sensor','FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
+    // init the MP100 unit
+    items.push({
+      title: Device[0],
+      state: 'Good' ,
+      icon: icons[0],
+      type: 0,
+      sn: this.getRandomSN()
+    });
+    let UnitCount=[0,4,4,1,2]; //FD,VS,BS,R
+
+    for (let i = 2; i < numItems; i++) {
+      let type=0;
+      do
+      {
+        type=Math.floor(Math.random()*4)+1;
+        if(UnitCount[type]>0)
+        {
+          UnitCount[type]--;
+        }
+        else
+        {
+          type=0
+        }
+      }
+      while(type == 0)
       items.push({
-        title: i == 1 ? 'MP100 Leak Sensor': 'Sensor ' + i,
-        // note: i == 1 ? 'Good' : 'This is item #' + i,
-        state: i == 1 ? 'Good' : statuses[Math.floor(Math.random() * statuses.length)],
-        icon: i == 1 ? 'build' : icons[Math.floor(Math.random() * icons.length)],
-        type: i == 1 ? 0 : 1,
+        title: Device[type],
+        state: statuses[Math.floor(Math.random() * statuses.length)],
+        icon: icons[type],
+        type: type,
         sn: this.getRandomSN()
       });
     }
@@ -74,10 +104,11 @@ export class HomePage {
   }
 
   itemTapped(event, item) {
+    let Pages=[MP100Page,Fd100Page,Vs100Page,Bs100Page,R100Page];
     console.log("item type = " + item.type);
     if (item.type < 100) {
-      if (item.type === 0 ) {
-        this.navCtrl.push(MP100Page, {
+      if (item.type < 5 ) {
+        this.navCtrl.push(Pages[item.type], {
           item: item
         });
       } else {

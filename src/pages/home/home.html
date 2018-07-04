@@ -9,7 +9,7 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf = " data.status % 2 < 0; else elsetag">
+  <div *ngIf = " data.status % 2 != 0; else elsetag">
     <ion-item class="header-status">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK

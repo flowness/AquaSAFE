@@ -6,6 +6,10 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { MP100Page } from '../pages/mp100/mp100';
+import { Fd100Page } from '../pages/fd100/fd100';
+import { Vs100Page } from '../pages/vs100/vs100';
+import { Bs100Page } from '../pages/bs100/bs100';
+import { R100Page } from '../pages/r100/r100';
 import { ModulePage } from '../pages/module/module';
 import { ActionPage } from '../pages/action/action';
 
@@ -18,6 +22,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ListPage,
     MP100Page,
+    Fd100Page,
+    Vs100Page,
+    Bs100Page,
+    R100Page,
     ModulePage,
     ActionPage
   ],
@@ -31,6 +39,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ListPage,
     MP100Page,
+    Fd100Page,
+    Vs100Page,
+    Bs100Page,
+    R100Page,    
     ModulePage,
     ActionPage
   ],
