@@ -22,7 +22,7 @@
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>
-      <button ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item)">
+      <button ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item, this.data)">
         <ion-icon [name]="item.icon" item-start></ion-icon>
         {{item.title}}
         <div class="item-note" item-end>
@@ -37,8 +37,8 @@
       <ion-item class="header-status-bad">
       <!-- <div class="header-status-bad"> -->
         System Status: BAD
-        <ion-item>
-          Alert Indicator: MP100
+        <ion-item no-lines class="header-status-alert-ind">
+          Alert Indicator: {{data.alert.indicator}}<br>Detection Time: {{data.alert.detectionTime}}
         </ion-item>
       </ion-item>
       <!-- <hr class="main-page-hr"/> -->

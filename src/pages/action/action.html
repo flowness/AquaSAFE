@@ -18,7 +18,7 @@
 
 <ion-content>
   <ion-item *ngIf = " item.type == 100; else elsetag"  text-wrap>
-    Please select what water consuming operation triggered the alert:
+    Please specify the water usage for the assumed leak detection on {{alert.detectionTimes}}:
   </ion-item>
   <ng-template #elsetag>
     <ion-item #elsetag>

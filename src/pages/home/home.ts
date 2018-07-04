@@ -24,13 +24,14 @@ export class HomePage {
     this.selectedItem = navParams.get('item');
     this.data = {};
     this.data.mainValve =  true;
-    this.prepareData();
+    this.prepareOkData();
+    this.prepareNotOkData();
     this.prepareWizardSteps();
     this.data.status = Math.ceil(Math.random() * 100);
 
   }
 
-  prepareData(){
+  prepareOkData(){
     let items = [];
     let numItems = Math.ceil(Math.random() * 15) + 1;
     let icons = ['wifi', 'bluetooth'];
@@ -46,6 +47,13 @@ export class HomePage {
       });
     }
     this.data.items = items;
+  }
+
+  prepareNotOkData(){
+    let alert = {};
+    alert.indicator = 'MP100';
+    alert.detectionTime = '4/7/2018 10:13';
+    this.data.alert = alert;
   }
 
   getRandomSN() {
@@ -86,8 +94,10 @@ export class HomePage {
         });
       }
     } else {
+      console.log("alert = " + this.data.alert);
       this.navCtrl.push(ActionPage, {
-        item: item
+        item: item,
+        alert: this.data.alert
       });
     }
   }

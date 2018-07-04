@@ -8,11 +8,13 @@ import { AlertController } from 'ionic-angular';
 })
 export class ActionPage {
   item: any;
+  alert:  any;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
+    console.log('navParams' + navParams.get('item'));
     this.item = navParams.get('item');
-
+    this.alert = navParams.get('alert');
   }
 
   doConfirm(title) {
