@@ -21,6 +21,8 @@ export class HomePage {
   data: any;
   // status: number;
   selectedItem: any;
+  state: any;
+  // private urlParameters: Array<any> = [];
   // icons: string[];
   // statuses: string[];
   // items: Array<{title: string, state: string, icon: string, type: number}>;
@@ -28,6 +30,7 @@ export class HomePage {
   // numItems: number;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
+    console.log('constructor');
     this.selectedItem = navParams.get('item');
     this.data = {};
     this.data.mainValve =  true;
@@ -35,7 +38,35 @@ export class HomePage {
     this.prepareNotOkData();
     this.prepareWizardSteps();
     this.data.status = Math.ceil(Math.random() * 100);
-    
+    console.log('constructor finished');
+  }
+
+  ionViewWillEnter(){
+    console.log('ionViewWillEnter');
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad');
+    if (document.URL.indexOf("?") > 0) {
+    	let splitURL = document.URL.split("?");
+    	let splitParams = splitURL[1].split("&");
+    	let i: any;
+    	for (i in splitParams){
+    		let singleURLParam = splitParams[i].split('=');
+    		if (singleURLParam[0] == "state"){
+    			this.state = singleURLParam[1];
+          console.log('state='+this.state);
+    		}
+      }
+    }
+    if (this.state=='BAD'){
+      this.data.status = 2;
+    } else if (this.state==='WARN'){
+      this.data.status = 3;
+    } else {
+      this.data.status = 1;
+    }
+    console.log('this.data.status='+this.data.status);
   }
 
   prepareOkData(){
