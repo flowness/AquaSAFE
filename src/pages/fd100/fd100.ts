@@ -29,12 +29,14 @@ export class Fd100Page {
 
   prepareData(serial) {
     let data1 = {};
+    let commStatus=['Good','Weak','Loss'];
     data1['sn'] = serial;
     data1['lastReading'] = new Date();
     data1['address'] = 'Haadarim St. Talmaz';
     data1['batteryStatus'] = Math.floor(Math.random() * 100);
     data1['tempC'] = Math.floor(Math.random() * 50) - 10;
     data1['tempF'] = Math.floor(data1['tempC'] * 1.8 + 32);
+    data1['commStatus'] = commStatus[Math.floor(Math.random() * commStatus.length)];
     this['data'] = data1;
   }
 
