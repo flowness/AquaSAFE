@@ -18,15 +18,32 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
+      <ion-list-header>
+         <h2> Settings</h2>
+        </ion-list-header>
+    <ion-item no-lines *ngFor="let item of items">
       <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-end>
-        {{item.note}}
-      </div>
-    </button>
+      <ion-label *ngIf = "item.input=='toggle'; else TextInput">{{item.title}}
+        <ion-row align-items-end *ngIf = "item.value== true && item.title=='Zero-Flow Hours Alert:'">
+          <ion-col>
+              <ion-label>Start</ion-label>
+              <ion-datetime  placeholder="00:00" displayFormat="HH:mm"></ion-datetime> 
+          </ion-col>
+          <ion-col>
+              <ion-label>Stop</ion-label>
+              <ion-datetime placeholder="00:00" displayFormat="HH:mm"></ion-datetime> 
+          </ion-col>
+        </ion-row>
+      </ion-label>
+
+      <ng-template #TextInput>
+          <ion-label floating *ngIf = "item.icon=='call'">Telephone number</ion-label>
+          <ion-input type="tel" *ngIf = "item.icon=='call'"></ion-input>
+          <ion-label floating *ngIf = "item.icon=='mail'">E-Mail</ion-label>
+          <ion-input type="email" *ngIf = "item.icon=='mail'"></ion-input>
+        </ng-template>
+      <ion-toggle [(ngModel)]="item.value" *ngIf = "item.input=='toggle'" item-end>
+      </ion-toggle>
+    </ion-item>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
 </ion-content>

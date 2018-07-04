@@ -6,32 +6,56 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'list.html'
 })
 export class ListPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  items: Array<{title: string, input: string, icon: string,value:any}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
 
     this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
-  }
-
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
+    this.items.push({
+      title: 'E-Mail',
+      input: 'text',
+      icon: 'mail',
+      value: ''
     });
-  }
+    this.items.push({
+      title: 'SMS',
+      input: 'text',
+      icon: 'call',
+      value: ''
+    });
+    this.items.push({
+      title: 'Freez Alert',
+      input: 'toggle',
+      icon: 'warning',
+      value: false
+    });
+    this.items.push({
+      title: 'Irregularity Alert',
+      input: 'toggle',
+      icon: 'warning',
+      value: false
+    });
+    this.items.push({
+      title: 'Leakage Alert',
+      input: 'toggle',
+      icon: 'warning',
+      value: false
+    });
+    this.items.push({
+      title: 'Zero-Flow Hours Alert:',
+      input: 'toggle',
+      icon: 'warning',
+      value: false
+    });
+
+    this.items.push({
+      title: 'Liters/Gallons',
+      input: 'toggle',
+      icon: 'water',
+      value: false
+    });
+
+    }
+  
 }
