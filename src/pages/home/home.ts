@@ -18,11 +18,15 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HomePage {
   data: any;
-  
+  icons: [];
+  devices: [];
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     console.log('constructor');
     this.data = {};
     this.data.mainValve =  true;
+    this.icons = ['water','aperture','cloud-outline','wifi'];
+    this.devices = ['FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
     console.log('constructor finished');
   }
 
@@ -47,61 +51,66 @@ export class HomePage {
     }
     if (state ==='bad'){
       this.data.status = 2;
-      this.prepareNotOkData();
+      this.prepareAlertData();
       this.prepareWizardSteps();
     } else if (state==='warn'){
-      this.prepareOkData();
+      this.prepareSiteData(false);
       this.data.status = 3;
     } else {
-      this.prepareOkData();
+      this.prepareSiteData(true);
       this.data.status = 1;
     }
     console.log('this.data.status='+this.data.status);
   }
 
-  prepareOkData(){
+  prepareSiteData(isAllGood){
     let items = [];
-    let numItems = Math.ceil(Math.random() * 8) + 1;
-    let icons = ['build', 'water','aperture','cloud-outline','wifi'];
-    let statuses = ['Battery', 'Check', 'Good'];
-    let Device = ['MP100 Leak Sensor','FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
     // init the MP100 unit
-    items.push({
-      title: Device[0],
-      state: 'Good' ,
-      icon: icons[0],
-      type: 0,
-      sn: this.getRandomSN()
-    });
-    let UnitCount=[0,4,4,1,2]; //FD,VS,BS,R
+    items.push(this.getMP100Item('All Good'));
 
+    let numItems = Math.ceil(Math.random() * 8) + 2;
+    let statuses = ['Battery', 'Check', 'Good'];
+    let unitCount=[0,4,4,1,2]; //FD,VS,BS,R
     for (let i = 2; i < numItems; i++) {
-      let type=0;
-      do
-      {
-        type=Math.floor(Math.random()*4)+1;
-        if(UnitCount[type]>0)
-        {
-          UnitCount[type]--;
-        }
-        else
-        {
-          type=0
-        }
-      }
-      while(type == 0)
-      items.push({
-        title: Device[type],
-        state: statuses[Math.floor(Math.random() * statuses.length)],
-        icon: icons[type],
-        type: type,
-        sn: this.getRandomSN()
-      });
+      items.push(this.getItem(unitCount, isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)]));
     }
     this.data.items = items;
   }
 
-  prepareNotOkData(){
+  getItem(unitCount, status) {
+    let type=0;
+    do {
+      type=Math.floor(Math.random()*4)+1;
+      if(unitCount[type]>0)
+      {
+        unitCount[type]--;
+      }
+      else
+      {
+        type=0
+      }
+    } while(type == 0)
+
+    return {
+      title: this.devices[type-1],
+      state: status,
+      icon: this.icons[type-1],
+      type: type,
+      sn: this.getRandomSN()
+    }
+  }
+
+  getMP100Item(status) {
+      return {
+        title: 'MP100 Leak Sensor',
+        state: status,
+        icon: 'build',
+        type: 0,
+        sn: this.getRandomSN()
+      }
+  }
+
+  prepareAlertData(){
     let alert = {};
     alert['indicator'] = 'MP100';
     alert['detectionTime'] = '4/7/2018 10:13';
