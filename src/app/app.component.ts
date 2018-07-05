@@ -5,9 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
-// import { MP100Page } from '../pages/mp100/mp100';
-// import { ModulePage } from '../pages/module/module';
-// import { ActionPage } from '../pages/action/action';
 
 @Component({
   templateUrl: 'app.html'

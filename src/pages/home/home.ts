@@ -8,9 +8,8 @@ import { R100Page } from '../r100/r100';
 
 
 import { ModulePage } from '../module/module';
-import { ActionPage } from '../action/action';
 import { NotALeakPage } from '../notaleak/notaleak';
-// import { NavController } from 'ionic-angular';
+import { IsALeakPage } from '../isaleak/isaleak';
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
@@ -137,28 +136,35 @@ export class HomePage {
   itemTapped(event, item) {
     let Pages=[MP100Page,Fd100Page,Vs100Page,Bs100Page,R100Page];
     console.log("item type = " + item.type);
-    if (item.type < 100) {
-      if (item.type < 5 ) {
+    switch (item.type) {
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+      case 4:
         this.navCtrl.push(Pages[item.type], {
           item: item
         });
-      } else {
-        this.navCtrl.push(ModulePage, {
-          item: item
-        });
-      }
-    } else {
-      if (item.type === 100 ) {
+        break;
+      case 100:
         this.navCtrl.push(NotALeakPage, {
           item: item,
           alert: this.data.alert
         });
-      } else {
-        this.navCtrl.push(ActionPage, {
+        break;
+      case 103:
+        this.navCtrl.push(IsALeakPage, {
           item: item,
           alert: this.data.alert
         });
-      }
+        break;
+
+      default:
+        this.navCtrl.push(ModulePage, {
+          item: item,
+          alert: this.data.alert
+        });
+        break;
     }
   }
 
