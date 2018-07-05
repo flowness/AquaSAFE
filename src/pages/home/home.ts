@@ -19,25 +19,11 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HomePage {
   data: any;
-  // status: number;
-  selectedItem: any;
-  state: any;
-  // private urlParameters: Array<any> = [];
-  // icons: string[];
-  // statuses: string[];
-  // items: Array<{title: string, state: string, icon: string, type: number}>;
-  // wizardStep1: Array<{title: string, action: string, icon: string, type: number}>;
-  // numItems: number;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
     console.log('constructor');
-    this.selectedItem = navParams.get('item');
     this.data = {};
     this.data.mainValve =  true;
-    this.prepareOkData();
-    this.prepareNotOkData();
-    this.prepareWizardSteps();
-    this.data.status = Math.ceil(Math.random() * 100);
     console.log('constructor finished');
   }
 
@@ -47,6 +33,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
+    let state = 'good';
     if (document.URL.indexOf("?") > 0) {
     	let splitURL = document.URL.split("?");
     	let splitParams = splitURL[1].split("&");
@@ -54,16 +41,20 @@ export class HomePage {
     	for (i in splitParams){
     		let singleURLParam = splitParams[i].split('=');
     		if (singleURLParam[0] == "state"){
-    			this.state = singleURLParam[1];
-          console.log('state='+this.state);
+    			state = singleURLParam[1].toLowerCase();
+          console.log('state='+state);
     		}
       }
     }
-    if (this.state=='BAD'){
+    if (state ==='bad'){
       this.data.status = 2;
-    } else if (this.state==='WARN'){
+      this.prepareNotOkData();
+      this.prepareWizardSteps();
+    } else if (state==='warn'){
+      this.prepareOkData();
       this.data.status = 3;
     } else {
+      this.prepareOkData();
       this.data.status = 1;
     }
     console.log('this.data.status='+this.data.status);

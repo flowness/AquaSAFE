@@ -23,7 +23,7 @@ page-home {
       display: table;
   }
 
-  .header-status-bad {
+  .header-status.bad {
       box-sizing: border-box;
       background-color: red;
       width: 100%;
@@ -37,6 +37,19 @@ page-home {
       display: table;
   }
 
+  .header-status.warn {
+      box-sizing: border-box;
+      background-color: yellow;
+      width: 100%;
+      min-height: 20vh;
+      max-height: 20%;
+      // position: absolute;
+      top: 0;
+      left: 0;
+      margin: 0 auto;
+      text-align:center;
+      display: table;
+  }
 
   .header-status-alert-ind {
       background-color: red;
