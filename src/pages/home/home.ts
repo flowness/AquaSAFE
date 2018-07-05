@@ -18,8 +18,8 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class HomePage {
   data: any;
-  icons: [];
-  devices: [];
+  icons: any;
+  devices: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     console.log('constructor');
@@ -36,7 +36,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
-    let state = 'good';
+    let state = '';
     if (document.URL.indexOf("?") > 0) {
     	let splitURL = document.URL.split("?");
     	let splitParams = splitURL[1].split("&");
@@ -45,21 +45,31 @@ export class HomePage {
     		let singleURLParam = splitParams[i].split('=');
     		if (singleURLParam[0] == "state"){
     			state = singleURLParam[1].toLowerCase();
-          console.log('state='+state);
     		}
       }
     }
+
+    console.log('state='+state);
     if (state ==='bad'){
       this.data.status = 2;
+    } else if (state==='warn'){
+      this.data.status = 3;
+    } else if (state==='good'){
+      this.data.status = 1;
+    } else {
+      this.data.status = Math.floor(Math.random() * 3) + 1;
+      console.log("random state = " + this.data.status);
+    }
+
+    if (this.data.status === 2){
       this.prepareAlertData();
       this.prepareWizardSteps();
-    } else if (state==='warn'){
+    } else if (this.data.status === 3){
       this.prepareSiteData(false);
-      this.data.status = 3;
     } else {
       this.prepareSiteData(true);
-      this.data.status = 1;
     }
+
     console.log('this.data.status='+this.data.status);
   }
 
