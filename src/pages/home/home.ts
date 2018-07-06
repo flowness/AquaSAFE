@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-// import { ListPage } from '../list/list';
-import { MP100Page } from '../mp100/mp100';
-import { Fd100Page } from '../fd100/fd100';
-import { Vs100Page } from '../vs100/vs100';
-import { Bs100Page } from '../bs100/bs100';
-import { R100Page } from '../r100/r100';
-
-
+import { MP100Page } from '../modules/mp100/mp100';
+import { Fd100Page } from '../modules/fd100/fd100';
+import { Vs100Page } from '../modules/vs100/vs100';
+import { Bs100Page } from '../modules/bs100/bs100';
+import { R100Page } from '../modules/r100/r100';
 import { ModulePage } from '../module/module';
-import { NotALeakPage } from '../notaleak/notaleak';
-import { IsALeakPage } from '../isaleak/isaleak';
+
+import { NotALeakPage } from '../events/notaleak/notaleak';
+import { IsALeakPage } from '../events/isaleak/isaleak';
+
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
