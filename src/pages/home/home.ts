@@ -6,8 +6,12 @@ import { Bs100Page } from '../modules/bs100/bs100';
 import { R100Page } from '../modules/r100/r100';
 import { ModulePage } from '../module/module';
 
-import { NotALeakPage } from '../events/notaleak/notaleak';
+import { CantseeLeakPage } from '../events/cantseeleak/cantseeleak';
 import { IsALeakPage } from '../events/isaleak/isaleak';
+import { NotALeakPage } from '../events/notaleak/notaleak';
+import { NotathomePage } from '../events/notathome/notathome';
+
+
 
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -166,6 +170,18 @@ export class HomePage {
         break;
       case 100:
         this.navCtrl.push(NotALeakPage, {
+          item: item,
+          alert: this.data.alert
+        });
+        break;
+      case 101:
+        this.navCtrl.push(CantseeLeakPage, {
+          item: item,
+          alert: this.data.alert
+        });
+        break;
+      case 102:
+        this.navCtrl.push(NotathomePage, {
           item: item,
           alert: this.data.alert
         });

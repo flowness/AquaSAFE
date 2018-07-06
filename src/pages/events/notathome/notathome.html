@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-navbar>
+      <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-item text-wrap>
+       <h2> I can see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
+    </ion-item>
+    <div [ngSwitch]="state">
+      <ion-item text-wrap *ngSwitchCase="0">
+            Is there someone around the property you can contact to inquire?
+            <br>
+            <button ion-button ion-content item-center (click)="PressNo()">No</button>
+            <button ion-button ion-content item-center (click)="PressYes()">Yes</button>
+        </ion-item>
+        <ion-item text-wrap *ngSwitchCase="1">
+          <div *ngIf="!someOneHome">
+              suggest to shut off the main valve
+            </div>
+          <div *ngIf="someOneHome">
+              if this a real leak
+              <br>
+              <button ion-button ion-content item-center (click)="PressNoLeak()">No</button>
+              <button ion-button ion-content item-center (click)="PressRealLeak()">Yes</button>  
+          </div>
+        </ion-item>
+        <ion-item text-wrap text-center *ngSwitchCase="2">
+            Verify that the leak had stopped – leak values
+        </ion-item>
+        <ion-item text-wrap text-center *ngSwitchCase="3">
+            offer a list of plumbers
+        </ion-item>
+      </div>      
+      <div padding></div>
+      <div *ngIf="state!=0">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <!-- empty design column to center buttons-->
+          </ion-col>
+          <ion-col>
+            <button ion-button ion-content item-center icon-start (click)="prevState()" [disabled]="state == 0" large>
+              <ion-icon name="arrow-dropleft"></ion-icon>
+              <i>
+                Previous
+              </i>
+            </button>
+          </ion-col>
+          <ion-col>
+              <!-- empty design column to center buttons-->
+          </ion-col>
+          <ion-col>
+            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 3" large>
+              <i>
+                Next
+              </i>
+              <ion-icon name="arrow-dropright"> </ion-icon>
+            </button>
+          </ion-col>
+          <ion-col>
+            <!-- empty design column to center buttons-->          
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      </div>
+  </ion-content>

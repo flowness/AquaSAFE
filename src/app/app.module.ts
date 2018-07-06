@@ -11,8 +11,13 @@ import { Vs100Page } from '../pages/modules/vs100/vs100';
 import { Bs100Page } from '../pages/modules/bs100/bs100';
 import { R100Page } from '../pages/modules/r100/r100';
 import { ModulePage } from '../pages/module/module';
-import { NotALeakPage } from '../pages/events/notaleak/notaleak';
+
+import { CantseeLeakPage } from '../pages/events/cantseeleak/cantseeleak';
 import { IsALeakPage } from '../pages/events/isaleak/isaleak';
+import { NotALeakPage } from '../pages/events/notaleak/notaleak';
+import { NotathomePage } from '../pages/events/notathome/notathome';
+
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,7 +34,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     R100Page,
     ModulePage,
     NotALeakPage,
-    IsALeakPage
+    IsALeakPage,
+    NotathomePage,
+    CantseeLeakPage
   ],
   imports: [
     BrowserModule,
@@ -47,7 +54,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     R100Page,    
     ModulePage,
     NotALeakPage,
-    IsALeakPage
+    IsALeakPage,
+    NotathomePage,
+    CantseeLeakPage
   ],
   providers: [
     StatusBar,

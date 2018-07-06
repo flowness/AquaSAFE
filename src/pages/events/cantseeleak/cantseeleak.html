@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-navbar>
+      <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <ion-item text-wrap>
+       <h2> I can see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
+    </ion-item>
+    <div [ngSwitch]="state">
+      <ion-item text-wrap text-center *ngSwitchCase="0">
+          Close all water sources to verify if the this is a real leak
+        </ion-item>
+        <ion-item text-wrap text-center *ngSwitchCase="1">
+            If the flow continues: shut off main valve
+        </ion-item>
+        <ion-item text-wrap text-center *ngSwitchCase="2">
+            Verify that the leak had stopped – leak values
+        </ion-item>
+        <ion-item text-wrap text-center *ngSwitchCase="3">
+            offer a list of plumbers
+        </ion-item>
+      </div>
+      <div padding></div>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <!-- empty design column to center buttons-->
+          </ion-col>
+          <ion-col>
+            <button ion-button ion-content item-center icon-start (click)="prevState()" [disabled]="state == 0" large>
+              <ion-icon name="arrow-dropleft"></ion-icon>
+              <i>
+                Previous
+              </i>
+            </button>
+          </ion-col>
+          <ion-col>
+              <!-- empty design column to center buttons-->
+          </ion-col>
+          <ion-col>
+            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 3" large>
+              <i>
+                Next
+              </i>
+              <ion-icon name="arrow-dropright"> </ion-icon>
+            </button>
+          </ion-col>
+          <ion-col>
+            <!-- empty design column to center buttons-->          
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-content>
