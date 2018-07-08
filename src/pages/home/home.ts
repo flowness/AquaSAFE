@@ -82,7 +82,7 @@ export class HomePage {
     items.push(this.getMP100Item('All Good'));
 
     let numItems = Math.ceil(Math.random() * 8) + 2;
-    let statuses = ['Battery', 'Check', 'Good'];
+    let statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
     let unitCount=[0,4,4,1,2]; //FD,VS,BS,R
     for (let i = 2; i < numItems; i++) {
       items.push(this.getItem(unitCount, isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)]));
