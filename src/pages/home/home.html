@@ -18,7 +18,7 @@
     <ion-item class="main-valve">
       <!-- <div id="status-text"></div> -->
       <ion-label>Main Valve</ion-label>
-      <ion-toggle [(ngModel)]="data.mainValve" (ionChange)="change()" (click)="doConfirmMainValve('Dishwasher')"></ion-toggle>
+      <ion-toggle [(ngModel)]="data.mainValve" (ngModelChange)="handleToggleChange($event)" item-content></ion-toggle>
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>

@@ -30,8 +30,8 @@ export class HomePage {
     console.log('constructor');
     this.data = {};
     this.data.mainValve =  true;
-    this.icons = ['water','aperture','cloud-outline','wifi'];
-    this.devices = ['FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
+    this.icons = ['build', 'water','aperture','cloud-outline','wifi'];
+    this.devices = ['MP100 Leak Sensor', 'FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
     console.log('constructor finished');
   }
 
@@ -79,50 +79,27 @@ export class HomePage {
   }
 
   prepareSiteData(isAllGood){
-    let items = [];
-    // init the MP100 unit
-    items.push(this.getMP100Item('All Good'));
-
-    let numItems = Math.ceil(Math.random() * 8) + 2;
     let statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
-    let unitCount=[0,4,4,1,2]; //MP,FD,VS,BS,R
-    for (let i = 2; i < numItems; i++) {
-      items.push(this.getItem(unitCount, isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)]));
-    }
+    let items = [];
+    // types 0=MP100, 1=FD100, 2=VS100
+    items.push(this.getItem(0, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    items.push(this.getItem(2, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+
     this.data.items = items;
   }
 
-  getItem(unitCount, status) {
-    let type=0;
-    do {
-      type=Math.floor(Math.random()*4)+1;
-      if(unitCount[type]>0)
-      {
-        unitCount[type]--;
-      }
-      else
-      {
-        type=0
-      }
-    } while(type == 0)
-
+  getItem(type, status) {
     return {
-      title: this.devices[type-1],
+      title: this.devices[type],
       state: status,
-      icon: this.icons[type-1],
+      icon: this.icons[type],
       type: type,
       sn: this.getRandomSN()
     }
-  }
-
-  getMP100Item(status) {
-      return {
-        title: 'MP100 Leak Sensor',
-        state: status,
-        icon: 'build',
-        type: 0,
-        sn: this.getRandomSN()
-      }
   }
 
   prepareAlertData(){
@@ -224,6 +201,7 @@ export class HomePage {
             text: 'Yes',
             handler: () => {
               console.log('Yes clicked');
+              this.data.mainValve = evt.checked;
             }
           }
         ]
