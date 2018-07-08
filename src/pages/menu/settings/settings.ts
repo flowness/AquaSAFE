@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-settings',
@@ -8,7 +9,7 @@ import { NavController, NavParams } from 'ionic-angular';
 export class settingsPage {
   items: Array<{title: string, input: string, icon: string,value:any}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
 
     this.items = [];
@@ -57,5 +58,10 @@ export class settingsPage {
     });
 
     }
-  
+
+    handleToggleChange(evt, item) {
+      if (item.title === 'Leakage Alert') {
+        console.log("setting leakage alert to " + item.value);
+      }
+    }
 }
