@@ -14,8 +14,8 @@
   <ion-item>
     SN: {{data.sn}}
   </ion-item>
-  <ion-item>
-    Status: {{data.status}}
+  <ion-item [ngClass]="{'item-warn' : selectedItem.state != 'All Good'}">
+    Status: {{selectedItem.state}}
   </ion-item>
   <ion-item>
     Location: {{data.address}}
