@@ -4,7 +4,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { settingsPage } from '../pages/menu/settings/settings';
+import { eventsPage } from '../pages/menu/events/events';
+
 import { MP100Page } from '../pages/modules/mp100/mp100';
 import { Fd100Page } from '../pages/modules/fd100/fd100';
 import { Vs100Page } from '../pages/modules/vs100/vs100';
@@ -26,7 +28,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
+    settingsPage,
+    eventsPage,
     MP100Page,
     Fd100Page,
     Vs100Page,
@@ -46,7 +49,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
+    settingsPage,
+    eventsPage,
     MP100Page,
     Fd100Page,
     Vs100Page,

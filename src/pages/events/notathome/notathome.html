@@ -9,18 +9,18 @@
        <h2> I can see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
     </ion-item>
     <div [ngSwitch]="state">
-      <ion-item text-wrap *ngSwitchCase="0">
+      <ion-item text-wrap text-center *ngSwitchCase="0">
             Is there someone around the property you can contact to inquire?
             <br>
-            <button ion-button ion-content item-center (click)="PressNo()">No</button>
-            <button ion-button ion-content item-center (click)="PressYes()">Yes</button>
+              <button ion-button ion-content item-center (click)="PressNo()">No</button>
+              <button ion-button ion-content item-center (click)="PressYes()">Yes</button>
         </ion-item>
-        <ion-item text-wrap *ngSwitchCase="1">
+        <ion-item text-wrap text-center *ngSwitchCase="1">
           <div *ngIf="!someOneHome">
               suggest to shut off the main valve
             </div>
           <div *ngIf="someOneHome">
-              if this a real leak
+              is this a real leak? 
               <br>
               <button ion-button ion-content item-center (click)="PressNoLeak()">No</button>
               <button ion-button ion-content item-center (click)="PressRealLeak()">Yes</button>  
@@ -52,7 +52,7 @@
               <!-- empty design column to center buttons-->
           </ion-col>
           <ion-col>
-            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 3" large>
+            <button ion-button ion-content item-center icon-end *ngIf="state!=1"  (click)="nextState()" [disabled]="state == 3" large>
               <i>
                 Next
               </i>

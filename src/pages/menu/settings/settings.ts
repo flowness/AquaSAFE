@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
-  selector: 'page-list',
-  templateUrl: 'list.html'
+  selector: 'page-settings',
+  templateUrl: 'settings.html'
 })
-export class ListPage {
+export class settingsPage {
   items: Array<{title: string, input: string, icon: string,value:any}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
