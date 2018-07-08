@@ -15,20 +15,16 @@
       System Status: OK
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
-    <ion-item class="main-valve">
-      <!-- <div id="status-text"></div> -->
-      <ion-label>Main Valve</ion-label>
-      <ion-toggle [(ngModel)]="data.mainValve" (ngModelChange)="handleToggleChange($event)" item-content></ion-toggle>
-    </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>
-      <button ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item)">
+      <ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item)">
         <ion-icon [name]="item.icon" item-start></ion-icon>
-        {{item.title}}
+        <ion-label>{{item.title}}</ion-label>
+        <ion-toggle *ngIf = "item.type === 2" [(ngModel)]="item.valve" (ngModelChange)="handleToggleChange($event, item)" item-content></ion-toggle>
         <div class="item-note" item-end>
           {{item.state}}
         </div>
-      </button>
+      </ion-item>
     </ion-list>
   </div>
   <!-- BAD status -->
