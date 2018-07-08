@@ -204,31 +204,31 @@ export class HomePage {
     }
   }
 
-  doConfirmMainValve(waterUsage) {
-    console.log("toggle1=" + this.data.mainValve);
- }
+ handleToggleChange(evt) {
+    if(evt.checked !== this.data.mainValve) {
+      console.log("toggle1=" + this.data.mainValve);
+      console.log("event2=" + event);
 
-  change() {
-    console.log("toggle=" + this.data.mainValve);
-    let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to ' + (this.data.mainValve ? 'open' : 'close') + ' the main valve?',
-      buttons: [
-        {
-          text: 'No',
-          handler: () => {
-            console.log('No clicked');
-            this.data.mainValve = !this.data.mainValve;
+      let alert = this.alertCtrl.create({
+        title: 'Confirmation',
+        message: 'Are you sure you want to ' + (this.data.mainValve ? 'open' : 'close') + ' the main valve?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+              console.log('No clicked');
+              this.data.mainValve = !this.data.mainValve;
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              console.log('Yes clicked');
+            }
           }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            console.log('Yes clicked');
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
+        ]
+      });
+      alert.present();
+    }
+ }
 }

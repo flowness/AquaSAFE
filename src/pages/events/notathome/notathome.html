@@ -3,10 +3,10 @@
       <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
     </ion-navbar>
   </ion-header>
-  
+
   <ion-content>
     <ion-item text-wrap>
-       <h2> I can see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
+       <h2> I am not at home leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
     </ion-item>
     <div [ngSwitch]="state">
       <ion-item text-wrap text-center *ngSwitchCase="0">
@@ -20,10 +20,10 @@
               suggest to shut off the main valve
             </div>
           <div *ngIf="someOneHome">
-              is this a real leak? 
+              is this a real leak?
               <br>
               <button ion-button ion-content item-center (click)="PressNoLeak()">No</button>
-              <button ion-button ion-content item-center (click)="PressRealLeak()">Yes</button>  
+              <button ion-button ion-content item-center (click)="PressRealLeak()">Yes</button>
           </div>
         </ion-item>
         <ion-item text-wrap text-center *ngSwitchCase="2">
@@ -32,7 +32,7 @@
         <ion-item text-wrap text-center *ngSwitchCase="3">
             offer a list of plumbers
         </ion-item>
-      </div>      
+      </div>
       <div padding></div>
       <div *ngIf="state!=0">
       <ion-grid>
@@ -60,7 +60,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <!-- empty design column to center buttons-->          
+            <!-- empty design column to center buttons-->
           </ion-col>
         </ion-row>
       </ion-grid>

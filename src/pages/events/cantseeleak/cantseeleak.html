@@ -3,10 +3,10 @@
       <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
     </ion-navbar>
   </ion-header>
-  
+
   <ion-content>
     <ion-item text-wrap>
-       <h2> I can see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
+       <h2> I don't see leak at {{alert.detectionTime}}, Suggestions for actions (Step {{state+1}}/4): </h2>
     </ion-item>
     <div [ngSwitch]="state">
       <ion-item text-wrap text-center *ngSwitchCase="0">
@@ -48,7 +48,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <!-- empty design column to center buttons-->          
+            <!-- empty design column to center buttons-->
           </ion-col>
         </ion-row>
       </ion-grid>
