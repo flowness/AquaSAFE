@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AlertController } from 'ionic-angular';
+
 import { MP100Page } from '../modules/mp100/mp100';
 import { Fd100Page } from '../modules/fd100/fd100';
 import { Vs100Page } from '../modules/vs100/vs100';
@@ -24,7 +26,7 @@ export class HomePage {
   icons: any;
   devices: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     console.log('constructor');
     this.data = {};
     this.data.mainValve =  true;
@@ -202,7 +204,31 @@ export class HomePage {
     }
   }
 
+  doConfirmMainValve(waterUsage) {
+    console.log("toggle1=" + this.data.mainValve);
+ }
+
   change() {
     console.log("toggle=" + this.data.mainValve);
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to ' + (this.data.mainValve ? 'open' : 'close') + ' the main valve?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+            this.data.mainValve = !this.data.mainValve;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }
