@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { MP100Page } from '../modules/mp100/mp100';
 import { Fd100Page } from '../modules/fd100/fd100';
@@ -26,59 +27,63 @@ export class HomePage {
   icons: any;
   devices: any;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
     console.log('constructor');
     this.data = {};
-    this.data.mainValve =  true;
-    this.icons = ['build', 'water','aperture','cloud-outline','wifi'];
-    this.devices = ['MP100 Leak Sensor', 'FD100 Flood detector','VS100 Valve shutoff','BS100 Base Station','R100 RF repater']
+    this.icons = ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
+    this.devices = ['MP100 Leak Sensor', 'FD100 Flood detector', 'VS100 Valve shutoff', 'BS100 Base Station', 'R100 RF repater']
     console.log('constructor finished');
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     console.log('ionViewWillEnter');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
+
+    console.log('this.data.status = ' + this.data.status);
+    this.storage.get('model').then((val) => { if (val != null) { console.log('val.status = ' + val.status); this.data = val;}});
+
     let state = '';
     if (document.URL.indexOf("?") > 0) {
-    	let splitURL = document.URL.split("?");
-    	let splitParams = splitURL[1].split("&");
-    	let i: any;
-    	for (i in splitParams){
-    		let singleURLParam = splitParams[i].split('=');
-    		if (singleURLParam[0] == "state"){
-    			state = singleURLParam[1].toLowerCase();
-    		}
+      let splitURL = document.URL.split("?");
+      let splitParams = splitURL[1].split("&");
+      let i: any;
+      for (i in splitParams) {
+        let singleURLParam = splitParams[i].split('=');
+        if (singleURLParam[0] == "state") {
+          state = singleURLParam[1].toLowerCase();
+        }
       }
     }
 
-    console.log('state='+state);
-    if (state ==='bad'){
+    console.log('state=' + state);
+    if (state === 'bad') {
       this.data.status = 2;
-    } else if (state==='warn'){
+    } else if (state === 'warn') {
       this.data.status = 3;
-    } else if (state==='good'){
+    } else if (state === 'good') {
       this.data.status = 1;
     } else {
       this.data.status = Math.floor(Math.random() * 3) + 1;
       console.log("random state = " + this.data.status);
     }
 
-    if (this.data.status === 2){
+    if (this.data.status === 2) {
       this.prepareAlertData();
       this.prepareWizardSteps();
-    } else if (this.data.status === 3){
+    } else if (this.data.status === 3) {
       this.prepareSiteData(false);
     } else {
       this.prepareSiteData(true);
     }
 
-    console.log('this.data.status='+this.data.status);
+    this.storage.set('model', this.data);
+    console.log('set model in storage');
   }
 
-  prepareSiteData(isAllGood){
+  prepareSiteData(isAllGood) {
     let statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
     let items = [];
     // types 0=MP100, 1=FD100, 2=VS100
@@ -103,7 +108,7 @@ export class HomePage {
     }
   }
 
-  prepareAlertData(){
+  prepareAlertData() {
     let alert = {};
     alert['indicator'] = 'MP100';
     alert['detectionTime'] = '4/7/2018 10:13';
@@ -121,22 +126,22 @@ export class HomePage {
 
   prepareWizardSteps() {
     let wizardSteps = [];
-    let wizIcons = ['../assets/imgs/cool-52.png', '../assets/imgs/sad-50.png', '../assets/imgs/sad-50.png', '../assets/imgs/crying-50.png'];
-    let wizActions = ['Respond', 'Quick Help','Quick Help', 'Help!'];
+    let wizIcons = ['assets/imgs/cool-52.png', 'assets/imgs/sad-50.png', 'assets/imgs/sad-50.png', 'assets/imgs/crying-50.png'];
+    let wizActions = ['Respond', 'Quick Help', 'Quick Help', 'Help!'];
     let wizTitles = ['Not A Leak', 'I don\'t see a leak', 'I\'m not at home', 'I see a leak!'];
     for (let i = 0; i < wizTitles.length; i++) {
       wizardSteps.push({
         icon: wizIcons[i],
         title: wizTitles[i],
         action: wizActions[i],
-        type: 100+i
+        type: 100 + i
       });
     }
     this.data.wizardSteps = wizardSteps;
   }
 
   itemTapped(event, item) {
-    let Pages=[MP100Page,Fd100Page,Vs100Page,Bs100Page,R100Page];
+    let Pages = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
     console.log("item type = " + item.type);
     switch (item.type) {
       case 0:
@@ -182,8 +187,8 @@ export class HomePage {
     }
   }
 
- handleToggleChange(evt, item) {
-    if(evt.checked !== item.valve) {
+  handleToggleChange(evt, item) {
+    if (evt.checked !== item.valve) {
       console.log("toggle1=" + item.valve);
       console.log("event2=" + event);
 
@@ -209,5 +214,5 @@ export class HomePage {
       });
       alert.present();
     }
- }
+  }
 }
