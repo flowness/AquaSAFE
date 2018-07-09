@@ -23,7 +23,7 @@ export class eventsPage {
     let numItems = Math.ceil(Math.random() * 8) + 5;
 
     for (let i = 0; i < numItems; i++) {
-      thisDate=new Date(thisDate.getTime() + (1000* (Math.ceil(Math.random() *  60 * 60 * 24) + 1)));
+      thisDate=new Date(thisDate.getTime() - (1000* (Math.ceil(Math.random() *  60 * 60 * 24) + 1)));
       this.items.push({
         title: 'E-Mail',
         timestamp: thisDate.toISOString(),

@@ -37,6 +37,7 @@ export class IsALeakPage {
             text: 'No',
             handler: () => {
               console.log('No clicked');
+              this.navCtrl.pop();
             }
           },
           {
