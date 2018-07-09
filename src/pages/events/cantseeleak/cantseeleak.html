@@ -11,38 +11,22 @@
       <ion-item text-wrap text-center item-content [hidden]="state!=0">
           Close all water sources to verify this is a real leak
           <br>
-          <ion-row>
-            <ion-col>
-            </ion-col>
-            <ion-col>
-              <canvas #sourceOffCanvas></canvas>
-            </ion-col>
-            <ion-col>
-            </ion-col>
-          </ion-row>
+          <div align="center"><canvas #sourceOffCanvas></canvas></div>
         </ion-item>
         <ion-item text-wrap text-center [hidden]="state!=1">
           If there is still some flow suggest to: 
-          <br>  
-          <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
-              <ion-icon name="aperture"></ion-icon>
-            shut off main valve
-          </button>
-          <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValve()" large>
-              <ion-icon name="aperture"></ion-icon>
-            main valve is shut off
-          </button>
-          <br>
-          <ion-row>
-              <ion-col>
-              </ion-col>
-              <ion-col>
-                <canvas #valveOffCanvas></canvas>
-              </ion-col>
-              <ion-col>
-              </ion-col>
-            </ion-row>            
-        </ion-item>
+          <div align="center">
+            <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
+                <ion-icon name="aperture"></ion-icon>
+              shut off main valve
+            </button>          
+            <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValve()" large>
+                <ion-icon name="aperture"></ion-icon>
+              main valve is shut off
+            </button>
+            <canvas #valveOffCanvas></canvas>
+          </div>
+          </ion-item>
         <ion-item text-wrap text-center [hidden]="state!=2">
             offer a list of plumbers
         </ion-item>

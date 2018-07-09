@@ -172,6 +172,7 @@ export class CantseeLeakPage {
   shutValve()
   {
     this.valveStatus=1;
+    clearInterval(this.task);
     this.taskValve = setInterval(() => {
       this.refreshDataValve();
     }, 300);
