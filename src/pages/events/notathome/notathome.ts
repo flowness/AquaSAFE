@@ -42,6 +42,7 @@ export class NotathomePage {
             text: 'No',
             handler: () => {
               console.log('No clicked');
+              this.navCtrl.pop();
             }
           },
           {
