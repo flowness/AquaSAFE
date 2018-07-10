@@ -43,8 +43,6 @@ export class HomePage {
     console.log('ionViewDidLoad');
 
     console.log('this.data.status = ' + this.data.status);
-    this.storage.get('model').then((val) => { if (val != null) { console.log('val.status = ' + val.status); this.data = val;}});
-
     let state = '';
     if (document.URL.indexOf("?") > 0) {
       let splitURL = document.URL.split("?");
@@ -58,29 +56,39 @@ export class HomePage {
       }
     }
 
-    console.log('state=' + state);
-    if (state === 'bad') {
-      this.data.status = 2;
-    } else if (state === 'warn') {
-      this.data.status = 3;
-    } else if (state === 'good') {
-      this.data.status = 1;
-    } else {
-      this.data.status = Math.floor(Math.random() * 3) + 1;
-      console.log("random state = " + this.data.status);
+    this.readData();
+    this.prepareData(state)
+  }
+
+  prepareData(state) {
+    console.log('state1=' + state);
+    console.log('data1=' + this.data);
+    if (this.data == null || !this.data.inited) {
+      if (state === 'bad') {
+        this.data.status = 2;
+      } else if (state === 'warn') {
+        this.data.status = 3;
+      } else if (state === 'good') {
+        this.data.status = 1;
+      } else {
+        this.data.status = Math.floor(Math.random() * 3) + 1;
+        console.log("random state = " + this.data.status);
+      }
+  
+      if (this.data.status === 2) {
+        this.prepareAlertData();
+        this.prepareWizardSteps();
+      } else if (this.data.status === 3) {
+        this.prepareSiteData(false);
+      } else {
+        this.prepareSiteData(true);
+      }
+      this.data.inited = true;
     }
 
-    if (this.data.status === 2) {
-      this.prepareAlertData();
-      this.prepareWizardSteps();
-    } else if (this.data.status === 3) {
-      this.prepareSiteData(false);
-    } else {
-      this.prepareSiteData(true);
-    }
-
-    this.storage.set('model', this.data);
-    console.log('set model in storage');
+    console.log('finished prepare');
+    console.dir(this.data);
+    this.persistData();
   }
 
   prepareSiteData(isAllGood) {
@@ -187,10 +195,9 @@ export class HomePage {
     }
   }
 
-  handleToggleChange(evt, item) {
-    if (evt.checked !== item.valve) {
-      console.log("toggle1=" + item.valve);
-      console.log("event2=" + event);
+  handleToggleChange(checked, item) {
+    console.log("toggle1=" + item.valve + ' checked=' + checked);
+    if (checked === item.valve) {
 
       let alert = this.alertCtrl.create({
         title: 'Confirmation',
@@ -200,19 +207,47 @@ export class HomePage {
             text: 'No',
             handler: () => {
               console.log('No clicked');
+              console.log('item sn= ' + item.sn);
               item.valve = !item.valve;
             }
           },
           {
             text: 'Yes',
             handler: () => {
-              console.log('Yes clicked');
-              item.valve = evt.checked;
+              console.log('Yes clicked. checked = ' + checked);
+              item.valve = checked;
+              this.updateModel(item, 'valve');
             }
           }
         ]
       });
       alert.present();
     }
+  }
+
+  updateModel(item, property) {
+    for (let index = 0; index < this.data.items.length; index++) {
+      if (this.data.items[index].sn == item.sn) {
+        this.data.items[index][property] = item[property];
+        this.persistData();
+      }
+    };
+  }
+
+  persistData(){
+    console.log('set model in storage');
+    console.dir(this.data);
+    this.storage.set('model', this.data);
+  }
+
+  readData(){
+    console.log('read model from storage');
+    this.storage.get('model').then((val) => {
+      if (val != null) {
+        console.log('val.status = ' + val.status);
+        this.data = val;
+        console.dir(this.data);
+      }
+    });
   }
 }
