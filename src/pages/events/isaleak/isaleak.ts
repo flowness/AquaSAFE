@@ -1,5 +1,6 @@
 import { ViewChild,Component } from '@angular/core';
 import {Navbar, AlertController,IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Chart } from 'chart.js';
 
 /**
  * Generated class for the IsaleakPage page.
@@ -19,9 +20,21 @@ export class IsALeakPage {
   state: any;
   @ViewChild(Navbar) navBar: Navbar;
 
+  dataIndex:any;
+  @ViewChild('sourceOffCanvas') sourceOffCanvas;
+  Chart: any;
+  task: any;
+  taskValve: any;
+  valveStatus:any;
+
+  leakCloseSuccess:any;
+
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
       this.state=0;
+      this.dataIndex=0;
+      this.valveStatus=0;
+      this.leakCloseSuccess=Math.random()<0.5?2:0;
       this.item = navParams.get('item');
       this.alert = navParams.get('alert');
   }
@@ -52,6 +65,84 @@ export class IsALeakPage {
    
       alert.present();
     };
+
+    let chartDefine = {
+      type: 'line',
+     data: {
+       labels: ['0'],
+       datasets: [{
+             data: [19],
+             borderWidth: 1,
+         }]
+     },
+     options: {
+       responsive: false,
+       legend: {
+         display: false,
+       },
+         scales: {
+             yAxes: [{
+                 ticks: {
+                     min: 0,
+                     max: 20
+                 }
+                 
+             }]
+         }
+     }
+   }
+
+   this.Chart = new  Chart(this.sourceOffCanvas.nativeElement, chartDefine);
+
+   this.task = setInterval(() => {
+    this.refreshData();
+  }, 300);
+  
+  }
+
+  refreshData()
+  {
+    let currentData=this.Chart.data.datasets[0].data[this.dataIndex++];
+    if(currentData>this.leakCloseSuccess)
+    {
+      let changeData=Math.floor(Math.random()*5);
+      if(currentData-changeData<this.leakCloseSuccess)
+      {
+        changeData=currentData-this.leakCloseSuccess;        
+      }
+      this.Chart.data.datasets[0].data[this.dataIndex] = currentData-changeData;
+      this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+    }
+    else
+    {
+      this.Chart.data.datasets[0].data.push(this.leakCloseSuccess);
+
+      if(this.Chart.data.datasets[0].data[0]!=this.leakCloseSuccess) 
+      {
+        this.Chart.data.datasets[0].data.shift();
+      }
+      else
+      {
+        clearInterval(this.task);
+      }
+
+    }
+    this.Chart.update(0);
+  }
+
+  refreshDataValve()
+  {
+    this.Chart.data.datasets[0].data.push(0);
+    if(this.Chart.data.datasets[0].data[0]!=0) 
+    {
+      this.Chart.data.datasets[0].data.shift();
+    }
+    else
+    {
+      clearInterval(this.taskValve);
+    }
+    this.Chart.update(0);
+
   }
 
   nextState()
@@ -63,4 +154,14 @@ export class IsALeakPage {
   {
     this.state--;
   }
+
+  shutValve()
+  {
+    this.valveStatus=1;
+    clearInterval(this.task);
+    this.taskValve = setInterval(() => {
+      this.refreshDataValve();
+    }, 300);
+  }
+
 }

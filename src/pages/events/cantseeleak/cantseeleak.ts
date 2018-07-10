@@ -19,19 +19,17 @@ export class CantseeLeakPage {
   item: any;
   alert: any;
   state: any;
-  data: any;
-  dataIndex:any;
-  task: any;
-  taskValve: any;
-  valveStatus:any;
-
   @ViewChild(Navbar) navBar: Navbar;
 
+  dataIndex:any;
   @ViewChild('sourceOffCanvas') sourceOffCanvas;
-  @ViewChild('valveOffCanvas') valveOffCanvas;
-
-  valveOffChart: any;  
   Chart: any;
+  task: any;
+
+  @ViewChild('valveOffCanvas') valveOffCanvas;
+  valveOffChart: any;  
+  taskValve: any;
+  valveStatus:any;
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
@@ -137,8 +135,6 @@ export class CantseeLeakPage {
     this.valveOffChart.data=this.Chart.data;
     this.Chart.update(0);
     this.valveOffChart.update(0);
-
-
   }
 
   refreshDataValve()
