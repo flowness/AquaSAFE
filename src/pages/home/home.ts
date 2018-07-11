@@ -33,16 +33,15 @@ export class HomePage {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
+    let loading = this.loadingCtrl.create({
+      content: 'Refreshing.', showBackdrop: false
+    });
+    loading.present();
+    this.readData(loading);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
-
-    let loading = this.loadingCtrl.create({
-      content: 'Refreshing.', showBackdrop:false
-    });
-    loading.present();
-    this.readData(loading);
   }
 
   prepareData() {
@@ -71,7 +70,7 @@ export class HomePage {
         this.data.status = Math.floor(Math.random() * 3) + 1;
         console.log("random state = " + this.data.status);
       }
-  
+
       this.prepareAlertData();
       this.prepareSiteData();
       this.data.inited = true;
@@ -95,7 +94,7 @@ export class HomePage {
     this.data.modules = modules;
   }
 
-  getModuleStatusByTypeAndSystemStatus(moduleType){
+  getModuleStatusByTypeAndSystemStatus(moduleType) {
     if (moduleType === 0 && this.data.status === 2) {
       return 'Leak Detected';
     } else {
@@ -137,7 +136,7 @@ export class HomePage {
     this.navCtrl.push(Pages[module.type], {
       module: module
     });
-}
+  }
 
   eventItemTapped(event, eventType) {
     console.log("item type = " + eventType);
@@ -204,13 +203,13 @@ export class HomePage {
     };
   }
 
-  persistData(){
+  persistData() {
     console.log('set model in storage');
     console.dir(this.data);
     this.storage.set('model', this.data);
   }
 
-  readData(loading){
+  readData(loading) {
     console.log('read model from storage');
     this.storage.get('model').then((val) => {
       if (val != null) {
