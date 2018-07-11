@@ -16,7 +16,6 @@ import { Chart } from 'chart.js';
 })
 export class CantseeLeakPage {
 
-  // item: any;
   alert: any;
   state: any;
   @ViewChild(Navbar) navBar: Navbar;
@@ -33,13 +32,10 @@ export class CantseeLeakPage {
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
       this.state=0;
       this.dataIndex=0;
       this.valveStatus=0;
-      // this.item = navParams.get('item');
       this.alert = navParams.get('alert');
-
   }
 
   ionViewDidLoad() {

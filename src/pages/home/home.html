@@ -17,12 +17,12 @@
     <!-- <hr class="main-page-hr"/> -->
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>
-      <ion-item *ngFor="let item of data.items" (click)="itemTapped($event, item)">
-        <ion-icon [name]="item.icon" item-start></ion-icon>
-        <ion-label>{{item.title}}</ion-label>
-        <ion-toggle *ngIf = "item.type === 2" [(ngModel)]="item.valve" (ngModelChange)="handleToggleChange($event, item)" item-content></ion-toggle>
+      <ion-item *ngFor="let module of data.modules" (click)="moduleTapped($event, module)">
+        <ion-icon [name]="module.icon" item-start></ion-icon>
+        <ion-label>{{module.title}}</ion-label>
+        <ion-toggle *ngIf = "module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleChange($event, module)" item-content></ion-toggle>
         <div class="item-note" item-end>
-          {{item.state}}
+          {{module.state}}
         </div>
       </ion-item>
     </ion-list>
@@ -77,11 +77,11 @@
   </div>
   <hr class="main-page-hr"/>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
+    <button ion-item *ngFor="let item of modules" (click)="itemTapped($event, module)">
+      <ion-icon [name]="module.icon" item-start></ion-icon>
+      {{module.title}}
       <div class="item-note" item-end>
-        {{item.state}}
+        {{module.state}}
       </div>
     </button>
   </ion-list> -->

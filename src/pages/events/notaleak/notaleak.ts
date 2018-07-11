@@ -7,12 +7,9 @@ import { AlertController } from 'ionic-angular';
   templateUrl: 'notaleak.html'
 })
 export class NotALeakPage {
-  // item: any;
   alert: any;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    // this.item = navParams.get('item');
     this.alert = navParams.get('alert');
     console.log('navParams = ' + this.alert.detectionTime);
   }

@@ -14,13 +14,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'r100.html',
 })
 export class R100Page {
-  selectedItem: any;
+  module: any;
   data: any;
   
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.selectedItem = navParams.get('item');
-    console.log("sn: " + this.selectedItem.sn);
-    this.prepareData(this.selectedItem.sn);
+    this.module = navParams.get('module');
+    console.log("sn: " + this.module.sn);
+    this.prepareData(this.module.sn);
   }
 
   ionViewDidLoad() {

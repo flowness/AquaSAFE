@@ -6,16 +6,13 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'mp100.html'
 })
 export class MP100Page {
-  selectedItem: any;
+  module: any;
   data: any;
-  // icons: string[];
-  // items: Array<{title: string, note: string, icon: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-    console.log("sn: " + this.selectedItem.sn);
-    this.prepareData(this.selectedItem.sn);
+    this.module = navParams.get('module');
+    console.log("sn: " + this.module.sn);
+    this.prepareData(this.module.sn);
   }
 
   prepareData(serial) {

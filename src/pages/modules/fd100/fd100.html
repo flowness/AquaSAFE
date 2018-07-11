@@ -9,13 +9,13 @@
 
 <ion-content>
   <ion-item>
-    {{selectedItem.title}}
+    {{module.title}}
   </ion-item>
   <ion-item>
     SN: {{data.sn}}
   </ion-item>
-  <ion-item [ngClass]="{'item-warn' : selectedItem.state != 'All Good'}">
-    Status: {{selectedItem.state}}
+  <ion-item [ngClass]="{'item-warn' : module.state != 'All Good'}">
+    Status: {{module.state}}
   </ion-item>
   <ion-item>
     Location: {{data.address}}

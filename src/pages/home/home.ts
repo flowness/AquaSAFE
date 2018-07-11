@@ -7,15 +7,11 @@ import { Fd100Page } from '../modules/fd100/fd100';
 import { Vs100Page } from '../modules/vs100/vs100';
 import { Bs100Page } from '../modules/bs100/bs100';
 import { R100Page } from '../modules/r100/r100';
-import { ModulePage } from '../module/module';
 
 import { CantseeLeakPage } from '../events/cantseeleak/cantseeleak';
 import { IsALeakPage } from '../events/isaleak/isaleak';
 import { NotALeakPage } from '../events/notaleak/notaleak';
 import { NotathomePage } from '../events/notathome/notathome';
-
-
-
 
 @Component({
   selector: 'page-home',
@@ -25,6 +21,7 @@ export class HomePage {
   data: any;
   icons: any;
   devices: any;
+  statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
     console.log('constructor');
@@ -63,7 +60,6 @@ export class HomePage {
     }
 
     console.log('state1=' + state);
-    console.log('data1=' + this.data);
     if (this.data == null || !this.data.inited) {
       if (state === 'bad') {
         this.data.status = 2;
@@ -76,13 +72,8 @@ export class HomePage {
         console.log("random state = " + this.data.status);
       }
   
-      if (this.data.status === 2) {
-        this.prepareAlertData();
-      } else if (this.data.status === 3) {
-        this.prepareSiteData();
-      } else {
-        this.prepareSiteData();
-      }
+      this.prepareAlertData();
+      this.prepareSiteData();
       this.data.inited = true;
     }
 
@@ -92,25 +83,28 @@ export class HomePage {
   }
 
   prepareSiteData() {
-    // let systemStatus = this.data.status;
-    let isAllGood = true;
-    // if (systemStatus === 3) {
-    //     isAllGood = false;
-    // }
-    let statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
-    let items = [];
+    let modules = [];
     // types 0=MP100, 1=FD100, 2=VS100
-    items.push(this.getItem(0, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
-    items.push(this.getItem(2, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
-    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
-    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
-    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
-    items.push(this.getItem(1, (isAllGood ? 'All Good' : statuses[Math.floor(Math.random() * statuses.length)])));
+    modules.push(this.getModule(0));
+    modules.push(this.getModule(2));
+    modules.push(this.getModule(1));
+    modules.push(this.getModule(1));
+    modules.push(this.getModule(1));
+    modules.push(this.getModule(1));
 
-    this.data.items = items;
+    this.data.modules = modules;
   }
 
-  getItem(type, status) {
+  getModuleStatusByTypeAndSystemStatus(moduleType){
+    if (moduleType === 0 && this.data.status === 2) {
+      return 'Leak Detected';
+    } else {
+      return (this.data.status != 3 ? 'All Good' : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
+    }
+  }
+
+  getModule(type) {
+    let status = this.getModuleStatusByTypeAndSystemStatus(type);
     return {
       title: this.devices[type],
       state: status,
@@ -137,11 +131,11 @@ export class HomePage {
     return sn;
   }
 
-  itemTapped(event, item) {
+  moduleTapped(event, module) {
     let Pages = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
-    console.log("item type = " + item.type);
-    this.navCtrl.push(Pages[item.type], {
-      item: item
+    console.log("module type = " + module.type);
+    this.navCtrl.push(Pages[module.type], {
+      module: module
     });
 }
 
@@ -150,53 +144,49 @@ export class HomePage {
     switch (eventType) {
       case 100:
         this.navCtrl.push(NotALeakPage, {
-          // item: item,
           alert: this.data.alert
         });
         break;
       case 101:
         this.navCtrl.push(CantseeLeakPage, {
-          // item: item,
           alert: this.data.alert
         });
         break;
       case 102:
         this.navCtrl.push(NotathomePage, {
-          // item: item,
           alert: this.data.alert
         });
         break;
       case 103:
         this.navCtrl.push(IsALeakPage, {
-          // item: item,
           alert: this.data.alert
         });
         break;
     }
   }
 
-  handleToggleChange(checked, item) {
-    console.log("toggle1=" + item.valve + ' checked=' + checked);
-    if (checked === item.valve) {
+  handleToggleChange(checked, module) {
+    console.log("toggle1=" + module.valve + ' checked=' + checked);
+    if (checked === module.valve) {
 
       let alert = this.alertCtrl.create({
         title: 'Confirmation',
-        message: 'Are you sure you want to ' + (item.valve ? 'open' : 'close') + ' the main valve?',
+        message: 'Are you sure you want to ' + (module.valve ? 'open' : 'close') + ' the main valve?',
         buttons: [
           {
             text: 'No',
             handler: () => {
               console.log('No clicked');
-              console.log('item sn= ' + item.sn);
-              item.valve = !item.valve;
+              console.log('module sn= ' + module.sn);
+              module.valve = !module.valve;
             }
           },
           {
             text: 'Yes',
             handler: () => {
               console.log('Yes clicked. checked = ' + checked);
-              item.valve = checked;
-              this.updateModel(item, 'valve');
+              module.valve = checked;
+              this.updateModel(module, 'valve');
             }
           }
         ]
@@ -205,10 +195,10 @@ export class HomePage {
     }
   }
 
-  updateModel(item, property) {
-    for (let index = 0; index < this.data.items.length; index++) {
-      if (this.data.items[index].sn == item.sn) {
-        this.data.items[index][property] = item[property];
+  updateModel(module, property) {
+    for (let index = 0; index < this.data.modules.length; index++) {
+      if (this.data.modules[index].sn == module.sn) {
+        this.data.modules[index][property] = module[property];
         this.persistData();
       }
     };
