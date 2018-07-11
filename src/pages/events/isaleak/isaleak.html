@@ -24,7 +24,15 @@
         <div align="center"><canvas #sourceOffCanvas></canvas></div>
       </ion-item>
         <ion-item text-wrap text-center [hidden]="state!=1">
-          Take a picture to records the leakage
+          To records the leakage
+          <button ion-button ion-content item-center icon-start (click)="takePicture()">
+            <ion-icon name="camera"></ion-icon>
+            Take a Picture
+          </button>
+          <br>
+          <div align="center">
+          <img [src]="base64Image" *ngIf="base64Image" />
+          </div>
         </ion-item>
         <ion-item text-wrap text-center [hidden]="state!=2">
             offer a list of plumbers

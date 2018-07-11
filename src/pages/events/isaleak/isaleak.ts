@@ -1,6 +1,7 @@
 import { ViewChild,Component } from '@angular/core';
 import {Navbar, AlertController,IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
+import {Camera,CameraOptions} from '@ionic-native/camera';
 
 /**
  * Generated class for the IsaleakPage page.
@@ -15,6 +16,8 @@ import { Chart } from 'chart.js';
   templateUrl: 'isaleak.html',
 })
 export class IsALeakPage {
+  public base64Image: string;
+  item: any;
   alert: any;
   state: any;
   @ViewChild(Navbar) navBar: Navbar;
@@ -28,12 +31,34 @@ export class IsALeakPage {
 
   leakCloseSuccess:any;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private camera: Camera,public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+    // If we navigated to this page, we will have an item available as a nav param
       this.state=0;
       this.dataIndex=0;
       this.valveStatus=0;
       this.leakCloseSuccess=Math.random()<0.5?2:0;
       this.alert = navParams.get('alert');
+  }
+
+  takePicture(){
+
+    const options: CameraOptions = {
+       quality: 50,
+       destinationType: this.camera.DestinationType.FILE_URI,
+       encodingType: this.camera.EncodingType.JPEG,
+       mediaType: this.camera.MediaType.PICTURE
+     }
+    
+     this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+     }, (err) => {
+      // Handle error
+     });
+
+ /*    this.camera.getPicture(this.onSuccess, this.onFail, options);*/
+ 
   }
 
   ionViewDidLoad() {
