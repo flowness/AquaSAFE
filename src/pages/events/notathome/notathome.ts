@@ -18,7 +18,7 @@ import { Chart } from 'chart.js';
 export class NotathomePage {
 
 
-  item: any;
+  // item: any;
   alert: any;
   state: any;
   someOneHome: boolean;
@@ -42,12 +42,10 @@ export class NotathomePage {
     // If we navigated to this page, we will have an item available as a nav param
       this.state=0;
       this.someOneHome=false;
-
       this.dataIndex=0;
       this.valveStatus=0;
       this.leakCloseSuccess=Math.random()<0.5?2:0;
-
-      this.item = navParams.get('item');
+      // this.item = navParams.get('item');
       this.alert = navParams.get('alert');
   }
 
@@ -237,7 +235,7 @@ export class NotathomePage {
   {
     this.navCtrl.pop();
     this.navCtrl.push(NotALeakPage, {
-      item: this.item,
+      // item: this.item,
       alert: this.alert
     });
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { MP100Page } from '../modules/mp100/mp100';
 import { Fd100Page } from '../modules/fd100/fd100';
@@ -16,7 +16,6 @@ import { NotathomePage } from '../events/notathome/notathome';
 
 
 
-import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -27,7 +26,7 @@ export class HomePage {
   icons: any;
   devices: any;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
     console.log('constructor');
     this.data = {};
     this.icons = ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
@@ -42,7 +41,14 @@ export class HomePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
 
-    console.log('this.data.status = ' + this.data.status);
+    let loading = this.loadingCtrl.create({
+      content: 'Refreshing.', showBackdrop:false
+    });
+    loading.present();
+    this.readData(loading);
+  }
+
+  prepareData() {
     let state = '';
     if (document.URL.indexOf("?") > 0) {
       let splitURL = document.URL.split("?");
@@ -56,11 +62,6 @@ export class HomePage {
       }
     }
 
-    this.readData();
-    this.prepareData(state)
-  }
-
-  prepareData(state) {
     console.log('state1=' + state);
     console.log('data1=' + this.data);
     if (this.data == null || !this.data.inited) {
@@ -77,11 +78,10 @@ export class HomePage {
   
       if (this.data.status === 2) {
         this.prepareAlertData();
-        this.prepareWizardSteps();
       } else if (this.data.status === 3) {
-        this.prepareSiteData(false);
+        this.prepareSiteData();
       } else {
-        this.prepareSiteData(true);
+        this.prepareSiteData();
       }
       this.data.inited = true;
     }
@@ -91,7 +91,12 @@ export class HomePage {
     this.persistData();
   }
 
-  prepareSiteData(isAllGood) {
+  prepareSiteData() {
+    // let systemStatus = this.data.status;
+    let isAllGood = true;
+    // if (systemStatus === 3) {
+    //     isAllGood = false;
+    // }
     let statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
     let items = [];
     // types 0=MP100, 1=FD100, 2=VS100
@@ -132,63 +137,38 @@ export class HomePage {
     return sn;
   }
 
-  prepareWizardSteps() {
-    let wizardSteps = [];
-    let wizIcons = ['assets/imgs/cool-52.png', 'assets/imgs/sad-50.png', 'assets/imgs/sad-50.png', 'assets/imgs/crying-50.png'];
-    let wizActions = ['Respond', 'Quick Help', 'Quick Help', 'Help!'];
-    let wizTitles = ['Not A Leak', 'I don\'t see a leak', 'I\'m not at home', 'I see a leak!'];
-    for (let i = 0; i < wizTitles.length; i++) {
-      wizardSteps.push({
-        icon: wizIcons[i],
-        title: wizTitles[i],
-        action: wizActions[i],
-        type: 100 + i
-      });
-    }
-    this.data.wizardSteps = wizardSteps;
-  }
-
   itemTapped(event, item) {
     let Pages = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
     console.log("item type = " + item.type);
-    switch (item.type) {
-      case 0:
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-        this.navCtrl.push(Pages[item.type], {
-          item: item
-        });
-        break;
+    this.navCtrl.push(Pages[item.type], {
+      item: item
+    });
+}
+
+  eventItemTapped(event, eventType) {
+    console.log("item type = " + eventType);
+    switch (eventType) {
       case 100:
         this.navCtrl.push(NotALeakPage, {
-          item: item,
+          // item: item,
           alert: this.data.alert
         });
         break;
       case 101:
         this.navCtrl.push(CantseeLeakPage, {
-          item: item,
+          // item: item,
           alert: this.data.alert
         });
         break;
       case 102:
         this.navCtrl.push(NotathomePage, {
-          item: item,
+          // item: item,
           alert: this.data.alert
         });
         break;
       case 103:
         this.navCtrl.push(IsALeakPage, {
-          item: item,
-          alert: this.data.alert
-        });
-        break;
-
-      default:
-        this.navCtrl.push(ModulePage, {
-          item: item,
+          // item: item,
           alert: this.data.alert
         });
         break;
@@ -240,14 +220,17 @@ export class HomePage {
     this.storage.set('model', this.data);
   }
 
-  readData(){
+  readData(loading){
     console.log('read model from storage');
     this.storage.get('model').then((val) => {
       if (val != null) {
         console.log('val.status = ' + val.status);
         this.data = val;
         console.dir(this.data);
+      } else {
+        this.prepareData();
       }
+      loading.dismiss();
     });
   }
 }

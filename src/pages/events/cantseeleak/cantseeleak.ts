@@ -16,7 +16,7 @@ import { Chart } from 'chart.js';
 })
 export class CantseeLeakPage {
 
-  item: any;
+  // item: any;
   alert: any;
   state: any;
   @ViewChild(Navbar) navBar: Navbar;
@@ -37,7 +37,7 @@ export class CantseeLeakPage {
       this.state=0;
       this.dataIndex=0;
       this.valveStatus=0;
-      this.item = navParams.get('item');
+      // this.item = navParams.get('item');
       this.alert = navParams.get('alert');
 
   }

@@ -15,7 +15,7 @@ import { Chart } from 'chart.js';
   templateUrl: 'isaleak.html',
 })
 export class IsALeakPage {
-  item: any;
+  // item: any;
   alert: any;
   state: any;
   @ViewChild(Navbar) navBar: Navbar;
@@ -35,7 +35,7 @@ export class IsALeakPage {
       this.dataIndex=0;
       this.valveStatus=0;
       this.leakCloseSuccess=Math.random()<0.5?2:0;
-      this.item = navParams.get('item');
+      // this.item = navParams.get('item');
       this.alert = navParams.get('alert');
   }
 
