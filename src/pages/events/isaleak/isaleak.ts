@@ -38,30 +38,30 @@ export class IsALeakPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad IsALeakPage');
-    this.navBar.backButtonClick= (e:UIEvent)=>{
-      let alert = this.alertCtrl.create({
-        title: 'Confirmation',
-        message: 'is leak resolved',
-        buttons: [
-          {
-            text: 'No',
-            handler: () => {
-              console.log('No clicked');
-              this.navCtrl.pop();
-            }
-          },
-          {
-            text: 'Yes',
-            handler: () => {
-              console.log('Yes clicked');
-              this.navCtrl.pop();
-            }
-          }
-        ]
-      });
+    // this.navBar.backButtonClick= (e:UIEvent)=>{
+    //   let alert = this.alertCtrl.create({
+    //     title: 'Confirmation',
+    //     message: 'is leak resolved',
+    //     buttons: [
+    //       {
+    //         text: 'No',
+    //         handler: () => {
+    //           console.log('No clicked');
+    //           this.navCtrl.pop();
+    //         }
+    //       },
+    //       {
+    //         text: 'Yes',
+    //         handler: () => {
+    //           console.log('Yes clicked');
+    //           this.navCtrl.pop();
+    //         }
+    //       }
+    //     ]
+    //   });
    
-      alert.present();
-    };
+    //   alert.present();
+    // };
 
     let chartDefine = {
       type: 'line',
