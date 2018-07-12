@@ -85,6 +85,7 @@ export class settingsPage {
         val.alert = alert;
 
         console.log('set model in storage');
+        console.dir(val);
         this.storage.set('model', val);
       }
       loading.dismiss();
