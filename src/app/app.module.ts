@@ -5,8 +5,9 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { settingsPage } from '../pages/menu/settings/settings';
-import { eventsPage } from '../pages/menu/events/events';
+import { StatisticsPage } from '../pages/menu/statistics/statistics';
+import { SettingsPage } from '../pages/menu/settings/settings';
+import { EventsPage } from '../pages/menu/events/events';
 
 import { MP100Page } from '../pages/modules/mp100/mp100';
 import { Fd100Page } from '../pages/modules/fd100/fd100';
@@ -30,8 +31,9 @@ import { Camera } from '@ionic-native/camera';
   declarations: [
     MyApp,
     HomePage,
-    settingsPage,
-    eventsPage,
+    StatisticsPage,
+    SettingsPage,
+    EventsPage,
     MP100Page,
     Fd100Page,
     Vs100Page,
@@ -52,8 +54,9 @@ import { Camera } from '@ionic-native/camera';
   entryComponents: [
     MyApp,
     HomePage,
-    settingsPage,
-    eventsPage,
+    StatisticsPage,
+    SettingsPage,
+    EventsPage,
     MP100Page,
     Fd100Page,
     Vs100Page,

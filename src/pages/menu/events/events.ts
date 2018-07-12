@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'events.html',
 })
 
-export class eventsPage {
+export class EventsPage {
   items: Array<{title: string, timestamp: string, event: string, status: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {

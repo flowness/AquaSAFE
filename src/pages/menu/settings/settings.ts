@@ -6,7 +6,7 @@ import { Storage } from '@ionic/storage';
   selector: 'page-settings',
   templateUrl: 'settings.html'
 })
-export class settingsPage {
+export class SettingsPage {
   items: Array<{ title: string, input: string, icon: string, value: any }>;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
