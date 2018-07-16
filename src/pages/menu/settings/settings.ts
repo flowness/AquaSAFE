@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 })
 export class SettingsPage {
   items: Array<{ title: string, input: string, icon: string, value: any }>;
+  statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
     this.items = [];
@@ -58,24 +59,34 @@ export class SettingsPage {
   }
 
   handleToggleChange(evt, item) {
-    if (item.title === 'Leakage Alert') {
+    if (item.title === 'Leakage Alert' || item.title === 'Irregularity Alert') {
       console.log("setting leakage alert to " + item.value);
       let loading = this.loadingCtrl.create({
         content: 'Refreshing.', showBackdrop: false
       });
-      this.updateModel(loading, item.value)
+      this.updateModel(loading, item)
     }
   }
 
-  updateModel(loading, isLeak) {
+  updateModel(loading, item) {
     console.log('read model from storage');
+    console.dir(item);
     this.storage.get('model').then((val) => {
       if (val != null) {
-        console.log('val.status = ' + val.status);
-        val.status = isLeak ? 2 : 1;
-        for (let index = 0; index < val.modules.length; index++) {
-          if (val.modules[index].type ===0) {
-            val.modules[index].state = isLeak ? 'Leak Detected' : 'All Good';
+        console.log('val.status before = ' + val.status);
+        console.log('item.title = ' + item.title);
+        val.status = item.value === 0 ? 1 : (item.title === 'Leakage Alert' ? 2 : 3);
+        console.log('val.status after = ' + val.status);
+        if (item.title === 'Leakage Alert') {
+          for (let index = 0; index < val.modules.length; index++) {
+            if (val.modules[index].type === 0) {
+              val.modules[index].state = item.value ? 'Leak Detected' : 'All Good';
+            }
+          }
+        }
+        if (item.title === 'Irregularity Alert') {
+          for (let index = 0; index < val.modules.length; index++) {
+            val.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
           }
         }
 

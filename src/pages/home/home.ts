@@ -64,11 +64,8 @@ export class HomePage {
         this.data.status = 2;
       } else if (state === 'warn') {
         this.data.status = 3;
-      } else if (state === 'good') {
-        this.data.status = 1;
       } else {
-        this.data.status = Math.floor(Math.random() * 3) + 1;
-        console.log("random state = " + this.data.status);
+        this.data.status = 1;
       }
 
       this.prepareAlertData();
