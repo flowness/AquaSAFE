@@ -1,3 +1,17 @@
 page-notaleak {
-
+    .img-show {
+        height: 15vh;
+        width: 15vh;
+        margin: auto;
+        display: block;
+        opacity: 1; 
+    }
+    
+    .img-hide {
+        height: 15vh;
+        width: 15vh;
+        margin: auto;
+        display: block;
+        opacity: 0; 
+    }
 }

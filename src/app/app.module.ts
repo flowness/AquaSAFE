@@ -21,7 +21,8 @@ import { IsALeakPage } from '../pages/events/isaleak/isaleak';
 import { NotALeakPage } from '../pages/events/notaleak/notaleak';
 import { NotathomePage } from '../pages/events/notathome/notathome';
 
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserModule } from '@angular/platform-browser';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -48,7 +49,8 @@ import { Camera } from '@ionic-native/camera';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    BrowserAnimationsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
