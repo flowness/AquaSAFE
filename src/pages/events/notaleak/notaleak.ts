@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   trigger,
@@ -15,38 +15,102 @@ import {
   selector: 'page-notaleak',
   templateUrl: 'notaleak.html',
   animations: [
-    trigger('elementState', [
+    trigger('elementState0', [
       state('opaque', style({
         opacity: 1
       })),
       state('transparent', style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('2000ms ease-in')),
-      transition('transparent => opaque', animate('2000ms ease-in'))
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState1', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState2', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState3', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState4', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState5', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
+    ]),
+    trigger('elementState6', [
+      state('opaque', style({
+        opacity: 1
+      })),
+      state('transparent', style({
+        opacity: 0
+      })),
+      transition('opaque => transparent', animate('1000ms ease-in')),
+      transition('transparent => opaque', animate('1000ms ease-in'))
     ])
+
   ]
 })
 
 export class NotALeakPage {
   alert: any;
-  state = "opaque";
+  state0 = "opaque";
+  state1 = "opaque";
+  state2 = "opaque";
+  state3 = "opaque";
+  state4 = "opaque";
+  state5 = "opaque";
+  state6 = "opaque";
+  numButtons = 7;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
     this.alert = navParams.get('alert');
     console.log('navParams = ' + this.alert.detectionTime);
   }
 
-  makeOpaque() {
-    this.state = "opaque";
-  }
-
-  makeTransparent() {
-    this.state = "transparent";
-  }
-
-  doConfirm(waterUsage) {
-    this.state = this.state === "transparent" ? "opaque" : "transparent";
+  doConfirm(waterUsage, i) {
+    for (let index = 0; index < this.numButtons; index++) {
+      if (i != index) {
+        this['state' + index] = this['state' + index] === "transparent" ? "opaque" : "transparent";
+      }
+    }
     // let alert = this.alertCtrl.create({
     //   title: 'Confirmation',
     //   message: 'Did the water usage detection done by the ' + waterUsage + '?',

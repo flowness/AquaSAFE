@@ -15,29 +15,29 @@
   <ion-grid>
     <ion-row align-items-center>
       <ion-col align-self-center>
-        <img class="img-show" src='assets/imgs/Washing-Machine.png' item-start (click)="doConfirm('Washing Machine')"/>
+        <img class="img-show" src='assets/imgs/Washing-Machine.png' item-start (click)="doConfirm('Washing Machine', 0)"  [@elementState0]="state0"/>
       </ion-col>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Dishwasher.png' item-start  (click)="doConfirm('Dishwasher')" [@elementState]="state"/>
+          <img class="img-show" src='assets/imgs/Dishwasher.png' item-start  (click)="doConfirm('Dishwasher', 1)" [@elementState1]="state1"/>
       </ion-col>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Hose.png' item-start  (click)="doConfirm('Hose')"/>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/shower.png' item-start  (click)="doConfirm('Shower')"/>
-      </ion-col>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/cleaning-house.png' item-start  (click)="doConfirm('House Cleaning')"/>
-      </ion-col>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Pool.png' item-start (click)="doConfirm('Pool')"/>
+          <img class="img-show" src='assets/imgs/Hose.png' item-start  (click)="doConfirm('Hose',2)"  [@elementState2]="state2"/>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Others.png' item-start  (click)="doConfirm('Other')"/>
+          <img class="img-show" src='assets/imgs/shower.png' item-start  (click)="doConfirm('Shower', 3)"  [@elementState3]="state3"/>
+      </ion-col>
+      <ion-col align-self-center>
+          <img class="img-show" src='assets/imgs/cleaning-house.png' item-start  (click)="doConfirm('House Cleaning', 4)"  [@elementState4]="state4"/>
+      </ion-col>
+      <ion-col align-self-center>
+          <img class="img-show" src='assets/imgs/Pool.png' item-start (click)="doConfirm('Pool', 5)"  [@elementState5]="state5"/>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col align-self-center>
+          <img class="img-show" src='assets/imgs/Others.png' item-start  (click)="doConfirm('Other', 6)"  [@elementState6]="state6"/>
       </ion-col>
     </ion-row>
   </ion-grid>
