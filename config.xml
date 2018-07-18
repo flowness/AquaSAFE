@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.aquasafe.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="app.aquasafe.io" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>AquaSAFE</name>
     <description>An awesome AquaSAFE app.</description>
     <author email="info@aquasafe.io" href="http://aquasafe.io/">AquaSAFE</author>
