@@ -3,13 +3,13 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf = "data.status != 'bad'; else bad">
+  <div *ngIf="data.status != 'bad'; else bad">
     <ion-item class="header-status" [ngClass]="{warn: data.status === 'warn'}">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK
@@ -20,7 +20,7 @@
       <ion-item *ngFor="let module of data.modules" (click)="moduleTapped($event, module)">
         <ion-icon [name]="module.icon" item-start></ion-icon>
         <ion-label>{{module.title}}</ion-label>
-        <ion-toggle *ngIf = "module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleChange($event, module)" item-content></ion-toggle>
+        <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleChange($event, module)" item-content></ion-toggle>
         <div class="item-note" item-end>
           {{module.state}}
         </div>
@@ -31,44 +31,61 @@
   <ng-template #bad>
     <div>
       <ion-item class="header-status bad">
-      <!-- <div class="header-status-bad"> -->
-        System Status: BAD
+        <!-- <div class="header-status-bad"> -->
+        System Status: LEAK DETECTED
         <ion-item no-lines class="header-status-alert-ind">
-          Alert Indicator: {{data.alert.indicator}}<br>Detection Time: {{data.alert.detectionTime}}
+          Alert Indicator: {{data.alert.indicator}}
+          <br>Detection Time: {{data.alert.detectionTime}}
         </ion-item>
       </ion-item>
-      <!-- <hr class="main-page-hr"/> -->
-      <!-- <hr class="main-page-hr"/> -->
-      <ion-list>
+      <ion-grid fixed>
+        <ion-row align-items-center>
+          <ion-col text-center style="background-color:rgb(76, 179, 76)">
+              <img src='assets/imgs/cool-52.png' item-start/>
+              <ion-item text-center style="background-color:rgb(76, 179, 76)">Not A Leak</ion-item>
+          </ion-col>
+          <ion-col text-center style="background-color:lightyellow">
+            <img src='assets/imgs/sad-50.png' item-start/>
+            <ion-item text-center style="background-color:lightyellow">I do not see a leak</ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row justify-content-center style="background-color:lightyellow">
+          <ion-col text-center>
+            <img src='assets/imgs/sad-50.png' item-start/>
+            <ion-item text-center  style="background-color:lightyellow">I am not at home</ion-item>
+          </ion-col>
+          <ion-col text-center style="background-color:rgb(214, 35, 35)">
+            <img src='assets/imgs/crying-50.png' item-start/>
+            <ion-item text-center style="background-color:rgb(214, 35, 35)" >I see a leak!</ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <!-- <ion-list>
         <button ion-item (click)="eventItemTapped($event, 100)">
-          <img src='assets/imgs/cool-52.png' item-start/>
-          Not A Leak
+          <img src='assets/imgs/cool-52.png' item-start/> Not A Leak
           <div class="item-note" item-end>
-          Respond
+            Respond
           </div>
         </button>
         <button ion-item (click)="eventItemTapped($event, 101)">
-          <img src='assets/imgs/sad-50.png' item-start/>
-          I do not see a leak
+          <img src='assets/imgs/sad-50.png' item-start/> I do not see a leak
           <div class="item-note" item-end>
-           Quick Help
+            Quick Help
           </div>
         </button>
         <button ion-item (click)="eventItemTapped($event, 102)">
-          <img src='assets/imgs/sad-50.png' item-start/>
-          I am not at home
+          <img src='assets/imgs/sad-50.png' item-start/> I am not at home
           <div class="item-note" item-end>
             Quick Help
           </div>
         </button>
         <button ion-item (click)="eventItemTapped($event, 103)">
-          <img src='assets/imgs/crying-50.png' item-start/>
-          I see a leak!
+          <img src='assets/imgs/crying-50.png' item-start/> I see a leak!
           <div class="item-note" item-end>
             Help!
           </div>
         </button>
-      </ion-list>
+      </ion-list> -->
     </div>
   </ng-template>
   <!-- <hr class="main-page-hr"/>

@@ -110,31 +110,31 @@ export class NotALeakPage {
         this['state' + index] = this['state' + index] === "transparent" ? "opaque" : "transparent";
       }
     }
-    // let alert = this.alertCtrl.create({
-    //   title: 'Confirmation',
-    //   message: 'Did the water usage detection done by the ' + waterUsage + '?',
-    //   buttons: [
-    //     {
-    //       text: 'No',
-    //       handler: () => {
-    //         console.log('No clicked');
-    //       }
-    //     },
-    //     {
-    //       text: 'Yes',
-    //       handler: () => {
-    //         console.log('Yes clicked');
-    //         let loading = this.loadingCtrl.create({
-    //           content: 'Refreshing.', showBackdrop: false
-    //         });
-    //         this.updateModel(loading);
-    //         this.navCtrl.pop();
-    //       }
-    //     }
-    //   ]
-    // });
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Did the water usage detection done by the ' + waterUsage + '?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked');
+            let loading = this.loadingCtrl.create({
+              content: 'Refreshing.', showBackdrop: false
+            });
+            this.updateModel(loading);
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
 
-    // alert.present();
+    alert.present();
     
   }
 
