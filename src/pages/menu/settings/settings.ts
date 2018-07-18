@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+import { ModelService } from '../../../app/model-service';
 
 @Component({
   selector: 'page-settings',
@@ -10,8 +10,10 @@ export class SettingsPage {
   items: Array<{ title: string, input: string, icon: string, value: any }>;
   statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
+    let settings = this.modelService.getSettings();
     this.items = [];
+
     this.items.push({
       title: 'E-Mail',
       input: 'text',
@@ -34,13 +36,13 @@ export class SettingsPage {
       title: 'Irregularity Alert',
       input: 'toggle',
       icon: 'warning',
-      value: false
+      value: settings.irregularityAlert
     });
     this.items.push({
       title: 'Leakage Alert',
       input: 'toggle',
       icon: 'warning',
-      value: false
+      value: settings.leakageAlert
     });
     this.items.push({
       title: 'Zero-Flow Hours Alert:',
@@ -56,50 +58,54 @@ export class SettingsPage {
       value: false
     });
 
+    console.log('settings');
+    console.dir(this.modelService.getModel());
   }
 
   handleToggleChange(evt, item) {
     if (item.title === 'Leakage Alert' || item.title === 'Irregularity Alert') {
       console.log("setting leakage alert to " + item.value);
-      let loading = this.loadingCtrl.create({
-        content: 'Refreshing.', showBackdrop: false
-      });
-      this.updateModel(loading, item)
+      this.updateModel(item)
     }
   }
 
-  updateModel(loading, item) {
+  updateModel(item) {
     console.log('read model from storage');
     console.dir(item);
-    this.storage.get('model').then((val) => {
-      if (val != null) {
-        console.log('val.status before = ' + val.status);
-        console.log('item.title = ' + item.title);
-        val.status = item.value === 0 ? 1 : (item.title === 'Leakage Alert' ? 2 : 3);
-        console.log('val.status after = ' + val.status);
-        if (item.title === 'Leakage Alert') {
-          for (let index = 0; index < val.modules.length; index++) {
-            if (val.modules[index].type === 0) {
-              val.modules[index].state = item.value ? 'Leak Detected' : 'All Good';
-            }
+    let model = this.modelService.getModel();
+    let settings = this.modelService.getSettings();
+    if (model != null) {
+      console.log('model.status before = ' + model.status);
+      console.log('item.title = ' + item.title);
+      model.status = item.value ? (item.title === 'Leakage Alert' ? 'bad' : 'warn') : 'good';
+      console.log('model.status after = ' + model.status);
+      if (item.title === 'Leakage Alert') {
+        settings.leakageAlert = item.value;
+        for (let index = 0; index < model.modules.length; index++) {
+          if (model.modules[index].type === 0) {
+            model.modules[index].state = item.value ? 'Leak Detected' : 'All Good';
+          } else {
+            model.modules[index].state = 'All Good';
           }
         }
-        if (item.title === 'Irregularity Alert') {
-          for (let index = 0; index < val.modules.length; index++) {
-            val.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
-          }
-        }
-
-        let alert = {};
-        alert['indicator'] = 'MP100';
-        alert['detectionTime'] = new Date().toISOString();
-        val.alert = alert;
-
-        console.log('set model in storage');
-        console.dir(val);
-        this.storage.set('model', val);
       }
-      loading.dismiss();
-    });
+      if (item.title === 'Irregularity Alert') {
+        settings.irregularityAlert = item.value;
+        for (let index = 0; index < model.modules.length; index++) {
+          model.modules[index].state = item.value ? this.statuses[Math.floor(Math.random() * this.statuses.length)] : 'All Good';
+        }
+      }
+
+      let alert = {};
+      alert['indicator'] = 'MP100';
+      alert['detectionTime'] = new Date().toISOString();
+      model.alert = alert;
+
+      console.log('set model in storage');
+      console.dir(model);
+      console.dir(settings);
+      this.modelService.setModel(model);
+      this.modelService.setSettings(settings);
+    }
   }
 }

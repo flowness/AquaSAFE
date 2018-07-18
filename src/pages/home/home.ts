@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 import { MP100Page } from '../modules/mp100/mp100';
@@ -12,6 +11,7 @@ import { CantseeLeakPage } from '../events/cantseeleak/cantseeleak';
 import { IsALeakPage } from '../events/isaleak/isaleak';
 import { NotALeakPage } from '../events/notaleak/notaleak';
 import { NotathomePage } from '../events/notathome/notathome';
+import { ModelService } from '../../app/model-service';
 
 @Component({
   selector: 'page-home',
@@ -23,7 +23,7 @@ export class HomePage {
   devices: any;
   statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
     console.log('constructor');
     this.data = {};
     this.icons = ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
@@ -33,11 +33,15 @@ export class HomePage {
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    let loading = this.loadingCtrl.create({
-      content: 'Refreshing.', showBackdrop: false
-    });
-    loading.present();
-    this.readData(loading);
+    console.log('read model from storage');
+    let model = this.modelService.getModel();
+    if (model != null && model.inited == true) {
+      console.log('data.status = ' + model.status);
+      this.data = model;
+      console.dir(this.data);
+    } else {
+      this.prepareData();
+    }
   }
 
   ionViewDidLoad() {
@@ -61,16 +65,17 @@ export class HomePage {
     console.log('state1=' + state);
     if (this.data == null || !this.data.inited) {
       if (state === 'bad') {
-        this.data.status = 2;
+        this.data.status = 'bad';
       } else if (state === 'warn') {
-        this.data.status = 3;
+        this.data.status = 'warn';
       } else {
-        this.data.status = 1;
+        this.data.status = 'good';
       }
 
       this.prepareAlertData();
       this.prepareSiteData();
       this.data.inited = true;
+      this.modelService.setModel(this.data);
     }
 
     console.log('finished prepare');
@@ -92,10 +97,10 @@ export class HomePage {
   }
 
   getModuleStatusByTypeAndSystemStatus(moduleType) {
-    if (moduleType === 0 && this.data.status === 2) {
+    if (moduleType === 0 && this.data.status === 'bad') {
       return 'Leak Detected';
     } else {
-      return (this.data.status != 3 ? 'All Good' : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
+      return (this.data.status != 'warn' ? 'All Good' : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
     }
   }
 
@@ -203,20 +208,19 @@ export class HomePage {
   persistData() {
     console.log('set model in storage');
     console.dir(this.data);
-    this.storage.set('model', this.data);
+    this.modelService.setModel(this.data);
   }
 
   readData(loading) {
     console.log('read model from storage');
-    this.storage.get('model').then((val) => {
-      if (val != null) {
-        console.log('val.status = ' + val.status);
-        this.data = val;
-        console.dir(this.data);
-      } else {
-        this.prepareData();
-      }
-      loading.dismiss();
-    });
+    let model = this.modelService.getModel();
+    if (model != null) {
+      console.log('data.status = ' + model.status);
+      this.data = model;
+      console.dir(this.data);
+    } else {
+      this.prepareData();
+    }
+    loading.dismiss();
   }
 }

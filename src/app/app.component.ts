@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -8,6 +7,7 @@ import { HomePage } from '../pages/home/home';
 import { StatisticsPage } from '../pages/menu/statistics/statistics';
 import { SettingsPage } from '../pages/menu/settings/settings';
 import { EventsPage } from '../pages/menu/events/events';
+import { ModelService } from './model-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,24 +17,25 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage: Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private modelService:ModelService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage},
-      { title: 'Statistics', component: StatisticsPage},
-      { title: 'Settings', component: SettingsPage},
-      { title: 'Events', component: EventsPage}
+      { title: 'Home', component: HomePage },
+      { title: 'Statistics', component: StatisticsPage },
+      { title: 'Settings', component: SettingsPage },
+      { title: 'Events', component: EventsPage }
     ];
 
   }
 
   initializeApp() {
     console.log('**************App Init**************');
-    this.storage.clear();
+    this.modelService.setModel({});
+    this.modelService.setSettings({});
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

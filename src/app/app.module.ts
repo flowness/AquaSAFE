@@ -28,6 +28,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 
+import { ModelService } from './model-service';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -74,7 +76,8 @@ import { Camera } from '@ionic-native/camera';
     StatusBar,
     SplashScreen,
     Camera,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    ModelService
   ]
 })
-export class AppModule {}
+export class AppModule { }

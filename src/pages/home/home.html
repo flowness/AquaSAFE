@@ -9,8 +9,8 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf = "data.status != 2; else bad">
-    <ion-item class="header-status" [ngClass]="{warn: data.status === 3}">
+  <div *ngIf = "data.status != 'bad'; else bad">
+    <ion-item class="header-status" [ngClass]="{warn: data.status === 'warn'}">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK
     </ion-item>

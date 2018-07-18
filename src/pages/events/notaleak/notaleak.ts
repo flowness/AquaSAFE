@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   trigger,
@@ -10,6 +8,7 @@ import {
   animate,
   transition
 } from "@angular/animations";
+import { ModelService } from '../../../app/model-service';
 
 @Component({
   selector: 'page-notaleak',
@@ -100,7 +99,7 @@ export class NotALeakPage {
   state6 = "opaque";
   numButtons = 7;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public loadingCtrl: LoadingController) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService:ModelService, public loadingCtrl: LoadingController) {
     this.alert = navParams.get('alert');
     console.log('navParams = ' + this.alert.detectionTime);
   }
@@ -141,18 +140,17 @@ export class NotALeakPage {
 
   updateModel(loading) {
     console.log('read model from storage');
-    this.storage.get('model').then((val) => {
-      if (val != null) {
-        console.log('val.status = ' + val.status);
-        val.status = 1;
-        for (let index = 0; index < val.modules.length; index++) {
-          val.modules[index].state = 'All Good';
-        }
-        console.log('set model in storage');
-        this.storage.set('model', val);
+    let model = this.modelService.getModel();
+    if (model != null) {
+      console.log('data.status = ' + model.status);
+      model.status = 'good';
+      for (let index = 0; index < model.modules.length; index++) {
+        model.modules[index].state = 'All Good';
       }
-      loading.dismiss();
-    });
-  }
+      console.log('set model in storage');
+      this.modelService.setModel(model);
+    }
+    loading.dismiss();
+}
 
 }
