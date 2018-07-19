@@ -40,21 +40,21 @@
       </ion-item>
       <ion-grid fixed>
         <ion-row align-items-center>
-          <ion-col text-center style="background-color:rgb(76, 179, 76)">
+          <ion-col text-center style="background-color:rgb(76, 179, 76)" (click)="eventItemTapped($event, 100)">
               <img src='assets/imgs/cool-52.png' item-start/>
               <ion-item text-center style="background-color:rgb(76, 179, 76)">Not A Leak</ion-item>
           </ion-col>
-          <ion-col text-center style="background-color:lightyellow">
+          <ion-col text-center style="background-color:lightyellow" (click)="eventItemTapped($event, 101)">
             <img src='assets/imgs/sad-50.png' item-start/>
             <ion-item text-center style="background-color:lightyellow">I do not see a leak</ion-item>
           </ion-col>
         </ion-row>
         <ion-row justify-content-center style="background-color:lightyellow">
-          <ion-col text-center>
+          <ion-col text-center (click)="eventItemTapped($event, 102)">
             <img src='assets/imgs/sad-50.png' item-start/>
             <ion-item text-center  style="background-color:lightyellow">I am not at home</ion-item>
           </ion-col>
-          <ion-col text-center style="background-color:rgb(214, 35, 35)">
+          <ion-col text-center style="background-color:rgb(214, 35, 35)" (click)="eventItemTapped($event, 103)">
             <img src='assets/imgs/crying-50.png' item-start/>
             <ion-item text-center style="background-color:rgb(214, 35, 35)" >I see a leak!</ion-item>
           </ion-col>
