@@ -67,7 +67,6 @@ export class CantseeLeakPage {
             ticks: {
               display: false,
             }
-
           }]
 
         }
@@ -105,6 +104,7 @@ export class CantseeLeakPage {
       }
 
     }
+    console.log('****** ' + this.Chart.data.datasets[0].data);
     this.valveOffChart.data = this.Chart.data;
     this.Chart.update(0);
     this.valveOffChart.update(0);

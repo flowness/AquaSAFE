@@ -105,8 +105,15 @@ export class IsALeakPage {
         scales: {
           yAxes: [{
             ticks: {
+              display: false,
               min: 0,
               max: 20
+            }
+
+          }],
+          xAxes: [{
+            ticks: {
+              display: false,
             }
 
           }]
