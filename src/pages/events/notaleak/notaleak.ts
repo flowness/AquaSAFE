@@ -138,6 +138,26 @@ export class NotALeakPage {
     
   }
 
+  noAnswer() {
+    let alert = this.alertCtrl.create({
+      message: 'You may always add your input later in the Events Screen',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            let loading = this.loadingCtrl.create({
+              content: 'Refreshing.', showBackdrop: false
+            });
+            this.updateModel(loading);
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+
   updateModel(loading) {
     console.log('read model from storage');
     let model = this.modelService.getModel();
