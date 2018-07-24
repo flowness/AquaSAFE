@@ -25,6 +25,7 @@ export class CantseeLeakPage {
   valveOffChart: any;
   taskValve: any;
   valveStatus: any;
+  maxNumOfPoints: number;
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -39,6 +40,7 @@ export class CantseeLeakPage {
     this.valveStatus = 0;
     this.alert = navParams.get('alert');
     this.endValue =  Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
+    this.maxNumOfPoints = 25;
   }
 
   ionViewDidLoad() {
@@ -116,7 +118,12 @@ export class CantseeLeakPage {
       }
 
     }
-    console.log('****** ' + this.Chart.data.datasets[0].data);
+    // console.log('****** ' + this.Chart.data.datasets[0].data);
+    if (this.Chart.data.datasets[0].data.length > this.maxNumOfPoints) {
+      this.Chart.data.datasets[0].data = this.Chart.data.datasets[0].data.slice(this.Chart.data.datasets[0].data.length-this.maxNumOfPoints,this.Chart.data.datasets[0].data.length);
+      this.dataIndex = this.maxNumOfPoints-1;
+    }
+    // console.log('------ ' + this.Chart.data.datasets[0].data);
     this.valveOffChart.data = this.Chart.data;
     this.Chart.update(0);
     this.valveOffChart.update(0);
@@ -136,7 +143,6 @@ export class CantseeLeakPage {
   }
 
   refreshDataValve() {
-
     this.valveOffChart.data.datasets[0].data.push(0);
     if (this.valveOffChart.data.datasets[0].data[0] != 0) {
       this.valveOffChart.data.datasets[0].data.shift();
