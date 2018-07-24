@@ -42,7 +42,8 @@ export class CantseeLeakPage {
   }
 
   ionViewDidLoad() {
-    let start = Math.floor(Math.random() * 31) + 19; //rand between 19-100
+    // let start = Math.floor(Math.random() * 31) + 19; //rand between 19-100
+    let start = 19;
     console.log('ionViewDidLoad CantseeLeakPage');
     let chartDefine = {
       type: 'line',
@@ -51,6 +52,7 @@ export class CantseeLeakPage {
         datasets: [{
           data: [start],
           borderWidth: 1,
+          backgroundColor: '#0062ff',
         }]
       },
       options: {
@@ -124,7 +126,7 @@ export class CantseeLeakPage {
     console.log("***tap");
     let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
     if (currentData > this.endValue) {
-      let changeData = Math.floor(Math.random() * 10);
+      let changeData = Math.floor(Math.random() * 7);
       if (currentData - changeData < this.endValue) {
         changeData = currentData - this.endValue;
       }
