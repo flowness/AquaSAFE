@@ -11,7 +11,7 @@
       <ion-item text-wrap text-center item-content [hidden]="state!=0">
           Close all water sources to verify this is a real leak
           <br>
-          <div align="center"><canvas #sourceOffCanvas></canvas></div>
+          <div align="center"><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
         </ion-item>
         <ion-item text-wrap text-center [hidden]="state!=1">
           If there is still some flow suggest to: 

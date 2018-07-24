@@ -18,17 +18,19 @@ export class CantseeLeakPage {
 
   alert: any;
   state: any;
-  @ViewChild(Navbar) navBar: Navbar;
-
+  endValue: number;
   dataIndex: any;
-  @ViewChild('sourceOffCanvas') sourceOffCanvas;
   Chart: any;
   task: any;
-
-  @ViewChild('valveOffCanvas') valveOffCanvas;
   valveOffChart: any;
   taskValve: any;
   valveStatus: any;
+
+  @ViewChild(Navbar) navBar: Navbar;
+
+  @ViewChild('sourceOffCanvas') sourceOffCanvas;
+
+  @ViewChild('valveOffCanvas') valveOffCanvas;
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
@@ -36,20 +38,27 @@ export class CantseeLeakPage {
     this.dataIndex = 0;
     this.valveStatus = 0;
     this.alert = navParams.get('alert');
+    this.endValue =  Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
   }
 
   ionViewDidLoad() {
+    let start = Math.floor(Math.random() * 31) + 19; //rand between 19-100
     console.log('ionViewDidLoad CantseeLeakPage');
     let chartDefine = {
       type: 'line',
       data: {
         labels: ['0'],
         datasets: [{
-          data: [19],
+          data: [start],
           borderWidth: 1,
         }]
       },
       options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         responsive: false,
         legend: {
           display: false,
@@ -59,13 +68,16 @@ export class CantseeLeakPage {
             ticks: {
               display: false,
               min: 0,
-              max: 20
+              max: start + 2
             }
 
           }],
           xAxes: [{
             ticks: {
               display: false,
+            },
+            gridLines: {
+              display: false
             }
           }]
 
@@ -85,21 +97,19 @@ export class CantseeLeakPage {
 
   refreshData() {
     let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > 2) {
-      let changeData = Math.floor(Math.random() * 5);
-      if (currentData - changeData < 2) {
-        changeData = currentData - 2;
-      }
-      this.Chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+    if (currentData > this.endValue) {
+      // let changeData = Math.floor(Math.random() * 10);
+      // if (currentData - changeData < this.endValue) {
+      //   changeData = currentData - this.endValue;
+      // }
+      this.Chart.data.datasets[0].data[this.dataIndex] = currentData;
       this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
-    }
-    else {
-      this.Chart.data.datasets[0].data.push(2);
+    } else {
+      this.Chart.data.datasets[0].data.push(this.endValue);
 
-      if (this.Chart.data.datasets[0].data[0] != 2) {
+      if (this.Chart.data.datasets[0].data[0] != this.endValue) {
         this.Chart.data.datasets[0].data.shift();
-      }
-      else {
+      } else {
         clearInterval(this.task);
       }
 
@@ -110,13 +120,25 @@ export class CantseeLeakPage {
     this.valveOffChart.update(0);
   }
 
+  updateCurrentValue() {
+    console.log("***tap");
+    let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
+    if (currentData > this.endValue) {
+      let changeData = Math.floor(Math.random() * 10);
+      if (currentData - changeData < this.endValue) {
+        changeData = currentData - this.endValue;
+      }
+      this.Chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+      this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+    }
+  }
+
   refreshDataValve() {
 
     this.valveOffChart.data.datasets[0].data.push(0);
     if (this.valveOffChart.data.datasets[0].data[0] != 0) {
       this.valveOffChart.data.datasets[0].data.shift();
-    }
-    else {
+    } else {
       clearInterval(this.taskValve);
     }
     this.Chart.data = this.valveOffChart.data;
