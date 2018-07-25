@@ -2,7 +2,7 @@ import { ViewChild, Component } from '@angular/core';
 import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { ModelService } from '../../../app/model-service';
+import { ModelService } from '../../../lib/model-service';
 
 /**
  * Generated class for the IsaleakPage page.

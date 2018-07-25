@@ -11,7 +11,7 @@ import { CantseeLeakPage } from '../events/cantseeleak/cantseeleak';
 import { IsALeakPage } from '../events/isaleak/isaleak';
 import { NotALeakPage } from '../events/notaleak/notaleak';
 import { NotathomePage } from '../events/notathome/notathome';
-import { ModelService } from '../../app/model-service';
+import { ModelService } from '../../lib/model-service';
 
 @Component({
   selector: 'page-home',

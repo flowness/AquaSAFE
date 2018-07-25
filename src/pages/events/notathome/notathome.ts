@@ -2,7 +2,7 @@ import { ViewChild, Component } from '@angular/core';
 import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NotALeakPage } from '../notaleak/notaleak';
 import { Chart } from 'chart.js';
-import { ModelService } from '../../../app/model-service';
+import { ModelService } from '../../../lib/model-service';
 
 /**
  * Generated class for the NotathomePage page.

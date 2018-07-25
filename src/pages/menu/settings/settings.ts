@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
-import { ModelService } from '../../../app/model-service';
+import { ModelService } from '../../../lib/model-service';
 
 @Component({
   selector: 'page-settings',
