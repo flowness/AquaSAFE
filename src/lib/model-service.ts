@@ -119,14 +119,40 @@ export class ModelService {
     for (let index = 0; index < this.model.modules.length; index++) {
       if (this.model.modules[index].sn == sn) {
         this.model.modules[index].valve = value;
+        this.changeStateAccordingToValve(value);
+        return;
       }
     }
   }
 
-  toggleAllValves(value) {
+  private isAllGood() {
+    if (this.model != null) {
+      for (let index = 0; index < this.model.modules.length; index++) {
+        if (this.model.modules[index].state != 'All Good') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private changeStateAccordingToValve(valveValue) {
+    if (valveValue) {
+      if (this.isAllGood()) {
+        this.model.status = 'good';
+      }
+    } else {
+      if (this.model.status === 'good') {
+        this.model.status = 'warn'
+      }
+    }
+  }
+
+  toggleAllValves(valveValue) {
     for (let index = 0; index < this.model.modules.length; index++) {
       if (this.model.modules[index].type == 2) {
-        this.model.modules[index].valve = value;
+        this.model.modules[index].valve = valveValue;
+        this.changeStateAccordingToValve(valveValue);
       }
     }
   }
@@ -141,10 +167,14 @@ export class ModelService {
 
   updateModelSetAllGood() {
     if (this.model != null) {
-      this.model.status = 'good';
+      let isValveOpen = true;
       for (let index = 0; index < this.model.modules.length; index++) {
         this.model.modules[index].state = 'All Good';
+        if (this.model.modules[index].type == 2) {
+          isValveOpen = this.model.modules[index].valve;
+        }
       }
+      this.model.status = isValveOpen ? 'good' : 'warn';
     }
   }
 

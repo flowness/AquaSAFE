@@ -77,7 +77,6 @@ export class HomePage {
             text: 'No',
             handler: () => {
               console.log('No clicked');
-              console.log('module sn= ' + module.sn);
               module.valve = !module.valve;
             }
           },
