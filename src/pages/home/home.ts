@@ -18,118 +18,17 @@ import { ModelService } from '../../app/model-service';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  data: any;
-  icons: any;
-  devices: any;
-  statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
     console.log('constructor');
-    this.data = {};
-    this.icons = ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
-    this.devices = ['MP100 Leak Sensor', 'FD100 Flood detector', 'VS100 Valve shutoff', 'BS100 Base Station', 'R100 RF repater']
-    console.log('constructor finished');
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
-    console.log('read model from storage');
-    let model = this.modelService.getModel();
-    if (model != null && model.inited == true) {
-      console.log('data.status = ' + model.status);
-      this.data = model;
-      console.dir(this.data);
-    } else {
-      this.prepareData();
-    }
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad');
-  }
-
-  prepareData() {
-    let state = '';
-    if (document.URL.indexOf("?") > 0) {
-      let splitURL = document.URL.split("?");
-      let splitParams = splitURL[1].split("&");
-      let i: any;
-      for (i in splitParams) {
-        let singleURLParam = splitParams[i].split('=');
-        if (singleURLParam[0] == "state") {
-          state = singleURLParam[1].toLowerCase();
-        }
-      }
-    }
-
-    console.log('state1=' + state);
-    if (this.data == null || !this.data.inited) {
-      if (state === 'bad') {
-        this.data.status = 'bad';
-      } else if (state === 'warn') {
-        this.data.status = 'warn';
-      } else {
-        this.data.status = 'good';
-      }
-
-      this.prepareAlertData();
-      this.prepareSiteData();
-      this.data.inited = true;
-      this.modelService.setModel(this.data);
-    }
-
-    console.log('finished prepare');
-    console.dir(this.data);
-    this.persistData();
-  }
-
-  prepareSiteData() {
-    let modules = [];
-    // types 0=MP100, 1=FD100, 2=VS100
-    modules.push(this.getModule(0));
-    modules.push(this.getModule(2));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
-
-    this.data.modules = modules;
-  }
-
-  getModuleStatusByTypeAndSystemStatus(moduleType) {
-    if (moduleType === 0 && this.data.status === 'bad') {
-      return 'Leak Detected';
-    } else {
-      return (this.data.status != 'warn' ? 'All Good' : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
-    }
-  }
-
-  getModule(type) {
-    let status = this.getModuleStatusByTypeAndSystemStatus(type);
-    return {
-      title: this.devices[type],
-      state: status,
-      icon: this.icons[type],
-      type: type,
-      valve: true,
-      sn: this.getRandomSN()
-    }
-  }
-
-  prepareAlertData() {
-    let alert = {};
-    alert['indicator'] = 'MP100';
-    alert['detectionTime'] = '4/7/2018 10:13';
-    this.data.alert = alert;
-  }
-
-  getRandomSN() {
-    let sn = '';
-    for (var i = 0; i < 8; i++) {
-      var num = Math.floor(Math.random() * 16);
-      sn += num.toString(16);
-    }
-    return sn;
   }
 
   moduleTapped(event, module) {
@@ -145,22 +44,22 @@ export class HomePage {
     switch (eventType) {
       case 100:
         this.navCtrl.push(NotALeakPage, {
-          alert: this.data.alert
+          alert: this.modelService.getModel().alert
         });
         break;
       case 101:
         this.navCtrl.push(CantseeLeakPage, {
-          alert: this.data.alert
+          alert: this.modelService.getModel().alert
         });
         break;
       case 102:
         this.navCtrl.push(NotathomePage, {
-          alert: this.data.alert
+          alert: this.modelService.getModel().alert
         });
         break;
       case 103:
         this.navCtrl.push(IsALeakPage, {
-          alert: this.data.alert
+          alert: this.modelService.getModel().alert
         });
         break;
     }
@@ -187,40 +86,12 @@ export class HomePage {
             handler: () => {
               console.log('Yes clicked. checked = ' + checked);
               module.valve = checked;
-              this.updateModel(module, 'valve');
+              this.modelService.updateModel(module, 'valve');
             }
           }
         ]
       });
       alert.present();
     }
-  }
-
-  updateModel(module, property) {
-    for (let index = 0; index < this.data.modules.length; index++) {
-      if (this.data.modules[index].sn == module.sn) {
-        this.data.modules[index][property] = module[property];
-        this.persistData();
-      }
-    };
-  }
-
-  persistData() {
-    console.log('set model in storage');
-    console.dir(this.data);
-    this.modelService.setModel(this.data);
-  }
-
-  readData(loading) {
-    console.log('read model from storage');
-    let model = this.modelService.getModel();
-    if (model != null) {
-      console.log('data.status = ' + model.status);
-      this.data = model;
-      console.dir(this.data);
-    } else {
-      this.prepareData();
-    }
-    loading.dismiss();
   }
 }
