@@ -1,6 +1,7 @@
 import { ViewChild, Component } from '@angular/core';
 import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
+import { ModelService } from '../../../app/model-service';
 
 /**
  * Generated class for the CantseeLeakPage page.
@@ -34,7 +35,7 @@ export class CantseeLeakPage {
   @ViewChild('valveOffCanvas') valveOffCanvas;
 
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     this.state = 0;
     this.dataIndex = 0;
     this.valveStatus = 0;
@@ -164,11 +165,32 @@ export class CantseeLeakPage {
   }
 
   shutValve() {
-    this.valveStatus = 1;
-    clearInterval(this.task);
-    this.taskValve = setInterval(() => {
-      this.refreshDataValve();
-    }, 300);
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to close the main valve?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+            this.valveStatus = 0;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked.');
+            this.valveStatus = 1;
+            clearInterval(this.task);
+            this.taskValve = setInterval(() => {
+              this.refreshDataValve();
+            }, 300);
+            this.modelService.toggleAllValves(false);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }
 

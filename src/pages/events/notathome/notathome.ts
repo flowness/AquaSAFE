@@ -2,6 +2,7 @@ import { ViewChild, Component } from '@angular/core';
 import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NotALeakPage } from '../notaleak/notaleak';
 import { Chart } from 'chart.js';
+import { ModelService } from '../../../app/model-service';
 
 /**
  * Generated class for the NotathomePage page.
@@ -35,7 +36,7 @@ export class NotathomePage {
   chartValve: any;
   taskValveOff: any;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     this.state = 0;
     this.someOneHome = false;
     this.dataIndex = 0;
@@ -54,9 +55,15 @@ export class NotathomePage {
         datasets: [{
           data: [19],
           borderWidth: 1,
+          backgroundColor: '#0062ff',
         }]
       },
       options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         responsive: false,
         legend: {
           display: false,
@@ -64,8 +71,17 @@ export class NotathomePage {
         scales: {
           yAxes: [{
             ticks: {
+              display: false,
               min: 0,
               max: 20
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              display: false,
+            },
+            gridLines: {
+              display: false
             }
           }]
         }
@@ -79,9 +95,15 @@ export class NotathomePage {
         datasets: [{
           data: [19, 19, 19, 19, 19, 19, 19, 19],
           borderWidth: 1,
+          backgroundColor: '#0062ff',
         }]
       },
       options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         responsive: false,
         legend: {
           display: false,
@@ -89,10 +111,18 @@ export class NotathomePage {
         scales: {
           yAxes: [{
             ticks: {
+              display: false,
               min: 0,
               max: 20
             }
-
+          }],
+          xAxes: [{
+            ticks: {
+              display: false,
+            },
+            gridLines: {
+              display: false
+            }
           }]
         }
       }
@@ -151,18 +181,62 @@ export class NotathomePage {
   }
 
   shutValve() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to close the main valve?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+            this.valveStatus = 0;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked.');
+            this.valveStatus = 1;
+            clearInterval(this.task);
+            this.taskValve = setInterval(() => {
+              this.refreshDataValve();
+            }, 300);
+            this.modelService.toggleAllValves(false);
+          }
+        }
+      ]
+    });
+    alert.present();
 
-    this.valveStatus = 1;
-    clearInterval(this.task);
-    this.taskValve = setInterval(() => {
-      this.refreshDataValve();
-    }, 300);
   }
 
   shutValveOff() {
-    this.taskValveOff = setInterval(() => {
-      this.refreshDataValveoff();
-    }, 300);
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to close the main valve?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+            this.valveStatus = 0;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked.');
+            this.valveStatus = 1;
+            clearInterval(this.task);
+            this.taskValveOff = setInterval(() => {
+              this.refreshDataValveoff();
+            }, 300);
+            this.modelService.toggleAllValves(false);
+          }
+        }
+      ]
+    });
+    alert.present();
 
   }
 

@@ -2,6 +2,7 @@ import { ViewChild, Component } from '@angular/core';
 import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ModelService } from '../../../app/model-service';
 
 /**
  * Generated class for the IsaleakPage page.
@@ -31,7 +32,7 @@ export class IsALeakPage {
 
   leakCloseSuccess: any;
 
-  constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     // If we navigated to this page, we will have an item available as a nav param
     this.state = 0;
     this.dataIndex = 0;
@@ -63,31 +64,6 @@ export class IsALeakPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad IsALeakPage');
-    // this.navBar.backButtonClick= (e:UIEvent)=>{
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Confirmation',
-    //     message: 'is leak resolved',
-    //     buttons: [
-    //       {
-    //         text: 'No',
-    //         handler: () => {
-    //           console.log('No clicked');
-    //           this.navCtrl.pop();
-    //         }
-    //       },
-    //       {
-    //         text: 'Yes',
-    //         handler: () => {
-    //           console.log('Yes clicked');
-    //           this.navCtrl.pop();
-    //         }
-    //       }
-    //     ]
-    //   });
-
-    //   alert.present();
-    // };
-
     let chartDefine = {
       type: 'line',
       data: {
@@ -95,9 +71,15 @@ export class IsALeakPage {
         datasets: [{
           data: [19],
           borderWidth: 1,
+          backgroundColor: '#0062ff',
         }]
       },
       options: {
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
         responsive: false,
         legend: {
           display: false,
@@ -109,13 +91,14 @@ export class IsALeakPage {
               min: 0,
               max: 20
             }
-
           }],
           xAxes: [{
             ticks: {
               display: false,
+            },
+            gridLines: {
+              display: false
             }
-
           }]
         }
       }
@@ -174,11 +157,31 @@ export class IsALeakPage {
   }
 
   shutValve() {
-    this.valveStatus = 1;
-    clearInterval(this.task);
-    this.taskValve = setInterval(() => {
-      this.refreshDataValve();
-    }, 300);
+    let alert = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: 'Are you sure you want to close the main valve?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+            this.valveStatus = 0;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            console.log('Yes clicked.');
+            this.valveStatus = 1;
+            clearInterval(this.task);
+            this.taskValve = setInterval(() => {
+              this.refreshDataValve();
+            }, 300);
+            this.modelService.toggleAllValves(false);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
-
 }

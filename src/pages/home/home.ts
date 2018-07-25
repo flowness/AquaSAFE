@@ -65,7 +65,7 @@ export class HomePage {
     }
   }
 
-  handleToggleChange(checked, module) {
+  handleToggleValveChange(checked, module) {
     console.log("toggle1=" + module.valve + ' checked=' + checked);
     if (checked === module.valve) {
 
@@ -86,7 +86,7 @@ export class HomePage {
             handler: () => {
               console.log('Yes clicked. checked = ' + checked);
               module.valve = checked;
-              this.modelService.updateModel(module, 'valve');
+              this.modelService.toggleValve(module.sn, module.valve);
             }
           }
         ]

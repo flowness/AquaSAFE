@@ -9,27 +9,21 @@ export class ModelService {
   }
 
   getModel(): any {
-    if (this.model != null && this.model.inited == true) {
-      console.log('data.status = ' + this.model.status);
-    } else {
+    if (this.model == null || this.model.inited != true) {
       this.prepareData();
     }
     return this.model;
-  }
-
-  setModel(model: any) {
-    this.model = model;
   }
 
   getSettings(): any {
     return this.settings;
   }
 
-  setSettings(settings: any) {
-    this.settings = settings;
-  }
-
-  prepareData() {
+  private prepareData() {
+    //init
+    this.model = {};
+    this.settings = {};
+    //
     let state = '';
     if (document.URL.indexOf("?") > 0) {
       let splitURL = document.URL.split("?");
@@ -53,7 +47,7 @@ export class ModelService {
         this.model.status = 'good';
       }
 
-      this.prepareAlertData();
+      this.addAlertToModel('MP100', '4/7/2018 10:13');
       this.prepareSiteData();
       this.model.inited = true;
     }
@@ -62,7 +56,7 @@ export class ModelService {
     console.dir(this.model);
   }
 
-  prepareSiteData() {
+  private prepareSiteData() {
     let modules = [];
     // types 0=MP100, 1=FD100, 2=VS100
     modules.push(this.getModule(0));
@@ -75,7 +69,7 @@ export class ModelService {
     this.model.modules = modules;
   }
 
-  getModule(type) {
+  private getModule(type) {
     let status = this.getModuleStatusByTypeAndSystemStatus(type);
     return {
       title: this.getDevices()[type],
@@ -87,7 +81,7 @@ export class ModelService {
     }
   }
 
-  getModuleStatusByTypeAndSystemStatus(moduleType) {
+  private getModuleStatusByTypeAndSystemStatus(moduleType) {
     if (moduleType === 0 && this.model.status === 'bad') {
       return 'Leak Detected';
     } else {
@@ -95,7 +89,7 @@ export class ModelService {
     }
   }
 
-  getRandomSN() {
+  private getRandomSN() {
     let sn = '';
     for (var i = 0; i < 8; i++) {
       var num = Math.floor(Math.random() * 16);
@@ -104,74 +98,88 @@ export class ModelService {
     return sn;
   }
 
-  prepareAlertData() {
+  private addAlertToModel(indicator, date) {
     let alert = {};
-    alert['indicator'] = 'MP100';
-    alert['detectionTime'] = '4/7/2018 10:13';
+    alert['indicator'] = indicator;
+    alert['detectionTime'] = date;
     this.model.alert = alert;
   }
 
-  updateModel(module, property) {
-    for (let index = 0; index < this.model.modules.length; index++) {
-      if (this.model.modules[index].sn == module.sn) {
-        this.model.modules[index][property] = module[property];
-      }
-    };
-  }
-
-  getDevices() {
+  private getDevices() {
     //TODO: how can I make it class memeber
     return ['MP100 Leak Sensor', 'FD100 Flood detector', 'VS100 Valve shutoff', 'BS100 Base Station', 'R100 RF repater'];
   }
 
-  getIcons() {
+  private getIcons() {
     //TODO: how can I make it class memeber
     return ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
   }
 
+  toggleValve(sn, value) {
+    for (let index = 0; index < this.model.modules.length; index++) {
+      if (this.model.modules[index].sn == sn) {
+        this.model.modules[index].valve = value;
+      }
+    }
+  }
+
+  toggleAllValves(value) {
+    for (let index = 0; index < this.model.modules.length; index++) {
+      if (this.model.modules[index].type == 2) {
+        this.model.modules[index].valve = value;
+      }
+    }
+  }
+
+  // private updateModel(module, property) {
+  //   for (let index = 0; index < this.model.modules.length; index++) {
+  //     if (this.model.modules[index].sn == module.sn) {
+  //       this.model.modules[index][property] = module[property];
+  //     }
+  //   }
+  // }
+
   updateModelSetAllGood() {
-    console.log('read model from storage');
     if (this.model != null) {
-      console.log('data.status = ' + this.model.status);
       this.model.status = 'good';
       for (let index = 0; index < this.model.modules.length; index++) {
         this.model.modules[index].state = 'All Good';
       }
-      console.log('set model in storage');
     }
   }
 
-  updateModelAndSettings(itemTitle, itemValue) {
-    console.log('read model from storage');
+  updateSettings(settingsItemTitle, settingsItemValue) {
     if (this.model != null) {
-      console.log('model.status before = ' + this.model.status);
-      console.log('item.title = ' + itemTitle);
-      this.model.status = itemValue ? (itemTitle === 'Leakage Alert' ? 'bad' : 'warn') : 'good';
-      console.log('model.status after = ' + this.model.status);
-      if (itemTitle === 'Leakage Alert') {
-        this.settings.leakageAlert = itemValue;
+      //set the settings object
+      if (settingsItemTitle === 'Leakage Alert') {
+        this.settings.leakageAlert = settingsItemValue;
+      }
+      if (settingsItemTitle === 'Irregularity Alert') {
+        this.settings.irregularityAlert = settingsItemValue;
+      }
+
+      if (!settingsItemValue) {
+        // in case of unset - change to All good
+        this.updateModelSetAllGood();
+        return;
+      }
+
+      // if we are here need to set leakage or warn
+      if (settingsItemTitle === 'Leakage Alert') {
+        this.model.status = 'bad';
         for (let index = 0; index < this.model.modules.length; index++) {
           if (this.model.modules[index].type === 0) {
-            this.model.modules[index].state = itemValue ? 'Leak Detected' : 'All Good';
-          } else {
-            this.model.modules[index].state = 'All Good';
+            this.model.modules[index].state = 'Leak Detected';
+            this.addAlertToModel('MP100', new Date().toISOString());
           }
         }
       }
-      if (itemTitle === 'Irregularity Alert') {
-        this.settings.irregularityAlert = itemValue;
+      if (settingsItemTitle === 'Irregularity Alert') {
+        this.model.status = 'warn';
         for (let index = 0; index < this.model.modules.length; index++) {
-          this.model.modules[index].state = itemValue ? this.statuses[Math.floor(Math.random() * this.statuses.length)] : 'All Good';
+          this.model.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
         }
       }
-
-      let alert = {};
-      alert['indicator'] = 'MP100';
-      alert['detectionTime'] = new Date().toISOString();
-      this.model.alert = alert;
-
-      console.log('set model in storage');
     }
   }
-
 }

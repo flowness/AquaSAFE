@@ -7,7 +7,6 @@ import { HomePage } from '../pages/home/home';
 import { StatisticsPage } from '../pages/menu/statistics/statistics';
 import { SettingsPage } from '../pages/menu/settings/settings';
 import { EventsPage } from '../pages/menu/events/events';
-import { ModelService } from './model-service';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +18,7 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private modelService:ModelService) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -34,8 +33,6 @@ export class MyApp {
 
   initializeApp() {
     console.log('**************App Init**************');
-    this.modelService.setModel({});
-    this.modelService.setSettings({});
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

@@ -11,7 +11,6 @@ export class SettingsPage {
   statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
-    let settings = this.modelService.getSettings();
     this.items = [];
 
     this.items.push({
@@ -36,13 +35,13 @@ export class SettingsPage {
       title: 'Irregularity Alert',
       input: 'toggle',
       icon: 'warning',
-      value: settings.irregularityAlert
+      value: this.modelService.getSettings().irregularityAlert
     });
     this.items.push({
       title: 'Leakage Alert',
       input: 'toggle',
       icon: 'warning',
-      value: settings.leakageAlert
+      value: this.modelService.getSettings().leakageAlert
     });
     this.items.push({
       title: 'Zero-Flow Hours Alert:',
@@ -65,7 +64,7 @@ export class SettingsPage {
   handleToggleChange(evt, item) {
     if (item.title === 'Leakage Alert' || item.title === 'Irregularity Alert') {
       console.log("setting leakage alert to " + item.value);
-      this.modelService.updateModelAndSettings(item.title, item.value);
+      this.modelService.updateSettings(item.title, item.value);
     }
   }
 }
