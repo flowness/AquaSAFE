@@ -124,10 +124,7 @@ export class NotALeakPage {
           text: 'Yes',
           handler: () => {
             console.log('Yes clicked');
-            let loading = this.loadingCtrl.create({
-              content: 'Refreshing.', showBackdrop: false
-            });
-            this.updateModel(loading);
+            this.modelService.updateModelSetAllGood();
             this.navCtrl.pop();
           }
         }
@@ -145,10 +142,7 @@ export class NotALeakPage {
         {
           text: 'OK',
           handler: () => {
-            let loading = this.loadingCtrl.create({
-              content: 'Refreshing.', showBackdrop: false
-            });
-            this.updateModel(loading);
+            this.modelService.updateModelSetAllGood();
             this.navCtrl.pop();
           }
         }
@@ -158,19 +152,5 @@ export class NotALeakPage {
     alert.present();
   }
 
-  updateModel(loading) {
-    console.log('read model from storage');
-    let model = this.modelService.getModel();
-    if (model != null) {
-      console.log('data.status = ' + model.status);
-      model.status = 'good';
-      for (let index = 0; index < model.modules.length; index++) {
-        model.modules[index].state = 'All Good';
-      }
-      console.log('set model in storage');
-      this.modelService.setModel(model);
-    }
-    loading.dismiss();
-}
 
 }

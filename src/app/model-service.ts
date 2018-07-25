@@ -129,4 +129,49 @@ export class ModelService {
     return ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
   }
 
+  updateModelSetAllGood() {
+    console.log('read model from storage');
+    if (this.model != null) {
+      console.log('data.status = ' + this.model.status);
+      this.model.status = 'good';
+      for (let index = 0; index < this.model.modules.length; index++) {
+        this.model.modules[index].state = 'All Good';
+      }
+      console.log('set model in storage');
+    }
+  }
+
+  updateModelAndSettings(itemTitle, itemValue) {
+    console.log('read model from storage');
+    if (this.model != null) {
+      console.log('model.status before = ' + this.model.status);
+      console.log('item.title = ' + itemTitle);
+      this.model.status = itemValue ? (itemTitle === 'Leakage Alert' ? 'bad' : 'warn') : 'good';
+      console.log('model.status after = ' + this.model.status);
+      if (itemTitle === 'Leakage Alert') {
+        this.settings.leakageAlert = itemValue;
+        for (let index = 0; index < this.model.modules.length; index++) {
+          if (this.model.modules[index].type === 0) {
+            this.model.modules[index].state = itemValue ? 'Leak Detected' : 'All Good';
+          } else {
+            this.model.modules[index].state = 'All Good';
+          }
+        }
+      }
+      if (itemTitle === 'Irregularity Alert') {
+        this.settings.irregularityAlert = itemValue;
+        for (let index = 0; index < this.model.modules.length; index++) {
+          this.model.modules[index].state = itemValue ? this.statuses[Math.floor(Math.random() * this.statuses.length)] : 'All Good';
+        }
+      }
+
+      let alert = {};
+      alert['indicator'] = 'MP100';
+      alert['detectionTime'] = new Date().toISOString();
+      this.model.alert = alert;
+
+      console.log('set model in storage');
+    }
+  }
+
 }
