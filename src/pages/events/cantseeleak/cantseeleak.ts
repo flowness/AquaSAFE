@@ -45,15 +45,13 @@ export class CantseeLeakPage {
   }
 
   ionViewDidLoad() {
-    // let start = Math.floor(Math.random() * 31) + 19; //rand between 19-100
-    let start = 19;
     console.log('ionViewDidLoad CantseeLeakPage');
     let chartDefine = {
       type: 'line',
       data: {
         labels: ['0'],
         datasets: [{
-          data: [start],
+          data: [19],
           borderWidth: 1,
           backgroundColor: '#0062ff',
         }]
@@ -73,7 +71,7 @@ export class CantseeLeakPage {
             ticks: {
               display: false,
               min: 0,
-              max: start + 2
+              max: 20
             }
 
           }],
@@ -103,10 +101,6 @@ export class CantseeLeakPage {
   refreshData() {
     let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
     if (currentData > this.endValue) {
-      // let changeData = Math.floor(Math.random() * 10);
-      // if (currentData - changeData < this.endValue) {
-      //   changeData = currentData - this.endValue;
-      // }
       this.Chart.data.datasets[0].data[this.dataIndex] = currentData;
       this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     } else {
@@ -117,7 +111,6 @@ export class CantseeLeakPage {
       } else {
         clearInterval(this.task);
       }
-
     }
     // console.log('****** ' + this.Chart.data.datasets[0].data);
     if (this.Chart.data.datasets[0].data.length > this.maxNumOfPoints) {
@@ -164,7 +157,7 @@ export class CantseeLeakPage {
     this.state--;
   }
 
-  shutValve() {
+  shutOffValve() {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Are you sure you want to close the main valve?',

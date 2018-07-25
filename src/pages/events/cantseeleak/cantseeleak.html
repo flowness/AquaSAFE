@@ -16,11 +16,11 @@
         <ion-item text-wrap text-center [hidden]="state!=1">
           If there is still some flow suggest to: 
           <div align="center">
-            <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
+            <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutOffValve()" large>
                 <ion-icon name="aperture"></ion-icon>
               shut off main valve
             </button>          
-            <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValve()" large>
+            <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutOffValve()" large>
                 <ion-icon name="aperture"></ion-icon>
               main valve is shut off
             </button>
