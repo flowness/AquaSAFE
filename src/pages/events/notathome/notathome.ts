@@ -1,8 +1,8 @@
-import { ViewChild, Component } from '@angular/core';
-import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
-import { NotALeakPage } from '../notaleak/notaleak';
-import { Chart } from 'chart.js';
-import { ModelService } from '../../../lib/model-service';
+import { ViewChild, Component } from "@angular/core";
+import { Navbar, AlertController, IonicPage, NavController, NavParams } from "ionic-angular";
+import { NotALeakPage } from "../notaleak/notaleak";
+import { Chart } from "chart.js";
+import { ModelService } from "../../../lib/model-service";
 
 /**
  * Generated class for the NotathomePage page.
@@ -13,8 +13,8 @@ import { ModelService } from '../../../lib/model-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-notathome',
-  templateUrl: 'notathome.html',
+  selector: "page-notathome",
+  templateUrl: "notathome.html",
 })
 export class NotathomePage {
   alert: any;
@@ -23,7 +23,7 @@ export class NotathomePage {
   @ViewChild(Navbar) navBar: Navbar;
 
   dataIndex: any;
-  @ViewChild('sourceOffCanvas') sourceOffCanvas;
+  @ViewChild("sourceOffCanvas") sourceOffCanvas;
   chart: any;
   task: any;
   taskValve: any;
@@ -32,7 +32,7 @@ export class NotathomePage {
   leakCloseSuccess: any;
 
 
-  @ViewChild('valveOffCanvas') valveOffCanvas;
+  @ViewChild("valveOffCanvas") valveOffCanvas;
   chartValve: any;
   taskValveOff: any;
 
@@ -42,20 +42,20 @@ export class NotathomePage {
     this.dataIndex = 0;
     this.valveStatus = 0;
     this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
-    this.alert = navParams.get('alert');
+    this.alert = navParams.get("alert");
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotathomePage');
+    console.log("ionViewDidLoad NotathomePage");
 
     let chartDefine = {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ['0'],
+        labels: ["0"],
         datasets: [{
           data: [19],
           borderWidth: 1,
-          backgroundColor: '#0062ff',
+          backgroundColor: "#0062ff",
         }]
       },
       options: {
@@ -89,13 +89,13 @@ export class NotathomePage {
     }
 
     let chartOffDefine = {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+        labels: ["0", "1", "2", "3", "4", "5", "6", "7"],
         datasets: [{
           data: [19, 19, 19, 19, 19, 19, 19, 19],
           borderWidth: 1,
-          backgroundColor: '#0062ff',
+          backgroundColor: "#0062ff",
         }]
       },
       options: {
@@ -182,20 +182,20 @@ export class NotathomePage {
 
   shutValve() {
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to close the main valve?',
+      title: "Confirmation",
+      message: "Are you sure you want to close the main valve?",
       buttons: [
         {
-          text: 'No',
+          text: "No",
           handler: () => {
-            console.log('No clicked');
+            console.log("No clicked");
             this.valveStatus = 0;
           }
         },
         {
-          text: 'Yes',
+          text: "Yes",
           handler: () => {
-            console.log('Yes clicked.');
+            console.log("Yes clicked.");
             this.valveStatus = 1;
             clearInterval(this.task);
             this.taskValve = setInterval(() => {
@@ -212,20 +212,20 @@ export class NotathomePage {
 
   shutValveOff() {
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to close the main valve?',
+      title: "Confirmation",
+      message: "Are you sure you want to close the main valve?",
       buttons: [
         {
-          text: 'No',
+          text: "No",
           handler: () => {
-            console.log('No clicked');
+            console.log("No clicked");
             this.valveStatus = 0;
           }
         },
         {
-          text: 'Yes',
+          text: "Yes",
           handler: () => {
-            console.log('Yes clicked.');
+            console.log("Yes clicked.");
             this.valveStatus = 1;
             clearInterval(this.task);
             this.taskValveOff = setInterval(() => {

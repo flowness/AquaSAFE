@@ -1,8 +1,8 @@
-import { ViewChild, Component } from '@angular/core';
-import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
-import { Chart } from 'chart.js';
-import { Camera, CameraOptions } from '@ionic-native/camera';
-import { ModelService } from '../../../lib/model-service';
+import { ViewChild, Component } from "@angular/core";
+import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from "ionic-angular";
+import { Chart } from "chart.js";
+import { Camera, CameraOptions } from "@ionic-native/camera";
+import { ModelService } from "../../../lib/model-service";
 
 /**
  * Generated class for the IsaleakPage page.
@@ -13,8 +13,8 @@ import { ModelService } from '../../../lib/model-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-isaleak',
-  templateUrl: 'isaleak.html',
+  selector: "page-isaleak",
+  templateUrl: "isaleak.html",
 })
 export class IsALeakPage {
   public base64Image: string;
@@ -24,7 +24,7 @@ export class IsALeakPage {
   @ViewChild(Navbar) navBar: Navbar;
 
   dataIndex: number;
-  @ViewChild('sourceOffCanvas') sourceOffCanvas;
+  @ViewChild("sourceOffCanvas") sourceOffCanvas;
   chart: Chart;
   task: number;
   taskValve: any;
@@ -38,7 +38,7 @@ export class IsALeakPage {
     this.dataIndex = 0;
     this.valveStatus = 0;
     this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
-    this.alert = navParams.get('alert');
+    this.alert = navParams.get("alert");
   }
 
   takePicture(): void {
@@ -52,7 +52,7 @@ export class IsALeakPage {
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
-      this.base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.base64Image = "data:image/jpeg;base64," + imageData;
     }, (err) => {
       // Handle error
     });
@@ -62,15 +62,15 @@ export class IsALeakPage {
   }
 
   ionViewDidLoad(): void {
-    console.log('ionViewDidLoad IsALeakPage');
+    console.log("ionViewDidLoad IsALeakPage");
     let chartDefine = {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ['0'],
+        labels: ["0"],
         datasets: [{
           data: [19],
           borderWidth: 1,
-          backgroundColor: '#0062ff',
+          backgroundColor: "#0062ff",
         }]
       },
       options: {
@@ -157,20 +157,20 @@ export class IsALeakPage {
 
   shutValve(): void {
     let alert: Alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to close the main valve?',
+      title: "Confirmation",
+      message: "Are you sure you want to close the main valve?",
       buttons: [
         {
-          text: 'No',
+          text: "No",
           handler: () => {
-            console.log('No clicked');
+            console.log("No clicked");
             this.valveStatus = 0;
           }
         },
         {
-          text: 'Yes',
+          text: "Yes",
           handler: () => {
-            console.log('Yes clicked.');
+            console.log("Yes clicked.");
             this.valveStatus = 1;
             clearInterval(this.task);
             this.taskValve = setInterval(() => {

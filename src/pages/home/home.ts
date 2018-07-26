@@ -1,45 +1,46 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { NavController, NavParams, LoadingController, AlertController, Alert } from "ionic-angular";
 
-import { MP100Page } from '../modules/mp100/mp100';
-import { Fd100Page } from '../modules/fd100/fd100';
-import { Vs100Page } from '../modules/vs100/vs100';
-import { Bs100Page } from '../modules/bs100/bs100';
-import { R100Page } from '../modules/r100/r100';
+import { MP100Page } from "../modules/mp100/mp100";
+import { Fd100Page } from "../modules/fd100/fd100";
+import { Vs100Page } from "../modules/vs100/vs100";
+import { Bs100Page } from "../modules/bs100/bs100";
+import { R100Page } from "../modules/r100/r100";
 
-import { CantseeLeakPage } from '../events/cantseeleak/cantseeleak';
-import { IsALeakPage } from '../events/isaleak/isaleak';
-import { NotALeakPage } from '../events/notaleak/notaleak';
-import { NotathomePage } from '../events/notathome/notathome';
-import { ModelService } from '../../lib/model-service';
+import { CantseeLeakPage } from "../events/cantseeleak/cantseeleak";
+import { IsALeakPage } from "../events/isaleak/isaleak";
+import { NotALeakPage } from "../events/notaleak/notaleak";
+import { NotathomePage } from "../events/notathome/notathome";
+import { ModelService } from "../../lib/model-service";
+import { Page } from "../../../node_modules/ionic-angular/umd/navigation/nav-util";
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: "page-home",
+  templateUrl: "home.html"
 })
 export class HomePage {
+  private pages: Page[] = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
-    console.log('constructor');
+    console.log("constructor");
   }
 
-  ionViewWillEnter() {
-    console.log('ionViewWillEnter');
+  ionViewWillEnter(): void {
+    console.log("ionViewWillEnter");
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad');
+  ionViewDidLoad(): void {
+    console.log("ionViewDidLoad");
   }
 
-  moduleTapped(event, module) {
-    let Pages = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
+  moduleTapped(event: any, module: any): void {
     console.log("module type = " + module.type);
-    this.navCtrl.push(Pages[module.type], {
+    this.navCtrl.push(this.pages[module.type], {
       module: module
     });
   }
 
-  eventItemTapped(event, eventType) {
+  eventItemTapped(event: any, eventType: number): void {
     console.log("item type = " + eventType);
     switch (eventType) {
       case 100:
@@ -65,25 +66,24 @@ export class HomePage {
     }
   }
 
-  handleToggleValveChange(checked, module) {
-    console.log("toggle1=" + module.valve + ' checked=' + checked);
+  handleToggleValveChange(checked: boolean, module: any): void {
+    console.log("toggle1=" + module.valve + " checked=" + checked);
     if (checked === module.valve) {
-
-      let alert = this.alertCtrl.create({
-        title: 'Confirmation',
-        message: 'Are you sure you want to ' + (module.valve ? 'open' : 'close') + ' the main valve?',
+      let alert: Alert = this.alertCtrl.create({
+        title: "Confirmation",
+        message: "Are you sure you want to " + (module.valve ? "open" : "close") + " the main valve?",
         buttons: [
           {
-            text: 'No',
+            text: "No",
             handler: () => {
-              console.log('No clicked');
+              console.log("No clicked");
               module.valve = !module.valve;
             }
           },
           {
-            text: 'Yes',
+            text: "Yes",
             handler: () => {
-              console.log('Yes clicked. checked = ' + checked);
+              console.log("Yes clicked. checked = " + checked);
               module.valve = checked;
               this.modelService.toggleValve(module.sn, module.valve);
             }

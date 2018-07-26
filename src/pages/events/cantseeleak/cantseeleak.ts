@@ -1,7 +1,7 @@
-import { ViewChild, Component } from '@angular/core';
-import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
-import { Chart } from 'chart.js';
-import { ModelService } from '../../../lib/model-service';
+import { ViewChild, Component } from "@angular/core";
+import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from "ionic-angular";
+import { Chart } from "chart.js";
+import { ModelService } from "../../../lib/model-service";
 
 /**
  * Generated class for the CantseeLeakPage page.
@@ -12,11 +12,10 @@ import { ModelService } from '../../../lib/model-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-cantseeleak',
-  templateUrl: 'cantseeleak.html',
+  selector: "page-cantseeleak",
+  templateUrl: "cantseeleak.html",
 })
 export class CantseeLeakPage {
-
   currentSiteAlert: any;
   state: number;
   endTappingValue: number;
@@ -30,30 +29,31 @@ export class CantseeLeakPage {
 
   @ViewChild(Navbar) navBar: Navbar;
 
-  @ViewChild('sourceOffCanvas') sourceOffCanvas;
+  @ViewChild("sourceOffCanvas") sourceOffCanvas;
 
-  @ViewChild('valveOffCanvas') valveOffCanvas;
+  @ViewChild("valveOffCanvas") valveOffCanvas;
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     this.state = 0;
     this.dataIndex = 0;
     this.valveStatus = 0;
-    this.currentSiteAlert = navParams.get('alert');
+    this.currentSiteAlert = navParams.get("alert");
     this.endTappingValue = Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
     this.maxNumOfPoints = 25;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CantseeLeakPage');
+    console.log("ionViewDidLoad CantseeLeakPage");
+    this.modelService.setCurrentFlow(19);
     let chartDefine: any = {
-      type: 'line',
+      type: "line",
       data: {
-        labels: ['0'],
+        labels: ["0"],
         datasets: [{
-          data: [19],
+          data: [this.modelService.getCurrentFlow()],
           borderWidth: 1,
-          backgroundColor: '#0062ff',
+          backgroundColor: "#0062ff",
         }]
       },
       options: {
@@ -101,6 +101,7 @@ export class CantseeLeakPage {
   private refreshData(): void {
     let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
     if (currentData > this.endTappingValue) {
+      this.modelService.setCurrentFlow(currentData);
       this.chart.data.datasets[0].data[this.dataIndex] = currentData;
       this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     } else {
@@ -112,12 +113,12 @@ export class CantseeLeakPage {
         clearInterval(this.task);
       }
     }
-    // console.log('****** ' + this.Chart.data.datasets[0].data);
+    // console.log("****** " + this.Chart.data.datasets[0].data);
     if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
       this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
       this.dataIndex = this.maxNumOfPoints - 1;
     }
-    // console.log('------ ' + this.Chart.data.datasets[0].data);
+    // console.log("------ " + this.Chart.data.datasets[0].data);
     this.valveOffChart.data = this.chart.data;
     this.chart.update(0);
     this.valveOffChart.update(0);
@@ -131,13 +132,14 @@ export class CantseeLeakPage {
       if (currentData - changeData < this.endTappingValue) {
         changeData = currentData - this.endTappingValue;
       }
-      this.chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+      this.modelService.setCurrentFlow(currentData - changeData);
+      this.chart.data.datasets[0].data[this.dataIndex] = this.modelService.getCurrentFlow();
       this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     }
   }
 
   text(): string {
-    return this.chart != undefined && this.chart!=null && this.chart.data.datasets[0].data[this.dataIndex] === 0 ? 'Seems like the water flow stopped:' : 'If there is still some flow suggest to:';
+    return this.chart != undefined && this.chart!=null && this.chart.data.datasets[0].data[this.dataIndex] === 0 ? "Seems like the water flow stopped:" : "If there is still some flow suggest to:";
   }
 
   refreshDataValve(): void {
@@ -162,25 +164,25 @@ export class CantseeLeakPage {
   }
 
   nextButtonString(step: number): string {
-    return (step === 0) ? 'All closed' : 'Next';
+    return (step === 0) ? "All closed" : "Next";
   }
 
   shutOffValve(): void {
     let alert: Alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Are you sure you want to close the main valve?',
+      title: "Confirmation",
+      message: "Are you sure you want to close the main valve?",
       buttons: [
         {
-          text: 'No',
+          text: "No",
           handler: () => {
-            console.log('No clicked');
+            console.log("No clicked");
             this.valveStatus = 0;
           }
         },
         {
-          text: 'Yes',
+          text: "Yes",
           handler: () => {
-            console.log('Yes clicked.');
+            console.log("Yes clicked.");
             this.valveStatus = 1;
             clearInterval(this.task);
             this.taskValve = setInterval(() => {

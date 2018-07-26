@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { NavController, NavParams, AlertController, LoadingController } from "ionic-angular";
 
 import {
   trigger,
@@ -8,81 +8,81 @@ import {
   animate,
   transition
 } from "@angular/animations";
-import { ModelService } from '../../../lib/model-service';
+import { ModelService } from "../../../lib/model-service";
 
 @Component({
-  selector: 'page-notaleak',
-  templateUrl: 'notaleak.html',
+  selector: "page-notaleak",
+  templateUrl: "notaleak.html",
   animations: [
-    trigger('elementState0', [
-      state('opaque', style({
+    trigger("elementState0", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState1', [
-      state('opaque', style({
+    trigger("elementState1", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState2', [
-      state('opaque', style({
+    trigger("elementState2", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState3', [
-      state('opaque', style({
+    trigger("elementState3", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState4', [
-      state('opaque', style({
+    trigger("elementState4", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState5', [
-      state('opaque', style({
+    trigger("elementState5", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ]),
-    trigger('elementState6', [
-      state('opaque', style({
+    trigger("elementState6", [
+      state("opaque", style({
         opacity: 1
       })),
-      state('transparent', style({
+      state("transparent", style({
         opacity: 0
       })),
-      transition('opaque => transparent', animate('1000ms ease-in')),
-      transition('transparent => opaque', animate('1000ms ease-in'))
+      transition("opaque => transparent", animate("1000ms ease-in")),
+      transition("transparent => opaque", animate("1000ms ease-in"))
     ])
 
   ]
@@ -100,30 +100,30 @@ export class NotALeakPage {
   numButtons = 7;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService:ModelService, public loadingCtrl: LoadingController) {
-    this.alert = navParams.get('alert');
-    console.log('navParams = ' + this.alert.detectionTime);
+    this.alert = navParams.get("alert");
+    console.log("navParams = " + this.alert.detectionTime);
   }
 
   doConfirm(waterUsage, i) {
     for (let index = 0; index < this.numButtons; index++) {
       if (i != index) {
-        this['state' + index] = this['state' + index] === "transparent" ? "opaque" : "transparent";
+        this["state" + index] = this["state" + index] === "transparent" ? "opaque" : "transparent";
       }
     }
     let alert = this.alertCtrl.create({
-      title: 'Confirmation',
-      message: 'Did the water usage detection done by the ' + waterUsage + '?',
+      title: "Confirmation",
+      message: "Did the water usage detection done by the " + waterUsage + "?",
       buttons: [
         {
-          text: 'No',
+          text: "No",
           handler: () => {
-            console.log('No clicked');
+            console.log("No clicked");
           }
         },
         {
-          text: 'Yes',
+          text: "Yes",
           handler: () => {
-            console.log('Yes clicked');
+            console.log("Yes clicked");
             this.modelService.updateModelSetAllGood();
             this.navCtrl.pop();
           }
@@ -137,10 +137,10 @@ export class NotALeakPage {
 
   noAnswer() {
     let alert = this.alertCtrl.create({
-      message: 'You may always add your input later in the Events Screen',
+      message: "You may always add your input later in the Events Screen",
       buttons: [
         {
-          text: 'OK',
+          text: "OK",
           handler: () => {
             this.modelService.updateModelSetAllGood();
             this.navCtrl.pop();
