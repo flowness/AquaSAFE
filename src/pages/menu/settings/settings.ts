@@ -56,9 +56,6 @@ export class SettingsPage {
       icon: 'water',
       value: false
     });
-
-    console.log('settings');
-    console.dir(this.modelService.getModel());
   }
 
   handleToggleChange(evt, item) {

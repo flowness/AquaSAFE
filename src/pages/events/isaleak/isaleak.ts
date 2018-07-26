@@ -1,5 +1,5 @@
 import { ViewChild, Component } from '@angular/core';
-import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ModelService } from '../../../lib/model-service';
@@ -20,17 +20,17 @@ export class IsALeakPage {
   public base64Image: string;
   item: any;
   alert: any;
-  state: any;
+  state: number;
   @ViewChild(Navbar) navBar: Navbar;
 
-  dataIndex: any;
+  dataIndex: number;
   @ViewChild('sourceOffCanvas') sourceOffCanvas;
-  Chart: any;
-  task: any;
+  chart: Chart;
+  task: number;
   taskValve: any;
-  valveStatus: any;
+  valveStatus: number;
 
-  leakCloseSuccess: any;
+  leakCloseSuccess: number;
 
   constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     // If we navigated to this page, we will have an item available as a nav param
@@ -41,8 +41,7 @@ export class IsALeakPage {
     this.alert = navParams.get('alert');
   }
 
-  takePicture() {
-
+  takePicture(): void {
     const options: CameraOptions = {
       quality: 50,
       destinationType: this.camera.DestinationType.DATA_URL,
@@ -62,7 +61,7 @@ export class IsALeakPage {
 
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad(): void {
     console.log('ionViewDidLoad IsALeakPage');
     let chartDefine = {
       type: 'line',
@@ -104,7 +103,7 @@ export class IsALeakPage {
       }
     }
 
-    this.Chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
+    this.chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
 
     this.task = setInterval(() => {
       this.refreshData();
@@ -112,52 +111,52 @@ export class IsALeakPage {
 
   }
 
-  refreshData() {
-    let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
+  refreshData(): void {
+    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
     if (currentData > this.leakCloseSuccess) {
       let changeData = Math.floor(Math.random() * 5);
       if (currentData - changeData < this.leakCloseSuccess) {
         changeData = currentData - this.leakCloseSuccess;
       }
-      this.Chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
-      this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+      this.chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     }
     else {
-      this.Chart.data.datasets[0].data.push(this.leakCloseSuccess);
+      this.chart.data.datasets[0].data.push(this.leakCloseSuccess);
 
-      if (this.Chart.data.datasets[0].data[0] != this.leakCloseSuccess) {
-        this.Chart.data.datasets[0].data.shift();
+      if (this.chart.data.datasets[0].data[0] != this.leakCloseSuccess) {
+        this.chart.data.datasets[0].data.shift();
       }
       else {
         clearInterval(this.task);
       }
 
     }
-    this.Chart.update(0);
+    this.chart.update(0);
   }
 
-  refreshDataValve() {
-    this.Chart.data.datasets[0].data.push(0);
-    if (this.Chart.data.datasets[0].data[0] != 0) {
-      this.Chart.data.datasets[0].data.shift();
+  refreshDataValve(): void {
+    this.chart.data.datasets[0].data.push(0);
+    if (this.chart.data.datasets[0].data[0] != 0) {
+      this.chart.data.datasets[0].data.shift();
     }
     else {
       clearInterval(this.taskValve);
     }
-    this.Chart.update(0);
+    this.chart.update(0);
 
   }
 
-  nextState() {
+  nextState(): void {
     this.state++;
   }
 
-  prevState() {
+  prevState(): void {
     this.state--;
   }
 
-  shutValve() {
-    let alert = this.alertCtrl.create({
+  shutValve(): void {
+    let alert: Alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Are you sure you want to close the main valve?',
       buttons: [

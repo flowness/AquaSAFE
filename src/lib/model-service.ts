@@ -2,29 +2,45 @@ export class ModelService {
   private model: any;
   private settings: any;
 
-  private statuses = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
+  private icons: string[] = ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
+  private devices: string[] = ['MP100 Leak Sensor', 'FD100 Flood detector', 'VS100 Valve shutoff', 'BS100 Base Station', 'R100 RF repater'];
+  private statuses: string[] = ['Low Battery', 'Tamper', 'Communication', 'All Good'];
 
   constructor() {
     console.log('constructor');
   }
 
-  getModel(): any {
+  getStatus(): any {
     if (this.model == null || this.model.inited != true) {
       this.prepareData();
     }
-    return this.model;
+    return this.model.status;
+  }
+
+  getModules(): any {
+    if (this.model == null || this.model.inited != true) {
+      this.prepareData();
+    }
+    return this.model.modules;
+  }
+
+  getAlert(): any {
+    if (this.model == null || this.model.inited != true) {
+      this.prepareData();
+    }
+    return this.model.alert;
   }
 
   getSettings(): any {
     return this.settings;
   }
 
-  private prepareData() {
+  private prepareData(): void {
     //init
     this.model = {};
     this.settings = {};
     //
-    let state = '';
+    let state: string = '';
     if (document.URL.indexOf("?") > 0) {
       let splitURL = document.URL.split("?");
       let splitParams = splitURL[1].split("&");
@@ -56,7 +72,7 @@ export class ModelService {
     console.dir(this.model);
   }
 
-  private prepareSiteData() {
+  private prepareSiteData(): void {
     let modules = [];
     // types 0=MP100, 1=FD100, 2=VS100
     modules.push(this.getModule(0));
@@ -69,19 +85,19 @@ export class ModelService {
     this.model.modules = modules;
   }
 
-  private getModule(type) {
+  private getModule(type: number): any {
     let status = this.getModuleStatusByTypeAndSystemStatus(type);
     return {
-      title: this.getDevices()[type],
+      title: this.devices[type],
       state: status,
-      icon: this.getIcons()[type],
+      icon: this.icons[type],
       type: type,
       valve: true,
       sn: this.getRandomSN()
     }
   }
 
-  private getModuleStatusByTypeAndSystemStatus(moduleType) {
+  private getModuleStatusByTypeAndSystemStatus(moduleType: number): string {
     if (moduleType === 0 && this.model.status === 'bad') {
       return 'Leak Detected';
     } else {
@@ -89,7 +105,7 @@ export class ModelService {
     }
   }
 
-  private getRandomSN() {
+  private getRandomSN(): string {
     let sn = '';
     for (var i = 0; i < 8; i++) {
       var num = Math.floor(Math.random() * 16);
@@ -98,24 +114,14 @@ export class ModelService {
     return sn;
   }
 
-  private addAlertToModel(indicator, date) {
+  private addAlertToModel(indicator: string, date: string): void {
     let alert = {};
     alert['indicator'] = indicator;
     alert['detectionTime'] = date;
     this.model.alert = alert;
   }
 
-  private getDevices() {
-    //TODO: how can I make it class memeber
-    return ['MP100 Leak Sensor', 'FD100 Flood detector', 'VS100 Valve shutoff', 'BS100 Base Station', 'R100 RF repater'];
-  }
-
-  private getIcons() {
-    //TODO: how can I make it class memeber
-    return ['build', 'water', 'aperture', 'cloud-outline', 'wifi'];
-  }
-
-  toggleValve(sn, value) {
+  toggleValve(sn: string, value: boolean): void {
     for (let index = 0; index < this.model.modules.length; index++) {
       if (this.model.modules[index].sn == sn) {
         this.model.modules[index].valve = value;
@@ -125,7 +131,7 @@ export class ModelService {
     }
   }
 
-  private isAllGood() {
+  private isAllGood(): boolean {
     if (this.model != null) {
       for (let index = 0; index < this.model.modules.length; index++) {
         if (this.model.modules[index].state != 'All Good') {
@@ -136,7 +142,7 @@ export class ModelService {
     return true;
   }
 
-  private changeStateAccordingToValve(valveValue) {
+  private changeStateAccordingToValve(valveValue: boolean): void {
     if (valveValue) {
       if (this.isAllGood()) {
         this.model.status = 'good';
@@ -148,7 +154,7 @@ export class ModelService {
     }
   }
 
-  toggleAllValves(valveValue) {
+  toggleAllValves(valveValue: boolean): void {
     for (let index = 0; index < this.model.modules.length; index++) {
       if (this.model.modules[index].type == 2) {
         this.model.modules[index].valve = valveValue;

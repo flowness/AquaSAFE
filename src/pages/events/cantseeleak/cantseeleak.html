@@ -1,63 +1,68 @@
 <ion-header>
-    <ion-navbar>
-      <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
+  </ion-navbar>
+</ion-header>
 
-  <ion-content>
-    <ion-item text-wrap text-center>
-        <h1>I can't see a leak</h1><h2>started at {{alert.detectionTime}}<br>Suggestions for actions (Step {{state+1}}/3):</h2>
-    </ion-item>
-      <ion-item text-wrap text-center item-content [hidden]="state!=0">
-          Close all water sources to verify this is a real leak
-          <br>
-          <div align="center"><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
-        </ion-item>
-        <ion-item text-wrap text-center [hidden]="state!=1">
-          If there is still some flow suggest to: 
-          <div align="center">
-            <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutOffValve()" large>
-                <ion-icon name="aperture"></ion-icon>
-              shut off main valve
-            </button>          
-            <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutOffValve()" large>
-                <ion-icon name="aperture"></ion-icon>
-              main valve is shut off
-            </button>
-            <canvas #valveOffCanvas></canvas>
-          </div>
-          </ion-item>
-        <ion-item text-wrap text-center [hidden]="state!=2">
-            offer a list of plumbers
-        </ion-item>
-      <div padding></div>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <!-- empty design column to center buttons-->
-          </ion-col>
-          <ion-col>
-            <button ion-button ion-content item-center icon-start (click)="prevState()" [hidden]="state == 0" large>
-              <ion-icon name="arrow-dropleft"></ion-icon>
-              <i>
-                Previous
-              </i>
-            </button>
-          </ion-col>
-          <ion-col>
-              <!-- empty design column to center buttons-->
-          </ion-col>
-          <ion-col>
-            <button ion-button ion-content item-center icon-end (click)="nextState()" [hidden]="state == 2" large>
-              <i>
-                Next
-              </i>
-              <ion-icon name="arrow-dropright"> </ion-icon>
-            </button>
-          </ion-col>
-          <ion-col>
-            <!-- empty design column to center buttons-->
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-  </ion-content>
+<ion-content>
+  <ion-item text-wrap text-center>
+    <h1>I can't see a leak</h1>
+    <h2>started at {{currentSiteAlert.detectionTime}}
+      <br>Suggestions for actions (Step {{state+1}}/3):</h2>
+  </ion-item>
+  <ion-item text-wrap text-center item-content [hidden]="state!=0">
+    Close all water sources to verify this is a real leak
+    <br>
+    <div align="center">
+      <canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas>
+    </div>
+  </ion-item>
+  <ion-item text-wrap text-center [hidden]="state!=1">
+    {{text()}}
+      <!-- {{ this.chart.data.datasets[0].data[dataIndex] === 0 ? 'Seems like the water flow stopped:' : 'If there is still some flow suggest to:' }} -->
+    <div align="center">
+      <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutOffValve()" large>
+        <ion-icon name="aperture"></ion-icon>
+        shut off main valve
+      </button>
+      <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutOffValve()" large>
+        <ion-icon name="aperture"></ion-icon>
+        main valve is shut off
+      </button>
+      <canvas #valveOffCanvas></canvas>
+    </div>
+  </ion-item>
+  <ion-item text-wrap text-center [hidden]="state!=2">
+    offer a list of plumbers
+  </ion-item>
+  <div padding></div>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <!-- empty design column to center buttons-->
+      </ion-col>
+      <ion-col>
+        <button ion-button ion-content item-center icon-start (click)="prevState()" [hidden]="state == 0" large>
+          <ion-icon name="arrow-dropleft"></ion-icon>
+          <i>
+            Previous
+          </i>
+        </button>
+      </ion-col>
+      <ion-col>
+        <!-- empty design column to center buttons-->
+      </ion-col>
+      <ion-col>
+        <button ion-button ion-content item-center icon-end (click)="nextState()" [hidden]="state == 2" large>
+          <i>
+            {{ state == 0 ? 'All closed' : 'Next' }}
+          </i>
+          <ion-icon name="arrow-dropright"> </ion-icon>
+        </button>
+      </ion-col>
+      <ion-col>
+        <!-- empty design column to center buttons-->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

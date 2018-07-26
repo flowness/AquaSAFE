@@ -9,15 +9,15 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf="modelService.getModel().status != 'bad'; else bad">
-    <ion-item class="header-status" [ngClass]="{warn: modelService.getModel().status === 'warn'}">
+  <div *ngIf="modelService.getStatus() != 'bad'; else bad">
+    <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
       <!-- <div id="status-text">System Status: OK</div> -->
       System Status: OK
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <!-- <hr class="main-page-hr"/> -->
     <ion-list>
-      <ion-item *ngFor="let module of modelService.getModel().modules" (click)="moduleTapped($event, module)">
+      <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
         <ion-icon [name]="module.icon" item-start></ion-icon>
         <ion-label>{{module.title}}</ion-label>
         <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)" item-content></ion-toggle>
@@ -34,8 +34,8 @@
         <!-- <div class="header-status-bad"> -->
         System Status: LEAK DETECTED
         <ion-item no-lines class="header-status-alert-ind">
-          Alert Indicator: {{modelService.getModel().alert.indicator}}
-          <br>Detection Time: {{modelService.getModel().alert.detectionTime}}
+          Alert Indicator: {{modelService.getAlert().indicator}}
+          <br>Detection Time: {{modelService.getAlert().detectionTime}}
         </ion-item>
       </ion-item>
       <ion-item text-center>Your response is important</ion-item>

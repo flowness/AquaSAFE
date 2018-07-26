@@ -1,9 +1,9 @@
 {
   "name": "AquaSAFE",
-  "app_id": "534ec5c8",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {},
     "gulp": {}
-  }
+  },
+  "type": "ionic-angular",
+  "pro_id": "534ec5c8"
 }

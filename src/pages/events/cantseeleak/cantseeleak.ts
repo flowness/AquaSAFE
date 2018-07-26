@@ -1,5 +1,5 @@
 import { ViewChild, Component } from '@angular/core';
-import { Navbar, AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
 import { Chart } from 'chart.js';
 import { ModelService } from '../../../lib/model-service';
 
@@ -17,15 +17,15 @@ import { ModelService } from '../../../lib/model-service';
 })
 export class CantseeLeakPage {
 
-  alert: any;
-  state: any;
-  endValue: number;
-  dataIndex: any;
-  Chart: any;
-  task: any;
-  valveOffChart: any;
-  taskValve: any;
-  valveStatus: any;
+  currentSiteAlert: any;
+  state: number;
+  endTappingValue: number;
+  dataIndex: number;
+  chart: Chart;
+  task: number;
+  valveOffChart: Chart;
+  taskValve: number;
+  valveStatus: number;
   maxNumOfPoints: number;
 
   @ViewChild(Navbar) navBar: Navbar;
@@ -39,14 +39,14 @@ export class CantseeLeakPage {
     this.state = 0;
     this.dataIndex = 0;
     this.valveStatus = 0;
-    this.alert = navParams.get('alert');
-    this.endValue =  Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
+    this.currentSiteAlert = navParams.get('alert');
+    this.endTappingValue = Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
     this.maxNumOfPoints = 25;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CantseeLeakPage');
-    let chartDefine = {
+    let chartDefine: any = {
       type: 'line',
       data: {
         labels: ['0'],
@@ -90,7 +90,7 @@ export class CantseeLeakPage {
 
     this.valveOffChart = new Chart(this.valveOffCanvas.nativeElement, chartDefine);
 
-    this.Chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
+    this.chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
 
     this.task = setInterval(() => {
       this.refreshData();
@@ -98,67 +98,75 @@ export class CantseeLeakPage {
 
   }
 
-  refreshData() {
-    let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.endValue) {
-      this.Chart.data.datasets[0].data[this.dataIndex] = currentData;
-      this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+  private refreshData(): void {
+    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
+    if (currentData > this.endTappingValue) {
+      this.chart.data.datasets[0].data[this.dataIndex] = currentData;
+      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     } else {
-      this.Chart.data.datasets[0].data.push(this.endValue);
+      this.chart.data.datasets[0].data.push(this.endTappingValue);
 
-      if (this.Chart.data.datasets[0].data[0] != this.endValue) {
-        this.Chart.data.datasets[0].data.shift();
+      if (this.chart.data.datasets[0].data[0] != this.endTappingValue) {
+        this.chart.data.datasets[0].data.shift();
       } else {
         clearInterval(this.task);
       }
     }
     // console.log('****** ' + this.Chart.data.datasets[0].data);
-    if (this.Chart.data.datasets[0].data.length > this.maxNumOfPoints) {
-      this.Chart.data.datasets[0].data = this.Chart.data.datasets[0].data.slice(this.Chart.data.datasets[0].data.length-this.maxNumOfPoints,this.Chart.data.datasets[0].data.length);
-      this.dataIndex = this.maxNumOfPoints-1;
+    if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
+      this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
+      this.dataIndex = this.maxNumOfPoints - 1;
     }
     // console.log('------ ' + this.Chart.data.datasets[0].data);
-    this.valveOffChart.data = this.Chart.data;
-    this.Chart.update(0);
+    this.valveOffChart.data = this.chart.data;
+    this.chart.update(0);
     this.valveOffChart.update(0);
   }
 
-  updateCurrentValue() {
+  updateCurrentValue(): void {
     console.log("***tap");
-    let currentData = this.Chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.endValue) {
-      let changeData = Math.floor(Math.random() * 7);
-      if (currentData - changeData < this.endValue) {
-        changeData = currentData - this.endValue;
+    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
+    if (currentData > this.endTappingValue) {
+      let changeData = Math.floor(Math.random() * 10);
+      if (currentData - changeData < this.endTappingValue) {
+        changeData = currentData - this.endTappingValue;
       }
-      this.Chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
-      this.Chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+      this.chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     }
   }
 
-  refreshDataValve() {
+  text(): string {
+    return this.chart != undefined && this.chart!=null && this.chart.data.datasets[0].data[this.dataIndex] === 0 ? 'Seems like the water flow stopped:' : 'If there is still some flow suggest to:';
+  }
+
+  refreshDataValve(): void {
     this.valveOffChart.data.datasets[0].data.push(0);
     if (this.valveOffChart.data.datasets[0].data[0] != 0) {
       this.valveOffChart.data.datasets[0].data.shift();
     } else {
       clearInterval(this.taskValve);
     }
-    this.Chart.data = this.valveOffChart.data;
-    this.Chart.update(0);
+    this.chart.data = this.valveOffChart.data;
+    this.chart.update(0);
     this.valveOffChart.update(0);
 
   }
 
-  nextState() {
+  nextState(): void {
     this.state++;
   }
 
-  prevState() {
+  prevState(): void {
     this.state--;
   }
 
-  shutOffValve() {
-    let alert = this.alertCtrl.create({
+  nextButtonString(step: number): string {
+    return (step === 0) ? 'All closed' : 'Next';
+  }
+
+  shutOffValve(): void {
+    let alert: Alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Are you sure you want to close the main valve?',
       buttons: [
