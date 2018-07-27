@@ -45,7 +45,6 @@ export class CantseeLeakPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad CantseeLeakPage");
-    this.modelService.setCurrentFlow(19);
     let chartDefine: any = {
       type: "line",
       data: {
@@ -94,14 +93,18 @@ export class CantseeLeakPage {
 
     this.task = setInterval(() => {
       this.refreshData();
-    }, 300);
+    }, 1000);
 
+  }
+
+  ionViewDidLeave() : void {
+    clearInterval(this.task);
   }
 
   private refreshData(): void {
     let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
     if (currentData > this.endTappingValue) {
-      this.modelService.setCurrentFlow(currentData);
+      // this.modelService.setCurrentFlow(currentData);
       this.chart.data.datasets[0].data[this.dataIndex] = currentData;
       this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
     } else {

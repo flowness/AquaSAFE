@@ -36,6 +36,7 @@
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getAlert().indicator}}
           <br>Detection Time: {{modelService.getAlert().detectionTime}}
+          <br>Leak Size: {{modelService.getCurrentFlow()}} ({{modelService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow() > 5 ? "Decent Leak" : "Small Leak"}})
         </ion-item>
       </ion-item>
       <ion-item text-center>Your response is important</ion-item>
