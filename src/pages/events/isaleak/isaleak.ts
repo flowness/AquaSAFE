@@ -18,25 +18,22 @@ import { ModelService } from "../../../lib/model-service";
 })
 export class IsALeakPage {
   public base64Image: string;
-  item: any;
-  alert: any;
-  state: number;
+  private item: any;
+  private alert: any;
+  private state: number = 0;
+  private chart: Chart;
+  private task: number;
+  private taskValve: any;
+  private valveStatus: number = 0;
+  private leakCloseSuccess: number;
+  private dataIndex: number = 0;
+
   @ViewChild(Navbar) navBar: Navbar;
 
-  dataIndex: number;
   @ViewChild("sourceOffCanvas") sourceOffCanvas;
-  chart: Chart;
-  task: number;
-  taskValve: any;
-  valveStatus: number;
-
-  leakCloseSuccess: number;
 
   constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     // If we navigated to this page, we will have an item available as a nav param
-    this.state = 0;
-    this.dataIndex = 0;
-    this.valveStatus = 0;
     this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
     this.alert = navParams.get("alert");
   }

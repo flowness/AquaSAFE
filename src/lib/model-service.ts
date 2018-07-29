@@ -145,7 +145,6 @@ export class ModelService {
       }
     }
 
-    console.log("state1=" + state);
     if (this.model == null || !this.model.inited) {
       if (state === "bad") {
         this.model.status = "bad";
@@ -161,8 +160,7 @@ export class ModelService {
       this.model.inited = true;
     }
 
-    console.log("finished prepare");
-    console.dir(this.model);
+    // console.dir(this.model);
   }
 
   private prepareSiteData(): void {

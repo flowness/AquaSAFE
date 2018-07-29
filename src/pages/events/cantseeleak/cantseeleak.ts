@@ -16,16 +16,16 @@ import { ModelService } from "../../../lib/model-service";
   templateUrl: "cantseeleak.html",
 })
 export class CantseeLeakPage {
-  currentSiteAlert: any;
-  state: number;
-  endTappingValue: number;
-  dataIndex: number;
-  chart: Chart;
-  task: number;
-  valveOffChart: Chart;
-  taskValve: number;
-  valveStatus: number;
-  maxNumOfPoints: number;
+  private currentSiteAlert: any;
+  private state: number = 0;
+  private endTappingValue: number;
+  private dataIndex: number = 0;
+  private chart: Chart;
+  private task: number;
+  private valveOffChart: Chart;
+  private taskValve: number;
+  private valveStatus: number = 0;
+  private maxNumOfPoints: number = 12;
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -35,12 +35,8 @@ export class CantseeLeakPage {
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
-    this.state = 0;
-    this.dataIndex = 0;
-    this.valveStatus = 0;
     this.currentSiteAlert = navParams.get("alert");
     this.endTappingValue = Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
-    this.maxNumOfPoints = 25;
   }
 
   ionViewDidLoad() {
