@@ -18,13 +18,13 @@ import { ModelService } from "../../../lib/model-service";
 })
 export class IsALeakPage {
   public base64Image: string;
-  private item: any;
-  private alert: any;
-  private state: number = 0;
+  item: any;
+  alert: any;
+  state: number = 0;
   private chart: Chart;
   private task: number;
   private taskValve: any;
-  private valveStatus: number = 0;
+  valveStatus: number = 0;
   private leakCloseSuccess: number;
   private dataIndex: number = 0;
 

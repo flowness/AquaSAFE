@@ -16,15 +16,15 @@ import { ModelService } from "../../../lib/model-service";
   templateUrl: "cantseeleak.html",
 })
 export class CantseeLeakPage {
-  private currentSiteAlert: any;
-  private state: number = 0;
+  currentSiteAlert: any;
+  state: number = 0;
   private endTappingValue: number;
   private dataIndex: number = 0;
   private chart: Chart;
   private task: number;
   private valveOffChart: Chart;
   private taskValve: number;
-  private valveStatus: number = 0;
+  valveStatus: number = 0;
   private maxNumOfPoints: number = 12;
 
   @ViewChild(Navbar) navBar: Navbar;
