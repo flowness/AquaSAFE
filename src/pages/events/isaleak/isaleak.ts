@@ -3,6 +3,7 @@ import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } f
 import { Chart } from "chart.js";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { ModelService } from "../../../lib/model-service";
+import { PlumbersPage } from "../../plumbers/plumbers";
 
 /**
  * Generated class for the IsaleakPage page.
@@ -150,6 +151,10 @@ export class IsALeakPage {
 
   prevState(): void {
     this.state--;
+  }
+
+  plumbers(): void {
+    this.navCtrl.push(PlumbersPage);
   }
 
   shutValve(): void {

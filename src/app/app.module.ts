@@ -29,6 +29,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 
 import { ModelService } from '../lib/model-service';
+import { PlumbersPage } from '../pages/plumbers/plumbers';
+import { CallNumber } from '../../node_modules/@ionic-native/call-number';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { ModelService } from '../lib/model-service';
     NotALeakPage,
     IsALeakPage,
     NotathomePage,
-    CantseeLeakPage
+    CantseeLeakPage,
+    PlumbersPage
   ],
   imports: [
     BrowserModule,
@@ -70,13 +73,16 @@ import { ModelService } from '../lib/model-service';
     NotALeakPage,
     IsALeakPage,
     NotathomePage,
-    CantseeLeakPage
+    CantseeLeakPage,
+    PlumbersPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Camera,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    CallNumber,
+    { provide: ErrorHandler, useClass: IonicErrorHandler }, 
     ModelService
   ]
 })

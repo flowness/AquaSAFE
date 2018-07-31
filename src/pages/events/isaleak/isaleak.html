@@ -57,9 +57,15 @@
               <!-- empty design column to center buttons-->
           </ion-col>
           <ion-col>
-            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 2" large>
+            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 2" large [hidden]="state==1">
               <i>
                 Next
+              </i>
+              <ion-icon name="arrow-dropright"> </ion-icon>
+            </button>
+            <button ion-button ion-content item-center icon-end (click)="plumbers()" [disabled]="state == 2" large [hidden]="state!=1">
+              <i>
+                Plumbers
               </i>
               <ion-icon name="arrow-dropright"> </ion-icon>
             </button>
