@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, Platform } from "ionic-angular";
+import { HomePage } from "../../home/home";
 
 /**
  * Generated class for the EventsPage page.
@@ -15,14 +16,19 @@ import { IonicPage, NavController, NavParams } from "ionic-angular";
 })
 
 export class EventsPage {
-  items: Array<{title: string, timestamp: string, event: string, status: string}>;
+  private items: Array<{title: string, timestamp: string, event: string, status: string}>;
+  private unregisterFunc: Function;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform) {
     this.items = [];
     let thisDate=new Date();
     let numItems = Math.ceil(Math.random() * 8) + 5;
 
-    for (let i = 0; i < numItems; i++) {
+    this. unregisterFunc =  platform.registerBackButtonAction(() => {
+      this.backButton();
+  });
+
+  for (let i = 0; i < numItems; i++) {
       thisDate=new Date(thisDate.getTime() - (1000* (Math.ceil(Math.random() *  60 * 60 * 24) + 1)));
       this.items.push({
         title: "E-Mail",
@@ -36,5 +42,14 @@ export class EventsPage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad EventsPage");
   }
+
+  private backButton(): void {
+    this.navCtrl.setRoot(HomePage);
+  }
+
+  ionViewDidLeave() : void {
+    this.unregisterFunc();
+  }
+
 
 }

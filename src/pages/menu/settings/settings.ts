@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
-import { NavController, NavParams, AlertController, LoadingController } from "ionic-angular";
+import { NavController, NavParams, AlertController, LoadingController, Platform } from "ionic-angular";
 import { ModelService } from "../../../lib/model-service";
+import { HomePage } from "../../home/home";
 
 @Component({
   selector: "page-settings",
@@ -9,8 +10,13 @@ import { ModelService } from "../../../lib/model-service";
 export class SettingsPage {
   items: Array<{ title: string, input: string, icon: string, value: any }>;
   statuses = ["Low Battery", "Tamper", "Communication", "All Good"];
+  unregisterFunc: Function;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService, platform: Platform) {
+    this.unregisterFunc = platform.registerBackButtonAction(() => {
+      this.backButton();
+    });
+
     this.items = [];
 
     this.items.push({
@@ -56,6 +62,14 @@ export class SettingsPage {
       icon: "water",
       value: false
     });
+  }
+
+  private backButton(): void {
+    this.navCtrl.setRoot(HomePage);
+  }
+
+  ionViewDidLeave(): void {
+    this.unregisterFunc();
   }
 
   handleToggleChange(evt, item) {
