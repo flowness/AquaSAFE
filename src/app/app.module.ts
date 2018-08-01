@@ -27,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
-
+import { Geolocation } from '@ionic-native/geolocation';
 import { ModelService } from '../lib/model-service';
 import { PlumbersPage } from '../pages/plumbers/plumbers';
 import { CallNumber } from '../../node_modules/@ionic-native/call-number';
@@ -83,7 +83,8 @@ import { CallNumber } from '../../node_modules/@ionic-native/call-number';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     CallNumber,
     { provide: ErrorHandler, useClass: IonicErrorHandler }, 
-    ModelService
+    ModelService,
+    Geolocation
   ]
 })
 export class AppModule { }
