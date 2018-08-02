@@ -45,11 +45,9 @@ export class PlumbersPage {
       ) {
         return 1;
       }
-
       if (plumber1.distanceGrade < plumber2.distanceGrade) {
         return -1;
       }
-
       return 0;
     });
   }

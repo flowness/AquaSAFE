@@ -12,7 +12,7 @@
   <div *ngIf="modelService.getStatus() != 'bad'; else bad">
     <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
       <!-- <div id="status-text">System Status: OK</div> -->
-      System Status: OK
+      <ion-item no-lines class="header-label good">SYSTEM OK!</ion-item>
     </ion-item>
     <!-- <hr class="main-page-hr"/> -->
     <!-- <hr class="main-page-hr"/> -->
@@ -32,7 +32,7 @@
     <div>
       <ion-item class="header-status bad">
         <!-- <div class="header-status-bad"> -->
-        System Status: LEAK DETECTED
+        <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getAlert().indicator}}
           <br>Detection Time: {{modelService.getAlert().detectionTime}}
