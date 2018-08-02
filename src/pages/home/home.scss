@@ -12,7 +12,7 @@ page-home {
     .header-status {
         box-sizing: border-box;
         background-color: lightgreen;
-        background: linear-gradient(to right, rgb(8, 153, 39) , rgb(45, 245, 162)); /* Standard syntax (must be last) */
+        background: radial-gradient(rgb(45, 245, 162), rgb(8, 153, 39)); /* Standard syntax (must be last) */
         width: 100%;
         min-height: 20vh;
         max-height: 20%;
@@ -27,7 +27,7 @@ page-home {
     .header-status.bad {
         box-sizing: border-box;
         background: red; /* For browsers that do not support gradients */
-        background: linear-gradient(to right, rgb(212, 11, 11) , rgb(245, 45, 45)); /* Standard syntax (must be last) */
+        background: radial-gradient(rgb(247, 81, 81), rgb(212, 11, 11)); /* Standard syntax (must be last) */
         width: 100%;
         min-height: 20vh;
         max-height: 20%;
@@ -40,16 +40,19 @@ page-home {
     }
 
     .header-label {
-        background-color: rgba(212,11,11,0.1);
+        background-color: rgba(212,11,11,0.0);
+        text-align: center;
     }
 
     .header-label.good {
         background-color: rgba(8, 153, 39,0);
+        text-align: center;
     }
 
     .header-status.warn {
         box-sizing: border-box;
         background-color: yellow;
+        background: radial-gradient(rgb(243, 241, 122), rgb(247, 230, 2)); /* Standard syntax (must be last) */
         width: 100%;
         min-height: 20vh;
         max-height: 20%;
@@ -62,7 +65,7 @@ page-home {
     }
 
     .header-status-alert-ind {
-        background-color: rgba(212,11,11,0.1);
+        background-color: rgba(212,11,11,0);
         border: 1px solid rgb(161, 150, 150);
         font-size: 14px;
         // width: 100%;

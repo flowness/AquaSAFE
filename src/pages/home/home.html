@@ -11,11 +11,9 @@
   <!-- OK status -->
   <div *ngIf="modelService.getStatus() != 'bad'; else bad">
     <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
-      <!-- <div id="status-text">System Status: OK</div> -->
-      <ion-item no-lines class="header-label good">SYSTEM OK!</ion-item>
+      <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item>
+      <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item>
     </ion-item>
-    <!-- <hr class="main-page-hr"/> -->
-    <!-- <hr class="main-page-hr"/> -->
     <ion-list>
       <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
         <ion-icon [name]="module.icon" item-start></ion-icon>
