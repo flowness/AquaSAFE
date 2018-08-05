@@ -1,7 +1,11 @@
 export class ModelService {
-  private model: any;
-  private settings: any;
+  private modules: module[];
+  private alert: alert;
+  private status: string;
+  private settings: settings;
   private currentFlow: number = 0;
+  private modelInited: boolean;
+  private events: event[];
 
   private icons: string[] = ["build", "water", "aperture", "cloud-outline", "wifi"];
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
@@ -11,28 +15,28 @@ export class ModelService {
     console.log("constructor");
   }
 
-  getStatus(): any {
-    if (this.model == null || this.model.inited != true) {
+  getStatus(): string {
+    if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
-    return this.model.status;
+    return this.status;
   }
 
-  getModules(): any {
-    if (this.model == null || this.model.inited != true) {
+  getModules(): module[] {
+    if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
-    return this.model.modules;
+    return this.modules;
   }
 
-  getAlert(): any {
-    if (this.model == null || this.model.inited != true) {
+  getAlert(): alert {
+    if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
-    return this.model.alert;
+    return this.alert;
   }
 
-  getSettings(): any {
+  getSettings(): settings {
     return this.settings;
   }
 
@@ -40,15 +44,21 @@ export class ModelService {
     return this.currentFlow;
   }
 
+  getEvents(): event[] {
+    if (this.modules == null || this.modelInited != true) {
+      this.prepareData();
+    }
+    return this.events;
+  }
   setCurrentFlow(f: number): void {
     console.log("setting current flow: " + f);
     this.currentFlow = f;
   }
 
   toggleValve(sn: string, valveValue: boolean): void {
-    for (let index = 0; index < this.model.modules.length; index++) {
-      if (this.model.modules[index].sn == sn) {
-        this.model.modules[index].valve = valveValue;
+    for (let index = 0; index < this.modules.length; index++) {
+      if (this.modules[index].sn == sn) {
+        this.modules[index].valve = valveValue;
         this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
           this.setCurrentFlow(0);
@@ -59,9 +69,9 @@ export class ModelService {
   }
 
   toggleAllValves(valveValue: boolean): void {
-    for (let index = 0; index < this.model.modules.length; index++) {
-      if (this.model.modules[index].type == 2) {
-        this.model.modules[index].valve = valveValue;
+    for (let index = 0; index < this.modules.length; index++) {
+      if (this.modules[index].type == 2) {
+        this.modules[index].valve = valveValue;
         this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
           this.setCurrentFlow(0);
@@ -71,28 +81,28 @@ export class ModelService {
   }
 
   // private updateModel(module, property) {
-  //   for (let index = 0; index < this.model.modules.length; index++) {
-  //     if (this.model.modules[index].sn == module.sn) {
-  //       this.model.modules[index][property] = module[property];
+  //   for (let index = 0; index < this.modules.length; index++) {
+  //     if (this.modules[index].sn == module.sn) {
+  //       this.modules[index][property] = module[property];
   //     }
   //   }
   // }
 
   updateModelSetAllGood() {
-    if (this.model != null) {
+    if (this.modules != null) {
       let isValveOpen = true;
-      for (let index = 0; index < this.model.modules.length; index++) {
-        this.model.modules[index].state = "All Good";
-        if (this.model.modules[index].type == 2) {
-          isValveOpen = this.model.modules[index].valve;
+      for (let index = 0; index < this.modules.length; index++) {
+        this.modules[index].state = "All Good";
+        if (this.modules[index].type == 2) {
+          isValveOpen = this.modules[index].valve;
         }
       }
-      this.model.status = isValveOpen ? "good" : "warn";
+      this.status = isValveOpen ? "good" : "warn";
     }
   }
 
-  updateSettings(settingsItemTitle, settingsItemValue) {
-    if (this.model != null) {
+  updateSettings(settingsItemTitle: string, settingsItemValue: boolean): void {
+    if (this.modules != null) {
       //set the settings object
       if (settingsItemTitle === "Leakage Alert") {
         this.settings.leakageAlert = settingsItemValue;
@@ -109,19 +119,19 @@ export class ModelService {
 
       // if we are here need to set leakage or warn
       if (settingsItemTitle === "Leakage Alert") {
-        this.model.status = "bad";
+        this.status = "bad";
         this.setCurrentFlow(19);
-        for (let index = 0; index < this.model.modules.length; index++) {
-          if (this.model.modules[index].type === 0) {
-            this.model.modules[index].state = "Leak Detected";
+        for (let index = 0; index < this.modules.length; index++) {
+          if (this.modules[index].type === 0) {
+            this.modules[index].state = "Leak Detected";
             this.addAlertToModel("MP100", new Date().toISOString());
           }
         }
       }
       if (settingsItemTitle === "Irregularity Alert") {
-        this.model.status = "warn";
-        for (let index = 0; index < this.model.modules.length; index++) {
-          this.model.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
+        this.status = "warn";
+        for (let index = 0; index < this.modules.length; index++) {
+          this.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
         }
       }
     }
@@ -129,8 +139,11 @@ export class ModelService {
 
   private prepareData(): void {
     //init
-    this.model = {};
-    this.settings = {};
+    this.modules = [];
+    this.settings = {
+      leakageAlert: false,
+      irregularityAlert: false
+    };
     //
     let state: string = "";
     if (document.URL.indexOf("?") > 0) {
@@ -145,26 +158,43 @@ export class ModelService {
       }
     }
 
-    if (this.model == null || !this.model.inited) {
+    if (this.modules == null || !this.modelInited) {
       if (state === "bad") {
-        this.model.status = "bad";
+        this.status = "bad";
         this.setCurrentFlow(19);
       } else if (state === "warn") {
-        this.model.status = "warn";
+        this.status = "warn";
       } else {
-        this.model.status = "good";
+        this.status = "good";
       }
 
       this.addAlertToModel("MP100", "4/7/2018 10:13");
       this.prepareSiteData();
-      this.model.inited = true;
+      this.prepareEvents();
+      this.modelInited = true;
     }
 
     // console.dir(this.model);
   }
 
+  prepareEvents() {
+    this.events = [];
+    let numItems = Math.ceil(Math.random() * 8) + 5;
+    let thisDate = new Date();
+    for (let i = 0; i < numItems; i++) {
+      thisDate = new Date(thisDate.getTime() - (1000 * (Math.ceil(Math.random() * 60 * 60 * 24) + 1)));
+      this.events.push({
+        title: "E-Mail",
+        timestamp: thisDate.toISOString(),
+        event: "bad",
+        status: Math.random() > 0.5 ? "close-circle" : "checkmark-circle"
+      });
+    }
+
+  }
+
   private prepareSiteData(): void {
-    let modules = [];
+    let modules: module[] = [];
     // types 0=MP100, 1=FD100, 2=VS100
     modules.push(this.getModule(0));
     modules.push(this.getModule(2));
@@ -173,10 +203,10 @@ export class ModelService {
     modules.push(this.getModule(1));
     modules.push(this.getModule(1));
 
-    this.model.modules = modules;
+    this.modules = modules;
   }
 
-  private getModule(type: number): any {
+  private getModule(type: number): module {
     let status = this.getModuleStatusByTypeAndSystemStatus(type);
     return {
       title: this.devices[type],
@@ -189,10 +219,10 @@ export class ModelService {
   }
 
   private getModuleStatusByTypeAndSystemStatus(moduleType: number): string {
-    if (moduleType === 0 && this.model.status === "bad") {
+    if (moduleType === 0 && this.status === "bad") {
       return "Leak Detected";
     } else {
-      return (this.model.status != "warn" ? "All Good" : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
+      return (this.status != "warn" ? "All Good" : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
     }
   }
 
@@ -206,16 +236,16 @@ export class ModelService {
   }
 
   private addAlertToModel(indicator: string, date: string): void {
-    let alert = {};
-    alert["indicator"] = indicator;
-    alert["detectionTime"] = date;
-    this.model.alert = alert;
+    this.alert = {
+      indicator: indicator,
+      detectionTime: date
+    };
   }
 
   private isAllGood(): boolean {
-    if (this.model != null) {
-      for (let index = 0; index < this.model.modules.length; index++) {
-        if (this.model.modules[index].state != "All Good") {
+    if (this.modules != null) {
+      for (let index = 0; index < this.modules.length; index++) {
+        if (this.modules[index].state != "All Good") {
           return false;
         }
       }
@@ -226,11 +256,11 @@ export class ModelService {
   private changeStateAccordingToValve(valveValue: boolean): void {
     if (valveValue) {
       if (this.isAllGood()) {
-        this.model.status = "good";
+        this.status = "good";
       }
     } else {
-      if (this.model.status === "good") {
-        this.model.status = "warn"
+      if (this.status === "good") {
+        this.status = "warn"
       }
     }
   }

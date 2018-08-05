@@ -66,7 +66,7 @@ export class HomePage {
     }
   }
 
-  handleToggleValveChange(checked: boolean, module: any): void {
+  handleToggleValveChange(checked: boolean, module: module): void {
     console.log("toggle1=" + module.valve + " checked=" + checked);
     if (checked === module.valve) {
       let alert: Alert = this.alertCtrl.create({

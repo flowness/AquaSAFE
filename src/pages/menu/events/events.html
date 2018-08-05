@@ -18,10 +18,10 @@
         <ion-list-header>
             <h2> Events hist</h2>
         </ion-list-header>
-        <ion-item *ngFor="let item of items">
-            <ion-icon [name]="item.status" item-start></ion-icon>
+        <ion-item *ngFor="let event of events">
+            <ion-icon [name]="event.status" item-start></ion-icon>
             <ion-label>
-              {{item.title}} {{item.timestamp}}
+              {{event.title}} {{event.timestamp}}
             </ion-label>
         </ion-item>
       </ion-list>
