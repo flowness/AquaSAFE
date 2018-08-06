@@ -17,27 +17,12 @@ import { ModelService } from "../../../lib/model-service";
 })
 
 export class EventsPage {
-  private events: event[]
   private unregisterFunc: Function;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform, private modelService: ModelService) {
-    this.events = [];
-    let thisDate = new Date();
-    let numItems = Math.ceil(Math.random() * 8) + 5;
-
+  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform, public modelService: ModelService) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
     });
-
-    for (let i = 0; i < numItems; i++) {
-      thisDate = new Date(thisDate.getTime() - (1000 * (Math.ceil(Math.random() * 60 * 60 * 24) + 1)));
-      this.events.push({
-        title: "E-Mail",
-        timestamp: thisDate.toISOString(),
-        event: "bad",
-        status: Math.random() > 0.5 ? "close-circle" : "checkmark-circle"
-      });
-    }
   }
 
   ionViewDidLoad() {
@@ -51,6 +36,4 @@ export class EventsPage {
   ionViewDidLeave(): void {
     this.unregisterFunc();
   }
-
-
 }

@@ -18,8 +18,8 @@
         <ion-list-header>
             <h2> Events hist</h2>
         </ion-list-header>
-        <ion-item *ngFor="let event of events">
-            <ion-icon [name]="event.status" item-start></ion-icon>
+        <ion-item *ngFor="let event of modelService.getEvents()">
+            <ion-icon [name]="event.open ? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
             <ion-label>
               {{event.title}} {{event.timestamp}}
             </ion-label>

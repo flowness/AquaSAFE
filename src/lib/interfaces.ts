@@ -20,6 +20,13 @@ interface settings {
 interface event {
     title: string,
     timestamp: string,
-    event: string,
-    status: string
+    type: string,
+    open: boolean,
+    moments: eventMoment[]
+}
+
+interface eventMoment {
+    title: string,
+    timestamp: string,
+    initiator: string,
 }

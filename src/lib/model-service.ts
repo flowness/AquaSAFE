@@ -183,14 +183,31 @@ export class ModelService {
     let thisDate = new Date();
     for (let i = 0; i < numItems; i++) {
       thisDate = new Date(thisDate.getTime() - (1000 * (Math.ceil(Math.random() * 60 * 60 * 24) + 1)));
+      let moment: eventMoment = {
+        title: "detection",
+        timestamp: this.formatDate(thisDate),
+        initiator: "MP100"
+      }
       this.events.push({
-        title: "E-Mail",
-        timestamp: thisDate.toISOString(),
-        event: "bad",
-        status: Math.random() > 0.5 ? "close-circle" : "checkmark-circle"
+        title: "Leak Detected",
+        timestamp: this.formatDate(thisDate),
+        type: "leak",
+        open: Math.random() > 0.5,
+        moments: [moment]
       });
     }
+    console.dir(this.events);
+  }
 
+  private formatDate(date: Date) : string {
+    var curr_date = date.getDate();
+    var curr_month = date.getMonth();
+    var curr_year = date.getFullYear();
+    let curr_hour = date.getHours();
+    let curr_hour_st = (curr_hour < 10) ? "0" + curr_hour : curr_hour;
+    var curr_min = date.getMinutes();
+    let curr_min_st = (curr_min < 10) ? "0" + curr_min : curr_min;
+    return curr_date + "-" + curr_month + "-" + curr_year + " " + curr_hour_st + ":" + curr_min_st;
   }
 
   private prepareSiteData(): void {
