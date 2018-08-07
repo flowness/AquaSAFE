@@ -7,12 +7,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>event</ion-title>
+    <ion-title>Event Details</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-list-header>
+      <h2>Event Type: {{event.type}}</h2>
+      <h2>Event Date: {{event.timestamp}}</h2>
+      <h2>Event Status: {{event.open}}</h2>
+    </ion-list-header>
+    <ion-item *ngFor="let moment of event.moments">
+      <ion-label>
+        {{moment.title}} {{moment.timestamp}} {{moment.initiator}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

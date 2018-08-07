@@ -31,6 +31,9 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { ModelService } from '../lib/model-service';
 import { PlumbersPage } from '../pages/plumbers/plumbers';
 import { CallNumber } from '../../node_modules/@ionic-native/call-number';
+import { EventPage } from '../pages/event/event';
+import { DataFinder } from '../providers/dataFinder';
+import { HttpModule } from '../../node_modules/@angular/http';
 
 @NgModule({
   declarations: [
@@ -49,13 +52,15 @@ import { CallNumber } from '../../node_modules/@ionic-native/call-number';
     IsALeakPage,
     NotathomePage,
     CantseeLeakPage,
-    PlumbersPage
+    PlumbersPage,
+    EventPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -74,7 +79,8 @@ import { CallNumber } from '../../node_modules/@ionic-native/call-number';
     IsALeakPage,
     NotathomePage,
     CantseeLeakPage,
-    PlumbersPage
+    PlumbersPage,
+    EventPage
   ],
   providers: [
     StatusBar,
@@ -84,7 +90,8 @@ import { CallNumber } from '../../node_modules/@ionic-native/call-number';
     CallNumber,
     { provide: ErrorHandler, useClass: IonicErrorHandler }, 
     ModelService,
-    Geolocation
+    Geolocation,
+    DataFinder
   ]
 })
 export class AppModule { }

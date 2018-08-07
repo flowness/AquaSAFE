@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Platform } from "ionic-angular";
 import { HomePage } from "../../home/home";
 import { ModelService } from "../../../lib/model-service";
+import { EventPage } from "../../event/event";
 
 /**
  * Generated class for the EventsPage page.
@@ -35,5 +36,11 @@ export class EventsPage {
 
   ionViewDidLeave(): void {
     this.unregisterFunc();
+  }
+
+  itemTapped(event, asEvent) {
+    this.navCtrl.push(EventPage, {
+      event: asEvent
+    });
   }
 }
