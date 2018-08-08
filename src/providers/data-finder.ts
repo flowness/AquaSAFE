@@ -45,6 +45,6 @@ export class DataFinder {
       errMsg = error.message ? error.message : error.toString();
     }
     console.error(errMsg);
-    // return Observable.throw(errMsg)
+    return Observable.throw(errMsg)
   }
 }
