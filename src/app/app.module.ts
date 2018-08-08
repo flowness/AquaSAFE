@@ -88,10 +88,10 @@ import { DataFinder } from '../providers/data-finder';
     Camera,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     CallNumber,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }, 
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    DataFinder, 
     ModelService,
-    Geolocation,
-    DataFinder
+    Geolocation
   ]
 })
 export class AppModule { }

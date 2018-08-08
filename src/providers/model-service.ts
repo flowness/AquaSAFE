@@ -1,8 +1,8 @@
-import { AlertController } from "../../node_modules/ionic-angular/umd";
+import { DataFinder } from "./data-finder";
+import { Injectable } from "../../node_modules/@angular/core";
 
-// import { DataFinder } from "./data-finder";
 
-
+@Injectable()
 export class ModelService {
   private modules: any;
   private alert: alert;
@@ -17,11 +17,11 @@ export class ModelService {
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
   // public dataFinder: DataFinder
-  constructor(public alertCtrl: AlertController) {
+  constructor(public dataFinder: DataFinder) {
     console.log("constructor model-service");
-    // this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
-    //   this.SetQueryOptionsData(data);
-    // });
+    this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
+      this.SetQueryOptionsData(data);
+    });
   }
 
   /* Sets data with returned JSON array */
