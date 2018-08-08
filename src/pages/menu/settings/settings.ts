@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { NavController, NavParams, AlertController, LoadingController, Platform } from "ionic-angular";
-import { ModelService } from "../../../lib/model-service";
+import { ModelService } from "../../../providers/model-service";
 import { HomePage } from "../../home/home";
 
 @Component({

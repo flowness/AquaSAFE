@@ -2,7 +2,7 @@ import { ViewChild, Component } from "@angular/core";
 import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from "ionic-angular";
 import { Chart } from "chart.js";
 import { Camera, CameraOptions } from "@ionic-native/camera";
-import { ModelService } from "../../../lib/model-service";
+import { ModelService } from "../../../providers/model-service";
 import { PlumbersPage } from "../../plumbers/plumbers";
 
 /**

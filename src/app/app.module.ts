@@ -28,12 +28,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { Geolocation } from '@ionic-native/geolocation';
-import { ModelService } from '../lib/model-service';
+import { ModelService } from '../providers/model-service';
 import { PlumbersPage } from '../pages/plumbers/plumbers';
-import { CallNumber } from '../../node_modules/@ionic-native/call-number';
+import { CallNumber } from '@ionic-native/call-number';
 import { EventPage } from '../pages/event/event';
-import { DataFinder } from '../providers/dataFinder';
-import { HttpModule } from '../../node_modules/@angular/http';
+import { HttpModule } from '@angular/http';
+import { DataFinder } from '../providers/data-finder';
 
 @NgModule({
   declarations: [

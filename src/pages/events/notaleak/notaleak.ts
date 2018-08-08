@@ -8,7 +8,7 @@ import {
   animate,
   transition
 } from "@angular/animations";
-import { ModelService } from "../../../lib/model-service";
+import { ModelService } from "../../../providers/model-service";
 
 @Component({
   selector: "page-notaleak",

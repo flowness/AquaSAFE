@@ -1,4 +1,7 @@
-// import { DataFinder } from "../providers/dataFinder";
+import { AlertController } from "../../node_modules/ionic-angular/umd";
+
+// import { DataFinder } from "./data-finder";
+
 
 export class ModelService {
   private modules: any;
@@ -13,8 +16,8 @@ export class ModelService {
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
-  //public dataFinder: DataFinder
-  constructor() {
+  // public dataFinder: DataFinder
+  constructor(public alertCtrl: AlertController) {
     console.log("constructor model-service");
     // this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
     //   this.SetQueryOptionsData(data);

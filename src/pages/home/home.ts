@@ -11,8 +11,9 @@ import { CantseeLeakPage } from "../events/cantseeleak/cantseeleak";
 import { IsALeakPage } from "../events/isaleak/isaleak";
 import { NotALeakPage } from "../events/notaleak/notaleak";
 import { NotathomePage } from "../events/notathome/notathome";
-import { ModelService } from "../../lib/model-service";
-import { Page } from "../../../node_modules/ionic-angular/umd/navigation/nav-util";
+import { ModelService } from "../../providers/model-service";
+import { Page } from "ionic-angular/umd/navigation/nav-util";
+import { DataFinder } from "../../providers/data-finder";
 
 @Component({
   selector: "page-home",
@@ -21,16 +22,16 @@ import { Page } from "../../../node_modules/ionic-angular/umd/navigation/nav-uti
 export class HomePage {
   private pages: Page[] = [MP100Page, Fd100Page, Vs100Page, Bs100Page, R100Page];
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService) {
-    console.log("constructor");
+  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService, public dataFinder: DataFinder) {
+    console.log("constructor home");
   }
 
   ionViewWillEnter(): void {
-    console.log("ionViewWillEnter");
+    console.log("ionViewWillEnter home");
   }
 
   ionViewDidLoad(): void {
-    console.log("ionViewDidLoad");
+    console.log("ionViewDidLoad home");
   }
 
   moduleTapped(event: any, module: any): void {
