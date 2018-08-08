@@ -46,22 +46,22 @@ export class HomePage {
     switch (eventType) {
       case 100:
         this.navCtrl.push(NotALeakPage, {
-          alert: this.modelService.getAlert()
+          event: this.modelService.getLastOpenEvent()
         });
         break;
       case 101:
         this.navCtrl.push(CantseeLeakPage, {
-          alert: this.modelService.getAlert()
+          event: this.modelService.getLastOpenEvent()
         });
         break;
       case 102:
         this.navCtrl.push(NotathomePage, {
-          alert: this.modelService.getAlert()
+          event: this.modelService.getLastOpenEvent()
         });
         break;
       case 103:
         this.navCtrl.push(IsALeakPage, {
-          alert: this.modelService.getAlert()
+          event: this.modelService.getLastOpenEvent()
         });
         break;
     }

@@ -89,7 +89,7 @@ import { ModelService } from "../../../providers/model-service";
 })
 
 export class NotALeakPage {
-  alert: any;
+  currentEvent: asEvent;
   state0 = "opaque";
   state1 = "opaque";
   state2 = "opaque";
@@ -100,8 +100,8 @@ export class NotALeakPage {
   numButtons = 7;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService:ModelService, public loadingCtrl: LoadingController) {
-    this.alert = navParams.get("alert");
-    console.log("navParams = " + this.alert.detectionTime);
+    this.currentEvent = navParams.get("event");
+    console.log("navParams = " + this.currentEvent.timestamp);
   }
 
   doConfirm(waterUsage, i) {

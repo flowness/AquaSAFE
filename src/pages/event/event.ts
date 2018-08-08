@@ -14,12 +14,12 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'event.html',
 })
 export class EventPage {
-  private event: event;
+  private asEvent: asEvent;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.event = navParams.get('event');
+    this.asEvent = navParams.get('event');
     console.log("event tapped");
-    console.dir(this.event);
+    console.dir(this.asEvent);
   }
 
   ionViewDidLoad() {

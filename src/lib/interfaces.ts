@@ -7,17 +7,12 @@ interface module {
     sn: string
 }
 
-interface alert {
-    indicator: string,
-    detectionTime: string
-}
-
 interface settings {
     leakageAlert: boolean;
     irregularityAlert: boolean;
 }
 
-interface event {
+interface asEvent {
     title: string,
     timestamp: string,
     type: string,

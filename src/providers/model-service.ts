@@ -5,71 +5,78 @@ import { Injectable } from "../../node_modules/@angular/core";
 @Injectable()
 export class ModelService {
   private modules: any;
-  private alert: alert;
   private status: string;
   private settings: settings;
   private currentFlow: number = 0;
   private modelInited: boolean;
-  private events: event[];
+  private events: asEvent[] = [];
 
   private icons: string[] = ["build", "water", "aperture", "cloud-outline", "wifi"];
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
-  // public dataFinder: DataFinder
   constructor(public dataFinder: DataFinder) {
     console.log("constructor model-service");
     this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
-      this.SetQueryOptionsData(data);
+      this.setEventsData(data);
     });
   }
 
   /* Sets data with returned JSON array */
-  SetQueryOptionsData(data: any) {
-    this.events = data;
+  private setEventsData(data: any): void {
+    console.log("events length1 = " + this.events.length);
+    for (let index = 0; index < data.length; index++) {
+      this.events.push(data[index]);
+    }
+    console.log("events length2 = " + this.events.length);
   }
 
-  getStatus(): string {
+  public getStatus(): string {
     if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
     return this.status;
   }
 
-  getModules(): module[] {
+  public getModules(): module[] {
     if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
     return this.modules;
   }
 
-  getAlert(): alert {
-    if (this.modules == null || this.modelInited != true) {
-      this.prepareData();
-    }
-    return this.alert;
-  }
-
-  getSettings(): settings {
+  public getSettings(): settings {
     return this.settings;
   }
 
-  getCurrentFlow(): number {
+  public getCurrentFlow(): number {
     return this.currentFlow;
   }
 
-  getEvents(): event[] {
+  public getEvents(): asEvent[] {
     if (this.modules == null || this.modelInited != true) {
       this.prepareData();
     }
     return this.events;
   }
-  setCurrentFlow(f: number): void {
+
+  public getLastOpenEvent(): asEvent {
+    console.log("getLastOpenEvent");
+    console.dir(this.events);
+    for (let index = this.events.length - 1; index >= 0; index--) {
+      const element: asEvent = this.events[index];
+      if (element.open) {
+        return element;
+      }
+    }
+  }
+
+  public setCurrentFlow(f: number): void {
     console.log("setting current flow: " + f);
     this.currentFlow = f;
   }
 
-  toggleValve(sn: string, valveValue: boolean): void {
+  public toggleValve(sn: string, valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
       if (this.modules[index].sn == sn) {
         this.modules[index].valve = valveValue;
@@ -82,7 +89,7 @@ export class ModelService {
     }
   }
 
-  toggleAllValves(valveValue: boolean): void {
+  public toggleAllValves(valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
       if (this.modules[index].type == 2) {
         this.modules[index].valve = valveValue;
@@ -102,7 +109,7 @@ export class ModelService {
   //   }
   // }
 
-  updateModelSetAllGood() {
+  public updateModelSetAllGood() {
     if (this.modules != null) {
       let isValveOpen = true;
       for (let index = 0; index < this.modules.length; index++) {
@@ -115,7 +122,7 @@ export class ModelService {
     }
   }
 
-  updateSettings(settingsItemTitle: string, settingsItemValue: boolean): void {
+  public updateSettings(settingsItemTitle: string, settingsItemValue: boolean): void {
     if (this.modules != null) {
       //set the settings object
       if (settingsItemTitle === "Leakage Alert") {
@@ -138,7 +145,7 @@ export class ModelService {
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === 0) {
             this.modules[index].state = "Leak Detected";
-            this.addAlertToModel("MP100", new Date().toISOString());
+            this.addLeakageAlertToModel("MP100", this.formatDate(new Date()));
           }
         }
       }
@@ -176,13 +183,13 @@ export class ModelService {
       if (state === "bad") {
         this.status = "bad";
         this.setCurrentFlow(19);
+        this.addLeakageAlertToModel("MP100", "04-07-2018 10:13");
       } else if (state === "warn") {
         this.status = "warn";
       } else {
         this.status = "good";
       }
 
-      this.addAlertToModel("MP100", "4/7/2018 10:13");
       this.prepareSiteData();
       // this.prepareEvents();
       this.modelInited = true;
@@ -211,16 +218,16 @@ export class ModelService {
   //   console.dir(this.events);
   // }
 
-  // private formatDate(date: Date) : string {
-  //   var curr_date = date.getDate();
-  //   var curr_month = date.getMonth();
-  //   var curr_year = date.getFullYear();
-  //   let curr_hour = date.getHours();
-  //   let curr_hour_st = (curr_hour < 10) ? "0" + curr_hour : curr_hour;
-  //   var curr_min = date.getMinutes();
-  //   let curr_min_st = (curr_min < 10) ? "0" + curr_min : curr_min;
-  //   return curr_date + "-" + curr_month + "-" + curr_year + " " + curr_hour_st + ":" + curr_min_st;
-  // }
+  private formatDate(date: Date) : string {
+    var curr_date = date.getDate();
+    var curr_month = date.getMonth();
+    var curr_year = date.getFullYear();
+    let curr_hour = date.getHours();
+    let curr_hour_st = (curr_hour < 10) ? "0" + curr_hour : curr_hour;
+    var curr_min = date.getMinutes();
+    let curr_min_st = (curr_min < 10) ? "0" + curr_min : curr_min;
+    return curr_date + "-" + curr_month + "-" + curr_year + " " + curr_hour_st + ":" + curr_min_st;
+  }
 
   private prepareSiteData(): void {
     let modules: module[] = [];
@@ -264,11 +271,21 @@ export class ModelService {
     return sn;
   }
 
-  private addAlertToModel(indicator: string, date: string): void {
-    this.alert = {
-      indicator: indicator,
-      detectionTime: date
+  private addLeakageAlertToModel(indicator: string, date: string): void {
+    let moment: eventMoment = {
+      title: "detection",
+      timestamp: date,
+      initiator: indicator
+    }
+    let event: asEvent = {
+      title: "Leak Detection",
+      timestamp: date,
+      type: "leak",
+      open: true,
+      moments: [moment]
     };
+    this.events.push(event);
+    console.dir(this.events);
   }
 
   private isAllGood(): boolean {

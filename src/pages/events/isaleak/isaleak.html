@@ -6,7 +6,7 @@
   
   <ion-content>
     <ion-item text-wrap text-center>
-      <h1>I can see the leak</h1><h2>started at {{alert.detectionTime}}<br>Suggestions for actions (Step {{state+1}}/3):</h2>
+      <h1>I can see the leak</h1><h2>started at {{currentEvent.timestamp}}<br>Suggestions for actions (Step {{state+1}}/3):</h2>
     </ion-item>
     <ion-item text-wrap text-center item-content [hidden]="state!=0">
         Isolate / stop the leak source

@@ -17,7 +17,7 @@ import { ModelService } from "../../../providers/model-service";
   templateUrl: "notathome.html",
 })
 export class NotathomePage {
-  alert: any;
+  currentEvent: asEvent;
   state: any;
   someOneHome: boolean;
   @ViewChild(Navbar) navBar: Navbar;
@@ -42,7 +42,7 @@ export class NotathomePage {
     this.dataIndex = 0;
     this.valveStatus = 0;
     this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
-    this.alert = navParams.get("alert");
+    this.currentEvent = navParams.get("event");
   }
 
   ionViewDidLoad() {
@@ -260,7 +260,7 @@ export class NotathomePage {
   PressNoLeak() {
     this.navCtrl.pop();
     this.navCtrl.push(NotALeakPage, {
-      alert: this.alert
+      event: this.currentEvent
     });
 
   }

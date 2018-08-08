@@ -18,10 +18,10 @@
         <ion-list-header>
             <h2> Events history</h2>
         </ion-list-header>
-        <ion-item *ngFor="let event of modelService.getEvents()" (click)="itemTapped($event, event)">
-            <ion-icon [name]="event.open ? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
+        <ion-item *ngFor="let asEvent of modelService.getEvents()" (click)="itemTapped($event, asEvent)">
+            <ion-icon [name]="asEvent.open ? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
             <ion-label>
-              {{event.title}} {{event.timestamp}}
+              {{asEvent.title}} {{asEvent.timestamp}}
             </ion-label>
         </ion-item>
       </ion-list>

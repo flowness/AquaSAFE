@@ -7,12 +7,12 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class ModulePage {
   module: any;
-  alert: any;
+  currentEvent: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an module available as a nav param
     this.module = navParams.get('module');
-    this.alert = navParams.get('alert');
+    this.currentEvent = navParams.get('event');
   }
 
 }

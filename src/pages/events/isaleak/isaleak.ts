@@ -20,7 +20,7 @@ import { PlumbersPage } from "../../plumbers/plumbers";
 export class IsALeakPage {
   public base64Image: string;
   item: any;
-  alert: any;
+  currentEvent: asEvent;
   state: number = 0;
   private chart: Chart;
   private task: number;
@@ -36,7 +36,7 @@ export class IsALeakPage {
   constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     // If we navigated to this page, we will have an item available as a nav param
     this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
-    this.alert = navParams.get("alert");
+    this.currentEvent = navParams.get("event");
   }
 
   takePicture(): void {

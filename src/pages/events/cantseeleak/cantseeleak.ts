@@ -16,7 +16,7 @@ import { ModelService } from "../../../providers/model-service";
   templateUrl: "cantseeleak.html",
 })
 export class CantseeLeakPage {
-  currentSiteAlert: any;
+  currentEvent: asEvent;
   state: number = 0;
   private endTappingValue: number;
   private dataIndex: number = 0;
@@ -35,7 +35,7 @@ export class CantseeLeakPage {
 
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
-    this.currentSiteAlert = navParams.get("alert");
+    this.currentEvent = navParams.get("event");
     this.endTappingValue = Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;
   }
 
