@@ -28,6 +28,7 @@ export class ModelService {
     for (let index = 0; index < data.length; index++) {
       this.events.push(data[index]);
     }
+    this.events = this.sortEvents(this.events);
     console.log("events length2 = " + this.events.length);
   }
 
@@ -145,7 +146,7 @@ export class ModelService {
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === 0) {
             this.modules[index].state = "Leak Detected";
-            this.addLeakageAlertToModel("MP100", this.formatDate(new Date()));
+            this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
           }
         }
       }
@@ -183,7 +184,7 @@ export class ModelService {
       if (state === "bad") {
         this.status = "bad";
         this.setCurrentFlow(19);
-        this.addLeakageAlertToModel("MP100", "04-07-2018 10:13");
+        this.addLeakageEventToModel("MP100", "04-07-2018 10:13");
       } else if (state === "warn") {
         this.status = "warn";
       } else {
@@ -218,15 +219,17 @@ export class ModelService {
   //   console.dir(this.events);
   // }
 
-  private formatDate(date: Date) : string {
+  private formatDate(date: Date): string {
     var curr_date = date.getDate();
-    var curr_month = date.getMonth();
+    var curr_month = date.getMonth() + 1;
     var curr_year = date.getFullYear();
     let curr_hour = date.getHours();
-    let curr_hour_st = (curr_hour < 10) ? "0" + curr_hour : curr_hour;
     var curr_min = date.getMinutes();
-    let curr_min_st = (curr_min < 10) ? "0" + curr_min : curr_min;
-    return curr_date + "-" + curr_month + "-" + curr_year + " " + curr_hour_st + ":" + curr_min_st;
+    return this.prefixZeroIfNeeded(curr_date) + "-" + this.prefixZeroIfNeeded(curr_month) + "-" + curr_year + " " + this.prefixZeroIfNeeded(curr_hour) + ":" + this.prefixZeroIfNeeded(curr_min);
+  }
+
+  private prefixZeroIfNeeded(s: number): string {
+    return (s < 10) ? "0" + s : "" + s;
   }
 
   private prepareSiteData(): void {
@@ -271,7 +274,7 @@ export class ModelService {
     return sn;
   }
 
-  private addLeakageAlertToModel(indicator: string, date: string): void {
+  private addLeakageEventToModel(indicator: string, date: string): void {
     let moment: eventMoment = {
       title: "detection",
       timestamp: date,
@@ -311,4 +314,35 @@ export class ModelService {
     }
   }
 
+  private sortEvents(events: asEvent[]): asEvent[] {
+    let result: asEvent[] = [];
+    let tempArray = [];
+    for (let index = 0; index < events.length; index++) {
+      const element = events[index];
+      tempArray.push({
+        effectiveDate: this.getEffectiveDate(element),
+        asEvent: element
+      });
+    }
+    tempArray.sort((n1, n2) => {
+      if (n1.effectiveDate > n2.effectiveDate) {
+        return 1;
+      }
+
+      if (n1.effectiveDate < n2.effectiveDate) {
+        return -1;
+      }
+
+      return 0;
+    });
+    for (let index = 0; index < tempArray.length; index++) {
+      const element = tempArray[index];
+      result.push(element.asEvent);
+    }
+    return result;
+  }
+
+  private getEffectiveDate(event: asEvent): string {
+    return event.moments[0].timestamp;
+  }
 }
