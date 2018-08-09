@@ -1,5 +1,6 @@
 import { DataFinder } from "./data-finder";
 import { Injectable } from "../../node_modules/@angular/core";
+import { DateFormatPipe } from "./dateFormatPipe";
 
 
 @Injectable()
@@ -15,7 +16,7 @@ export class ModelService {
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
-  constructor(public dataFinder: DataFinder) {
+  constructor(public dataFinder: DataFinder, public dateFormatPipe: DateFormatPipe) {
     console.log("constructor model-service");
     this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
       this.setEventsData(data);
@@ -344,5 +345,6 @@ export class ModelService {
 
   private getEffectiveDate(event: asEvent): string {
     return event.moments[0].timestamp;
+    // return this.dateFormatPipe.transform(event.moments[0].timestamp, "");
   }
 }
