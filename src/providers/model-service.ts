@@ -328,17 +328,17 @@ export class ModelService {
     }
     console.dir(tempArray);
     tempArray.sort((n1, n2) => {
-      if (n1.effectiveDate.getTime() > n2.effectiveDate.getTime()) {
+      if (n1.effectiveDate > n2.effectiveDate) {
         return asc ? 1 : -1;
       }
 
-      if (n1.effectiveDate.getTime() < n2.effectiveDate.getTime()) {
+      if (n1.effectiveDate < n2.effectiveDate) {
         return asc ? -1 : 1;
       }
 
       return 0;
     });
-    console.dir(tempArray);
+    // console.dir(tempArray);
     for (let index = 0; index < tempArray.length; index++) {
       const element = tempArray[index];
       result.push(element.asEvent);
@@ -348,7 +348,7 @@ export class ModelService {
 
   private getEffectiveDate(event: asEvent): Date {
     // console.log("date0= " + event.moments[0].timestamp);
-    let res = this.dateParsePipe.transform(event.moments[0].timestamp);
+    let res = this.dateParsePipe.transform(event.moments[event.moments.length - 1].timestamp);
     // console.log("date3= " + res);
     return res;
   }
