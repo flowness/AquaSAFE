@@ -34,6 +34,7 @@ import { CallNumber } from '@ionic-native/call-number';
 import { EventPage } from '../pages/event/event';
 import { HttpModule } from '@angular/http';
 import { DataFinder } from '../providers/data-finder';
+import { DateParsePipe } from '../providers/date-parse-pipe';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { DataFinder } from '../providers/data-finder';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DataFinder, 
     ModelService,
-    Geolocation
+    Geolocation,
+    DateParsePipe
   ]
 })
 export class AppModule { }

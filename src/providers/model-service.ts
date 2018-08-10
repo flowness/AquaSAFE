@@ -1,6 +1,6 @@
 import { DataFinder } from "./data-finder";
 import { Injectable } from "../../node_modules/@angular/core";
-import { DateFormatPipe } from "./dateFormatPipe";
+import { DateParsePipe } from "./date-parse-pipe";
 
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ModelService {
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
-  constructor(public dataFinder: DataFinder, public dateFormatPipe: DateFormatPipe) {
+  constructor(public dataFinder: DataFinder, public dateParsePipe: DateParsePipe) {
     console.log("constructor model-service");
     this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
       this.setEventsData(data);
@@ -29,7 +29,7 @@ export class ModelService {
     for (let index = 0; index < data.length; index++) {
       this.events.push(data[index]);
     }
-    this.events = this.sortEvents(this.events);
+    this.events = this.sortEvents(this.events, false);
     console.log("events length2 = " + this.events.length);
   }
 
@@ -289,6 +289,7 @@ export class ModelService {
       moments: [moment]
     };
     this.events.push(event);
+    this.events = this.sortEvents(this.events, false);
     console.dir(this.events);
   }
 
@@ -315,7 +316,7 @@ export class ModelService {
     }
   }
 
-  private sortEvents(events: asEvent[]): asEvent[] {
+  private sortEvents(events: asEvent[], asc: boolean = true): asEvent[] {
     let result: asEvent[] = [];
     let tempArray = [];
     for (let index = 0; index < events.length; index++) {
@@ -325,17 +326,19 @@ export class ModelService {
         asEvent: element
       });
     }
+    console.dir(tempArray);
     tempArray.sort((n1, n2) => {
-      if (n1.effectiveDate > n2.effectiveDate) {
-        return 1;
+      if (n1.effectiveDate.getTime() > n2.effectiveDate.getTime()) {
+        return asc ? 1 : -1;
       }
 
-      if (n1.effectiveDate < n2.effectiveDate) {
-        return -1;
+      if (n1.effectiveDate.getTime() < n2.effectiveDate.getTime()) {
+        return asc ? -1 : 1;
       }
 
       return 0;
     });
+    console.dir(tempArray);
     for (let index = 0; index < tempArray.length; index++) {
       const element = tempArray[index];
       result.push(element.asEvent);
@@ -343,8 +346,10 @@ export class ModelService {
     return result;
   }
 
-  private getEffectiveDate(event: asEvent): string {
-    return event.moments[0].timestamp;
-    // return this.dateFormatPipe.transform(event.moments[0].timestamp, "");
+  private getEffectiveDate(event: asEvent): Date {
+    // console.log("date0= " + event.moments[0].timestamp);
+    let res = this.dateParsePipe.transform(event.moments[0].timestamp);
+    // console.log("date3= " + res);
+    return res;
   }
 }
