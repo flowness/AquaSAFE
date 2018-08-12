@@ -9,7 +9,7 @@
 
 <ion-content>
   <!-- OK status -->
-  <div *ngIf="modelService.getStatus() != 'bad'; else bad">
+  <div *ngIf="modelService.getStatus() != 'leak'; else leak">
     <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
       <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item>
       <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item>
@@ -25,11 +25,10 @@
       </ion-item>
     </ion-list>
   </div>
-  <!-- BAD status -->
-  <ng-template #bad>
+  <!-- LEAK status -->
+  <ng-template #leak>
     <div>
-      <ion-item class="header-status bad">
-        <!-- <div class="header-status-bad"> -->
+      <ion-item class="header-status leak">
         <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}

@@ -22,7 +22,7 @@
             </button>
           </div>
         <br>
-        <div align="center"><canvas #sourceOffCanvas></canvas></div>
+        <div align="center"><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
       </ion-item>
         <ion-item text-wrap text-center [hidden]="wizardState!=1">
           To records the leakage

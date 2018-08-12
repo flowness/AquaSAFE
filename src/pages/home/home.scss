@@ -24,7 +24,7 @@ page-home {
         display: table;
     }
 
-    .header-status.bad {
+    .header-status.leak {
         box-sizing: border-box;
         background: red; /* For browsers that do not support gradients */
         background: radial-gradient(rgb(247, 81, 81), rgb(212, 11, 11)); /* Standard syntax (must be last) */

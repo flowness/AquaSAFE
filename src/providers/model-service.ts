@@ -142,7 +142,7 @@ export class ModelService {
 
       // if we are here need to set leakage or warn
       if (settingsItemTitle === "Leakage Alert") {
-        this.status = "bad";
+        this.status = "leak";
         this.setCurrentFlow(19);
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === 0) {
@@ -182,8 +182,8 @@ export class ModelService {
     }
 
     if (this.modules == null || !this.modelInited) {
-      if (state === "bad") {
-        this.status = "bad";
+      if (state === "leak") {
+        this.status = "leak";
         this.setCurrentFlow(19);
         this.addLeakageEventToModel("MP100", "04-07-2018 10:13");
       } else if (state === "warn") {
@@ -259,7 +259,7 @@ export class ModelService {
   }
 
   private getModuleStatusByTypeAndSystemStatus(moduleType: number): string {
-    if (moduleType === 0 && this.status === "bad") {
+    if (moduleType === 0 && this.status === "leak") {
       return "Leak Detected";
     } else {
       return (this.status != "warn" ? "All Good" : this.statuses[Math.floor(Math.random() * this.statuses.length)]);

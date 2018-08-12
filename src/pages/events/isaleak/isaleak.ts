@@ -25,8 +25,9 @@ export class IsALeakPage {
   private task: number;
   private taskValve: any;
   valveStatus: number = 0;
-  private leakCloseSuccess: number;
+  private endTappingValue: number;
   private dataIndex: number = 0;
+  private maxNumOfPoints: number = 12;
 
   @ViewChild(Navbar) navBar: Navbar;
 
@@ -34,7 +35,7 @@ export class IsALeakPage {
 
   constructor(private camera: Camera, public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     // If we navigated to this page, we will have an item available as a nav param
-    this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
+    this.endTappingValue = Math.random() < 0.5 ? 2 : 0;
     this.currentEvent = navParams.get("event");
   }
 
@@ -110,24 +111,25 @@ export class IsALeakPage {
 
   refreshData(): void {
     let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.leakCloseSuccess) {
-      let changeData = Math.floor(Math.random() * 5);
-      if (currentData - changeData < this.leakCloseSuccess) {
-        changeData = currentData - this.leakCloseSuccess;
-      }
-      this.chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
+    if (currentData > this.endTappingValue) {
+      // let changeData = Math.floor(Math.random() * 5);
+      // if (currentData - changeData < this.endTappingValue) {
+      //   changeData = currentData - this.endTappingValue;
+      // }
+      this.chart.data.datasets[0].data[this.dataIndex] = currentData;
       this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
-    }
-    else {
-      this.chart.data.datasets[0].data.push(this.leakCloseSuccess);
+    } else {
+      this.chart.data.datasets[0].data.push(this.endTappingValue);
 
-      if (this.chart.data.datasets[0].data[0] != this.leakCloseSuccess) {
+      if (this.chart.data.datasets[0].data[0] != this.endTappingValue) {
         this.chart.data.datasets[0].data.shift();
-      }
-      else {
+      } else {
         clearInterval(this.task);
       }
-
+    }
+    if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
+      this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
+      this.dataIndex = this.maxNumOfPoints - 1;
     }
     this.chart.update(0);
   }
@@ -143,6 +145,21 @@ export class IsALeakPage {
     this.chart.update(0);
 
   }
+
+  updateCurrentValue(): void {
+    console.log("***tap");
+    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
+    if (currentData > this.endTappingValue) {
+      let changeData = Math.floor(Math.random() * 10);
+      if (currentData - changeData < this.endTappingValue) {
+        changeData = currentData - this.endTappingValue;
+      }
+      this.modelService.setCurrentFlow(currentData - changeData);
+      this.chart.data.datasets[0].data[this.dataIndex] = this.modelService.getCurrentFlow();
+      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+    }
+  }
+
 
   nextState(): void {
     this.wizardState++;
