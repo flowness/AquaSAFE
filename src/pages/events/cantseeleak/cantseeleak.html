@@ -6,8 +6,8 @@
 
 <ion-content>
   <ion-item text-wrap text-center>
-    <h1>I can't see a leak</h1>
-    <h2>started at {{currentEvent.timestamp}}
+    <!-- <h1>I can't see a leak</h1> -->
+    <h2>Leak detected at {{currentEvent.timestamp}}
       <br>Suggestions for actions (Step {{state+1}}/3):</h2>
   </ion-item>
   <ion-item text-wrap text-center item-content [hidden]="state!=0">

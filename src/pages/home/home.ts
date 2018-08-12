@@ -43,27 +43,21 @@ export class HomePage {
 
   eventItemTapped(event: any, eventType: number): void {
     console.log("item type = " + eventType);
+    this.navCtrl.push(this.getEventPage(eventType), {
+      event: this.modelService.getLatestOpenEvent()
+    });
+  }
+
+  getEventPage(eventType: number): Page {
     switch (eventType) {
       case 100:
-        this.navCtrl.push(NotALeakPage, {
-          event: this.modelService.getLastOpenEvent()
-        });
-        break;
+        return NotALeakPage;
       case 101:
-        this.navCtrl.push(CantseeLeakPage, {
-          event: this.modelService.getLastOpenEvent()
-        });
-        break;
+        return CantseeLeakPage;
       case 102:
-        this.navCtrl.push(NotathomePage, {
-          event: this.modelService.getLastOpenEvent()
-        });
-        break;
+        return NotathomePage;
       case 103:
-        this.navCtrl.push(IsALeakPage, {
-          event: this.modelService.getLastOpenEvent()
-        });
-        break;
+        return IsALeakPage;
     }
   }
 

@@ -62,10 +62,10 @@ export class ModelService {
     return this.events;
   }
 
-  public getLastOpenEvent(): asEvent {
-    console.log("getLastOpenEvent");
-    console.dir(this.events);
-    for (let index = this.events.length - 1; index >= 0; index--) {
+  public getLatestOpenEvent(): asEvent {
+    // console.log("getLatestOpenEvent");
+    // console.dir(this.events);
+    for (let index = 0; index < this.events.length; index++) {
       const element: asEvent = this.events[index];
       if (element.open) {
         return element;

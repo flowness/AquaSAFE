@@ -19,9 +19,8 @@ import { PlumbersPage } from "../../plumbers/plumbers";
 })
 export class IsALeakPage {
   public base64Image: string;
-  item: any;
-  currentEvent: asEvent;
-  state: number = 0;
+  public currentEvent: asEvent;
+  public wizardState: number = 0;
   private chart: Chart;
   private task: number;
   private taskValve: any;
@@ -146,11 +145,11 @@ export class IsALeakPage {
   }
 
   nextState(): void {
-    this.state++;
+    this.wizardState++;
   }
 
   prevState(): void {
-    this.state--;
+    this.wizardState--;
   }
 
   plumbers(): void {
