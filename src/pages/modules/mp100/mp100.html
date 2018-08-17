@@ -12,7 +12,7 @@
     {{module.title}}
   </ion-item>
   <ion-item>
-    SN: {{data.sn}}
+    SN: {{module.sn}}
   </ion-item>
   <ion-item [ngClass]="{'item-warn' : module.state != 'All Good'}">
     Status: {{module.state}}
@@ -27,6 +27,6 @@
     Battery: {{data.batteryStatus}}%
   </ion-item>
   <ion-item>
-    Temperature: {{data.tempC}}&#x2103; / {{data.tempF}}&#x2109;
+    Temperature: {{data.tempC}}&#x2103; / {{convertCToF(data.tempC)}}&#x2109;
   </ion-item>
 </ion-content>

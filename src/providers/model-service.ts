@@ -13,7 +13,8 @@ export class ModelService {
   private events: asEvent[] = [];
 
   private icons: string[] = ["build", "water", "aperture", "cloud-outline", "wifi"];
-  private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repater"];
+  private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repeater"];
+  private typeNames: string[] = ["MP100", "FD100", "VS100", "BS100", "R100"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
   constructor(public dataFinder: DataFinder, public dateParsePipe: DateParsePipe) {
@@ -198,27 +199,15 @@ export class ModelService {
     }
   }
 
-  // prepareEvents() {
-  //   this.events = [];
-  //   let numItems = Math.ceil(Math.random() * 8) + 5;
-  //   let thisDate = new Date();
-  //   for (let i = 0; i < numItems; i++) {
-  //     thisDate = new Date(thisDate.getTime() - (1000 * (Math.ceil(Math.random() * 60 * 60 * 24) + 1)));
-  //     let moment: eventMoment = {
-  //       title: "detection",
-  //       timestamp: this.formatDate(thisDate),
-  //       initiator: "MP100"
-  //     }
-  //     this.events.push({
-  //       title: "Leak Detected",
-  //       timestamp: this.formatDate(thisDate),
-  //       type: "leak",
-  //       open: Math.random() > 0.5,
-  //       moments: [moment]
-  //     });
-  //   }
-  //   console.dir(this.events);
-  // }
+  public getModuleData(sn: string): moduleData {
+    return {
+      sn: sn,
+      lastReading: new Date(),
+      address: 'Haadarim St. Talmaz',
+      batteryStatus: Math.floor(Math.random() * 100),
+      tempC: Math.floor(Math.random() * 50) - 10
+    }
+  }
 
   private formatDate(date: Date): string {
     var curr_date = date.getDate();
@@ -254,7 +243,7 @@ export class ModelService {
       icon: this.icons[type],
       type: type,
       valve: true,
-      sn: this.getRandomSN()
+      sn: this.getRandomSN(type)
     }
   }
 
@@ -266,9 +255,9 @@ export class ModelService {
     }
   }
 
-  private getRandomSN(): string {
-    let sn: string = "";
-    for (var i = 0; i < 8; i++) {
+  private getRandomSN(type: number): string {
+    let sn: string = this.typeNames[type];
+    for (var i = 0; i < 3; i++) {
       var num = Math.floor(Math.random() * 16);
       sn += num.toString(16);
     }

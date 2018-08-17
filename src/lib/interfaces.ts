@@ -7,6 +7,14 @@ interface module {
     sn: string
 }
 
+interface moduleData {
+    sn: string,
+    lastReading: Date,
+    address: string,
+    batteryStatus: number,
+    tempC: number
+}
+
 interface settings {
     leakageAlert: boolean;
     irregularityAlert: boolean;
