@@ -14,6 +14,7 @@ import { NotathomePage } from "../events/notathome/notathome";
 import { ModelService } from "../../providers/model-service";
 import { Page } from "ionic-angular/umd/navigation/nav-util";
 import { DataFinder } from "../../providers/data-finder";
+import { module } from "../../lib/interfaces";
 
 @Component({
   selector: "page-home",

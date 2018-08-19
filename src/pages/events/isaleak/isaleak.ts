@@ -4,6 +4,7 @@ import { Chart } from "chart.js";
 import { Camera, CameraOptions } from "@ionic-native/camera";
 import { ModelService } from "../../../providers/model-service";
 import { PlumbersPage } from "../../plumbers/plumbers";
+import { asEvent } from "../../../lib/interfaces";
 
 /**
  * Generated class for the IsaleakPage page.

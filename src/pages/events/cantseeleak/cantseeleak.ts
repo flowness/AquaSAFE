@@ -2,6 +2,7 @@ import { ViewChild, Component } from "@angular/core";
 import { Navbar, AlertController, IonicPage, NavController, NavParams, Alert } from "ionic-angular";
 import { Chart } from "chart.js";
 import { ModelService } from "../../../providers/model-service";
+import { asEvent } from "../../../lib/interfaces";
 
 /**
  * Generated class for the CantseeLeakPage page.

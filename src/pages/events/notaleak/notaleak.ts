@@ -9,6 +9,7 @@ import {
   transition
 } from "@angular/animations";
 import { ModelService } from "../../../providers/model-service";
+import { asEvent } from "../../../lib/interfaces";
 
 @Component({
   selector: "page-notaleak",

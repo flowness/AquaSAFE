@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { asEvent } from '../../lib/interfaces';
 
 /**
  * Generated class for the EventPage page.

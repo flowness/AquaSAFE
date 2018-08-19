@@ -27,6 +27,6 @@
     Battery: {{data.batteryStatus}}%
   </ion-item>
   <ion-item>
-    Temperature: {{data.tempC}}&#x2103; / {{data.tempF}}&#x2109;
+    Temperature: {{data.tempC}}&#x2103; / {{convertCToF(data.tempC)}}&#x2109;
   </ion-item>
 </ion-content>

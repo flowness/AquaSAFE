@@ -1,11 +1,12 @@
 import { DataFinder } from "./data-finder";
 import { Injectable } from "../../node_modules/@angular/core";
 import { DateParsePipe } from "./date-parse-pipe";
-
+import { EventStatus, ModuleType } from "../lib/enums";
+import { module, settings, asEvent, moduleData, eventMoment } from "../lib/interfaces";
 
 @Injectable()
 export class ModelService {
-  private modules: any;
+  private modules: module[];
   private status: string;
   private settings: settings;
   private currentFlow: number = 0;
@@ -14,7 +15,6 @@ export class ModelService {
 
   private icons: string[] = ["build", "water", "aperture", "cloud-outline", "wifi"];
   private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repeater"];
-  private typeNames: string[] = ["MP100", "FD100", "VS100", "BS100", "R100"];
   private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
 
   constructor(public dataFinder: DataFinder, public dateParsePipe: DateParsePipe) {
@@ -68,7 +68,7 @@ export class ModelService {
     // console.dir(this.events);
     for (let index = 0; index < this.events.length; index++) {
       const element: asEvent = this.events[index];
-      if (element.open) {
+      if (EventStatus.isOpenStatus(element.status)) {
         return element;
       }
     }
@@ -76,7 +76,7 @@ export class ModelService {
 
   public getShutOffValveStatus(): boolean {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type == 2) {
+      if (this.modules[index].type ==  ModuleType.VS100) {
         return this.modules[index].valve;
       }
     }
@@ -103,7 +103,7 @@ export class ModelService {
 
   public toggleAllValves(valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type == 2) {
+      if (this.modules[index].type ==  ModuleType.VS100) {
         this.modules[index].valve = valveValue;
         this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
@@ -126,7 +126,7 @@ export class ModelService {
       let isValveOpen = true;
       for (let index = 0; index < this.modules.length; index++) {
         this.modules[index].state = "All Good";
-        if (this.modules[index].type == 2) {
+        if (this.modules[index].type == ModuleType.VS100) {
           isValveOpen = this.modules[index].valve;
         }
       }
@@ -155,7 +155,7 @@ export class ModelService {
         this.status = "leak";
         this.setCurrentFlow(19);
         for (let index = 0; index < this.modules.length; index++) {
-          if (this.modules[index].type === 0) {
+          if (this.modules[index].type == ModuleType.MP100) {
             this.modules[index].state = "Leak Detected";
             this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
           }
@@ -234,17 +234,17 @@ export class ModelService {
   private prepareSiteData(): void {
     let modules: module[] = [];
     // types 0=MP100, 1=FD100, 2=VS100
-    modules.push(this.getModule(0));
-    modules.push(this.getModule(2));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
-    modules.push(this.getModule(1));
+    modules.push(this.getModule(ModuleType.MP100));
+    modules.push(this.getModule(ModuleType.VS100));
+    modules.push(this.getModule(ModuleType.FD100));
+    modules.push(this.getModule(ModuleType.FD100));
+    modules.push(this.getModule(ModuleType.FD100));
+    modules.push(this.getModule(ModuleType.FD100));
 
     this.modules = modules;
   }
 
-  private getModule(type: number): module {
+  private getModule(type: ModuleType): module {
     let status = this.getModuleStatusByTypeAndSystemStatus(type);
     return {
       title: this.devices[type],
@@ -256,16 +256,16 @@ export class ModelService {
     }
   }
 
-  private getModuleStatusByTypeAndSystemStatus(moduleType: number): string {
-    if (moduleType === 0 && this.status === "leak") {
+  private getModuleStatusByTypeAndSystemStatus(moduleType: ModuleType): string {
+    if (moduleType == ModuleType.MP100 && this.status === "leak") {
       return "Leak Detected";
     } else {
       return (this.status != "warn" ? "All Good" : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
     }
   }
 
-  private getRandomSN(type: number): string {
-    let sn: string = this.typeNames[type];
+  private getRandomSN(type: ModuleType): string {
+    let sn: string = type.toString();
     for (var i = 0; i < 3; i++) {
       var num = Math.floor(Math.random() * 16);
       sn += num.toString(16);
@@ -283,7 +283,7 @@ export class ModelService {
       title: "Leak Detection",
       timestamp: date,
       type: "leak",
-      open: true,
+      status: EventStatus.LIVE,
       moments: [moment]
     };
     this.events.push(event);

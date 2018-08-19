@@ -3,6 +3,7 @@ import { Navbar, AlertController, IonicPage, NavController, NavParams } from "io
 import { NotALeakPage } from "../notaleak/notaleak";
 import { Chart } from "chart.js";
 import { ModelService } from "../../../providers/model-service";
+import { asEvent } from "../../../lib/interfaces";
 
 /**
  * Generated class for the NotathomePage page.

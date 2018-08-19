@@ -18,7 +18,7 @@
       <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
         <ion-icon [name]="module.icon" item-start></ion-icon>
         <ion-label>{{module.title}}</ion-label>
-        <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)" item-content></ion-toggle>
+        <ion-toggle *ngIf="module.type == 'VS100'" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)" item-content></ion-toggle>
         <div class="item-note" item-end>
           {{module.state}}
         </div>

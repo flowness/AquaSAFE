@@ -1,13 +1,15 @@
-interface module {
+import { ModuleType } from "./enums";
+
+export interface module {
     title: string,
     state: string,
     icon: string,
-    type: number,
+    type: ModuleType,
     valve: boolean,
     sn: string
 }
 
-interface moduleData {
+export interface moduleData {
     sn: string,
     lastReading: Date,
     address: string,
@@ -15,20 +17,20 @@ interface moduleData {
     tempC: number
 }
 
-interface settings {
+export interface settings {
     leakageAlert: boolean;
     irregularityAlert: boolean;
 }
 
-interface asEvent {
+export interface asEvent {
     title: string,
     timestamp: string,
     type: string,
-    open: boolean,
+    status: number,
     moments: eventMoment[]
 }
 
-interface eventMoment {
+export interface eventMoment {
     title: string,
     timestamp: string,
     initiator: string,
