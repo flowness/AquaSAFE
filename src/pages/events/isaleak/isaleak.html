@@ -12,11 +12,11 @@
     <ion-item text-wrap text-center item-content [hidden]="step!=0">
         Isolate / stop the leak source
         <div align="center">
-            <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
+            <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutValve()" large>
                 <ion-icon name="aperture"></ion-icon>
               shut off main valve
             </button>          
-            <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValve()" large>
+            <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutValve()" large>
                 <ion-icon name="aperture"></ion-icon>
               main valve is shut off
             </button>

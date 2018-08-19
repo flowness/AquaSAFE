@@ -74,6 +74,15 @@ export class ModelService {
     }
   }
 
+  public getShutOffValveStatus(): boolean {
+    for (let index = 0; index < this.modules.length; index++) {
+      if (this.modules[index].type == 2) {
+        return this.modules[index].valve;
+      }
+    }
+    return false;
+  }
+
   public setCurrentFlow(f: number): void {
     console.log("setting current flow: " + f);
     this.currentFlow = f;

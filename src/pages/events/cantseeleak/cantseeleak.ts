@@ -27,9 +27,6 @@ export class CantseeLeakPage {
 
   @ViewChild("sourceOffCanvas") sourceOffCanvas;
 
-  @ViewChild("valveOffCanvas") valveOffCanvas;
-
-
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     this.currentEvent = navParams.get("event");
     this.endTappingValue = Math.floor(Math.random() * 31) % 2 == 0 ? 2 : 0;

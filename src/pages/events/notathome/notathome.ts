@@ -16,32 +16,22 @@ import { ModelService } from "../../../providers/model-service";
   selector: "page-notathome",
   templateUrl: "notathome.html",
 })
+
 export class NotathomePage {
+
   currentEvent: asEvent;
-  state: any;
-  someOneHome: boolean;
+  step: number = 0;
+  someOneHome: boolean = false;
+  chart: Chart;
+  private task: number;
+  private endTappingValue: number;
+  private maxNumOfPoints: number = 12;
+
   @ViewChild(Navbar) navBar: Navbar;
-
-  dataIndex: any;
   @ViewChild("sourceOffCanvas") sourceOffCanvas;
-  chart: any;
-  task: any;
-  taskValve: any;
-  valveStatus: any;
-
-  leakCloseSuccess: any;
-
-
-  @ViewChild("valveOffCanvas") valveOffCanvas;
-  chartValve: any;
-  taskValveOff: any;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
-    this.state = 0;
-    this.someOneHome = false;
-    this.dataIndex = 0;
-    this.valveStatus = 0;
-    this.leakCloseSuccess = Math.random() < 0.5 ? 2 : 0;
+    this.endTappingValue = Math.random() < 0.5 ? 2 : 0;
     this.currentEvent = navParams.get("event");
   }
 
@@ -88,126 +78,35 @@ export class NotathomePage {
       }
     }
 
-    let chartOffDefine = {
-      type: "line",
-      data: {
-        labels: ["0", "1", "2", "3", "4", "5", "6", "7"],
-        datasets: [{
-          data: [19, 19, 19, 19, 19, 19, 19, 19],
-          borderWidth: 1,
-          backgroundColor: "#0062ff",
-        }]
-      },
-      options: {
-        elements: {
-          point: {
-            radius: 0
-          }
-        },
-        responsive: false,
-        legend: {
-          display: false,
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              display: false,
-              min: 0,
-              max: 20
-            }
-          }],
-          xAxes: [{
-            ticks: {
-              display: false,
-            },
-            gridLines: {
-              display: false
-            }
-          }]
-        }
-      }
-    }
-
     this.chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
-    this.chartValve = new Chart(this.valveOffCanvas.nativeElement, chartOffDefine);
+
+    this.task = setInterval(() => {
+      this.refreshData();
+    }, 1500);
   }
 
-  refreshData() {
-    let currentData = this.chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.leakCloseSuccess) {
-      let changeData = Math.floor(Math.random() * 5);
-      if (currentData - changeData < this.leakCloseSuccess) {
-        changeData = currentData - this.leakCloseSuccess;
-      }
-      this.chart.data.datasets[0].data[this.dataIndex] = currentData - changeData;
-      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
-    }
-    else {
-      this.chart.data.datasets[0].data.push(this.leakCloseSuccess);
+  ionViewDidLeave() : void {
+    clearInterval(this.task);
+  }
 
-      if (this.chart.data.datasets[0].data[0] != this.leakCloseSuccess) {
-        this.chart.data.datasets[0].data.shift();
-      }
-      else {
-        clearInterval(this.task);
-      }
+  private refreshData(): void {
+    let currentFlow: number = this.modelService.getCurrentFlow();
+    this.chart.data.datasets[0].data.push(currentFlow);
+    this.chart.data.labels[this.chart.data.datasets[0].data.length] = this.chart.data.datasets[0].data.length.toString()
 
+    if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
+      this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
     }
     this.chart.update(0);
   }
 
-  refreshDataValve() {
-    this.chart.data.datasets[0].data.push(0);
-    if (this.chart.data.datasets[0].data[0] != 0) {
-      this.chart.data.datasets[0].data.shift();
+  updateCurrentValue(): void {
+    console.log("***tap");
+    let currentData: number = this.modelService.getCurrentFlow();
+    if (currentData > this.endTappingValue) {
+      let changeData = Math.floor(Math.random() * 8) + 2;
+      this.modelService.setCurrentFlow(Math.max(currentData - changeData, this.endTappingValue));
     }
-    else {
-      clearInterval(this.taskValve);
-    }
-    this.chart.update(0);
-
-  }
-
-  refreshDataValveoff() {
-    this.chartValve.data.datasets[0].data.push(0);
-    if (this.chartValve.data.datasets[0].data[0] != 0) {
-      this.chartValve.data.datasets[0].data.shift();
-    }
-    else {
-      clearInterval(this.taskValveOff);
-    }
-    this.chartValve.update(0);
-
-  }
-
-  shutValve() {
-    let alert = this.alertCtrl.create({
-      title: "Confirmation",
-      message: "Are you sure you want to close the main valve?",
-      buttons: [
-        {
-          text: "No",
-          handler: () => {
-            console.log("No clicked");
-            this.valveStatus = 0;
-          }
-        },
-        {
-          text: "Yes",
-          handler: () => {
-            console.log("Yes clicked.");
-            this.valveStatus = 1;
-            clearInterval(this.task);
-            this.taskValve = setInterval(() => {
-              this.refreshDataValve();
-            }, 300);
-            this.modelService.toggleAllValves(false);
-          }
-        }
-      ]
-    });
-    alert.present();
-
   }
 
   shutValveOff() {
@@ -219,18 +118,12 @@ export class NotathomePage {
           text: "No",
           handler: () => {
             console.log("No clicked");
-            this.valveStatus = 0;
           }
         },
         {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked.");
-            this.valveStatus = 1;
-            clearInterval(this.task);
-            this.taskValveOff = setInterval(() => {
-              this.refreshDataValveoff();
-            }, 300);
             this.modelService.toggleAllValves(false);
           }
         }
@@ -240,12 +133,12 @@ export class NotathomePage {
 
   }
 
-  nextState() {
-    this.state++;
+  nextStep() {
+    this.step++;
   }
 
-  prevState() {
-    this.state--;
+  prevStep() {
+    this.step--;
   }
 
   PressYes() {
@@ -254,7 +147,7 @@ export class NotathomePage {
 
   PressNo() {
     this.someOneHome = false;
-    this.state++;
+    this.step++;
   }
 
   PressNoLeak() {
@@ -266,7 +159,7 @@ export class NotathomePage {
   }
 
   PressRealLeak() {
-    this.state++;
+    this.step++;
     this.task = setInterval(() => {
       this.refreshData();
     }, 300);

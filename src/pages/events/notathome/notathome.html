@@ -1,94 +1,98 @@
 <ion-header>
-    <ion-navbar>
-      <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
+  </ion-navbar>
+</ion-header>
 
-  <ion-content>
-    <ion-item text-wrap text-center>
-        <h1>I am not at home</h1><h2>Leak detected at {{currentEvent.timestamp}}<br>Suggestions for actions (Step {{state+1}}/3):</h2>
-    </ion-item>
-    <ion-item text-wrap text-center  [hidden]="state!=0">
-      <div *ngIf="!someOneHome">
-        Is there someone around the property you can contact to inquire?
-        <br>
-        <button ion-button ion-content item-center (click)="PressNo()">No</button>
-        <button ion-button ion-content item-center (click)="PressYes()">Yes</button>
+<ion-content>
+  <ion-item text-wrap text-center>
+    <h1>I am not at home</h1>
+    <h2>Leak detected at {{currentEvent.timestamp}}<br>Suggestions for actions (Step {{step+1}}/3):</h2>
+  </ion-item>
+  <ion-item text-wrap text-center [hidden]="step!=0">
+    <div *ngIf="!someOneHome">
+      Is there someone around the property you can contact to inquire?
+      <br>
+      <button ion-button ion-content item-center (click)="PressNo()">No</button>
+      <button ion-button ion-content item-center (click)="PressYes()">Yes</button>
+    </div>
+    <div *ngIf="someOneHome">
+      is this a real leak (or normal water usage)?
+      <br>
+      <button ion-button ion-content item-center (click)="PressNoLeak()">normal usage</button>
+      <button ion-button ion-content item-center (click)="PressRealLeak()">LEAK</button>
+      <br>
+      <button ion-button ion-content item-center (click)="PressNo()">no one is home</button>
+    </div>
+  </ion-item>
+  <ion-item text-wrap text-center [hidden]="step!=1">
+    <div [hidden]="someOneHome">
+      suggest to shut off the main valve
+      <div align="center">
+        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+          large>
+          <ion-icon name="aperture"></ion-icon>
+          shut off main valve
+        </button>
+        <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+          large>
+          <ion-icon name="aperture"></ion-icon>
+          main valve is shut off
+        </button>
       </div>
-      <div *ngIf="someOneHome">
-        is this a real leak (or normal water usage)?
-        <br>
-        <button ion-button ion-content item-center (click)="PressNoLeak()">normal usage</button>
-        <button ion-button ion-content item-center (click)="PressRealLeak()">LEAK</button>
-        <br>
-        <button ion-button ion-content item-center (click)="PressNo()">no one is home</button>
+    </div>
+    <div [hidden]="!someOneHome">
+      please request contact to Isolate / stop the leak source
+      <div align="center">
+        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+          large>
+          <ion-icon name="aperture"></ion-icon>
+          shut off main valve
+        </button>
+        <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+          large>
+          <ion-icon name="aperture"></ion-icon>
+          main valve is shut off
+        </button>
       </div>
-    </ion-item>
-    <ion-item text-wrap text-center [hidden]="state!=1">
-      <div [hidden]="someOneHome">
-        suggest to shut off the main valve
-        <div align="center">
-          <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValveOff()" large>
-              <ion-icon name="aperture"></ion-icon>
-            shut off main valve
-          </button>          
-          <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValveOff()" large>
-              <ion-icon name="aperture"></ion-icon>
-            main valve is shut off
+    </div>
+  </ion-item>
+  <ion-item>
+    <canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas>
+  </ion-item>
+  <ion-item text-wrap text-center [hidden]="step!=2">
+    offer a list of plumbers
+  </ion-item>
+  <div padding></div>
+  <div *ngIf="step!=0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <!-- empty design column to center buttons-->
+        </ion-col>
+        <ion-col>
+          <button ion-button ion-content item-center icon-start (click)="prevStep()" large>
+            <ion-icon name="arrow-dropleft"></ion-icon>
+            <i>
+              Previous
+            </i>
           </button>
-          <br>
-          <canvas #valveOffCanvas></canvas>
-        </div>
-      </div>
-      <div [hidden]="!someOneHome">
-        please request contact to Isolate / stop the leak source
-        <div align="center">
-          <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
-              <ion-icon name="aperture"></ion-icon>
-            shut off main valve
-          </button>          
-          <button ion-button ion-content item-center icon-start color="danger" [hidden]="!valveStatus" (click)="shutValve()" large>
-              <ion-icon name="aperture"></ion-icon>
-            main valve is shut off
+        </ion-col>
+        <ion-col>
+          <!-- empty design column to center buttons-->
+        </ion-col>
+        <ion-col>
+          <button ion-button ion-content item-center icon-end (click)="nextStep()" [disabled]="step == 2" large>
+            <i>
+              Next
+            </i>
+            <ion-icon name="arrow-dropright"> </ion-icon>
           </button>
-        <br>
-        <canvas #sourceOffCanvas></canvas>
-        </div>
-      </div>
-    </ion-item>
-    <ion-item text-wrap text-center [hidden]="state!=2">
-        offer a list of plumbers
-    </ion-item>
-      <div padding></div>
-      <div *ngIf="state!=0">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <!-- empty design column to center buttons-->
-          </ion-col>
-          <ion-col>
-            <button ion-button ion-content item-center icon-start (click)="prevState()" large>
-              <ion-icon name="arrow-dropleft"></ion-icon>
-              <i>
-                Previous
-              </i>
-            </button>
-          </ion-col>
-          <ion-col>
-              <!-- empty design column to center buttons-->
-          </ion-col>
-          <ion-col>
-            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="state == 2" large>
-              <i>
-                Next
-              </i>
-              <ion-icon name="arrow-dropright"> </ion-icon>
-            </button>
-          </ion-col>
-          <ion-col>
-            <!-- empty design column to center buttons-->
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      </div>
-  </ion-content>
+        </ion-col>
+        <ion-col>
+          <!-- empty design column to center buttons-->
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
