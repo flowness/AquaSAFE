@@ -7,9 +7,9 @@
   <ion-content>
     <ion-item text-wrap text-center>
       <!-- <h1>I can see the leak</h1> -->
-      <h2>Leak detected at {{currentEvent.timestamp}}<br>Suggestions for actions (Step {{wizardState+1}}/3):</h2>
+      <h2>Leak detected at {{currentEvent.timestamp}}<br>Suggestions for actions (Step {{step+1}}/3):</h2>
     </ion-item>
-    <ion-item text-wrap text-center item-content [hidden]="wizardState!=0">
+    <ion-item text-wrap text-center item-content [hidden]="step!=0">
         Isolate / stop the leak source
         <div align="center">
             <button ion-button ion-content item-center icon-start [hidden]="valveStatus" (click)="shutValve()" large>
@@ -24,7 +24,7 @@
         <br>
         <div align="center"><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
       </ion-item>
-        <ion-item text-wrap text-center [hidden]="wizardState!=1">
+        <ion-item text-wrap text-center [hidden]="step!=1">
           To records the leakage
           <button ion-button ion-content item-center icon-start (click)="takePicture()">
             <ion-icon name="camera"></ion-icon>
@@ -35,7 +35,7 @@
           <img [src]="base64Image" *ngIf="base64Image" />
           </div>
         </ion-item>
-        <ion-item text-wrap text-center [hidden]="wizardState!=2">
+        <ion-item text-wrap text-center [hidden]="step!=2">
             offer a list of plumbers
         </ion-item>
 
@@ -47,7 +47,7 @@
             <!-- empty design column to center buttons-->
           </ion-col>
           <ion-col>
-            <button ion-button ion-content item-center icon-start (click)="prevState()" [disabled]="wizardState == 0" large>
+            <button ion-button ion-content item-center icon-start (click)="prevStep()" [disabled]="step == 0" large>
               <ion-icon name="arrow-dropleft"></ion-icon>
               <i>
                 Previous
@@ -58,13 +58,13 @@
               <!-- empty design column to center buttons-->
           </ion-col>
           <ion-col>
-            <button ion-button ion-content item-center icon-end (click)="nextState()" [disabled]="wizardState == 2" large [hidden]="wizardState==1">
+            <button ion-button ion-content item-center icon-end (click)="nextStep()" [disabled]="step == 2" large [hidden]="step==1">
               <i>
                 Next
               </i>
               <ion-icon name="arrow-dropright"> </ion-icon>
             </button>
-            <button ion-button ion-content item-center icon-end (click)="plumbers()" [disabled]="wizardState == 2" large [hidden]="wizardState!=1">
+            <button ion-button ion-content item-center icon-end (click)="plumbers()" [disabled]="step == 2" large [hidden]="step!=1">
               <i>
                 Plumbers
               </i>

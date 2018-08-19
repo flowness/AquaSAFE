@@ -20,13 +20,10 @@ import { PlumbersPage } from "../../plumbers/plumbers";
 export class IsALeakPage {
   public base64Image: string;
   public currentEvent: asEvent;
-  public wizardState: number = 0;
+  public step: number = 0;
   private chart: Chart;
   private task: number;
-  private taskValve: any;
-  valveStatus: number = 0;
   private endTappingValue: number;
-  private dataIndex: number = 0;
   private maxNumOfPoints: number = 12;
 
   @ViewChild(Navbar) navBar: Navbar;
@@ -105,68 +102,42 @@ export class IsALeakPage {
 
     this.task = setInterval(() => {
       this.refreshData();
-    }, 300);
+    }, 1500);
 
   }
 
-  refreshData(): void {
-    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.endTappingValue) {
-      // let changeData = Math.floor(Math.random() * 5);
-      // if (currentData - changeData < this.endTappingValue) {
-      //   changeData = currentData - this.endTappingValue;
-      // }
-      this.chart.data.datasets[0].data[this.dataIndex] = currentData;
-      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
-    } else {
-      this.chart.data.datasets[0].data.push(this.endTappingValue);
+  ionViewDidLeave() : void {
+    clearInterval(this.task);
+  }
 
-      if (this.chart.data.datasets[0].data[0] != this.endTappingValue) {
-        this.chart.data.datasets[0].data.shift();
-      } else {
-        clearInterval(this.task);
-      }
-    }
+  private refreshData(): void {
+    let currentFlow: number = this.modelService.getCurrentFlow();
+    console.log("current flow = " + currentFlow);
+    this.chart.data.datasets[0].data.push(currentFlow);
+    this.chart.data.labels[this.chart.data.datasets[0].data.length] = this.chart.data.datasets[0].data.length.toString()
+
     if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
       this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
-      this.dataIndex = this.maxNumOfPoints - 1;
     }
+    console.dir(this.chart.data.datasets[0].data);
     this.chart.update(0);
-  }
-
-  refreshDataValve(): void {
-    this.chart.data.datasets[0].data.push(0);
-    if (this.chart.data.datasets[0].data[0] != 0) {
-      this.chart.data.datasets[0].data.shift();
-    }
-    else {
-      clearInterval(this.taskValve);
-    }
-    this.chart.update(0);
-
   }
 
   updateCurrentValue(): void {
     console.log("***tap");
-    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
+    let currentData: number = this.modelService.getCurrentFlow();
     if (currentData > this.endTappingValue) {
-      let changeData = Math.floor(Math.random() * 10);
-      if (currentData - changeData < this.endTappingValue) {
-        changeData = currentData - this.endTappingValue;
-      }
-      this.modelService.setCurrentFlow(currentData - changeData);
-      this.chart.data.datasets[0].data[this.dataIndex] = this.modelService.getCurrentFlow();
-      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+      let changeData = Math.floor(Math.random() * 8) + 2;
+      this.modelService.setCurrentFlow(Math.max(currentData - changeData, this.endTappingValue));
     }
   }
 
-
-  nextState(): void {
-    this.wizardState++;
+  nextStep(): void {
+    this.step++;
   }
 
-  prevState(): void {
-    this.wizardState--;
+  prevStep(): void {
+    this.step--;
   }
 
   plumbers(): void {
@@ -182,18 +153,12 @@ export class IsALeakPage {
           text: "No",
           handler: () => {
             console.log("No clicked");
-            this.valveStatus = 0;
           }
         },
         {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked.");
-            this.valveStatus = 1;
-            clearInterval(this.task);
-            this.taskValve = setInterval(() => {
-              this.refreshDataValve();
-            }, 300);
             this.modelService.toggleAllValves(false);
           }
         }
