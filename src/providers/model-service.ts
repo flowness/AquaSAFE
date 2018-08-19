@@ -76,7 +76,7 @@ export class ModelService {
 
   public getShutOffValveStatus(): boolean {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type ==  ModuleType.VS100) {
+      if (this.modules[index].type ===  ModuleType.VS100) {
         return this.modules[index].valve;
       }
     }
@@ -103,7 +103,7 @@ export class ModelService {
 
   public toggleAllValves(valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type ==  ModuleType.VS100) {
+      if (this.modules[index].type ===  ModuleType.VS100) {
         this.modules[index].valve = valveValue;
         this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
@@ -126,7 +126,7 @@ export class ModelService {
       let isValveOpen = true;
       for (let index = 0; index < this.modules.length; index++) {
         this.modules[index].state = "All Good";
-        if (this.modules[index].type == ModuleType.VS100) {
+        if (this.modules[index].type === ModuleType.VS100) {
           isValveOpen = this.modules[index].valve;
         }
       }
@@ -155,7 +155,7 @@ export class ModelService {
         this.status = "leak";
         this.setCurrentFlow(19);
         for (let index = 0; index < this.modules.length; index++) {
-          if (this.modules[index].type == ModuleType.MP100) {
+          if (this.modules[index].type === ModuleType.MP100) {
             this.modules[index].state = "Leak Detected";
             this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
           }
