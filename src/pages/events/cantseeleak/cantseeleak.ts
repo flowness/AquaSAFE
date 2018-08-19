@@ -17,14 +17,10 @@ import { ModelService } from "../../../providers/model-service";
 })
 export class CantseeLeakPage {
   currentEvent: asEvent;
-  state: number = 0;
+  step: number = 0;
   private endTappingValue: number;
-  private dataIndex: number = 0;
   private chart: Chart;
   private task: number;
-  private valveOffChart: Chart;
-  private taskValve: number;
-  valveStatus: number = 0;
   private maxNumOfPoints: number = 12;
 
   @ViewChild(Navbar) navBar: Navbar;
@@ -83,13 +79,11 @@ export class CantseeLeakPage {
       }
     }
 
-    this.valveOffChart = new Chart(this.valveOffCanvas.nativeElement, chartDefine);
-
     this.chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
 
     this.task = setInterval(() => {
       this.refreshData();
-    }, 1000);
+    }, 1500);
 
   }
 
@@ -98,68 +92,37 @@ export class CantseeLeakPage {
   }
 
   private refreshData(): void {
-    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
-    if (currentData > this.endTappingValue) {
-      // this.modelService.setCurrentFlow(currentData);
-      this.chart.data.datasets[0].data[this.dataIndex] = currentData;
-      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
-    } else {
-      this.chart.data.datasets[0].data.push(this.endTappingValue);
+    let currentFlow: number = this.modelService.getCurrentFlow();
+    console.log("current flow = " + currentFlow);
+    this.chart.data.datasets[0].data.push(currentFlow);
+    this.chart.data.labels[this.chart.data.datasets[0].data.length] = this.chart.data.datasets[0].data.length.toString()
 
-      if (this.chart.data.datasets[0].data[0] != this.endTappingValue) {
-        this.chart.data.datasets[0].data.shift();
-      } else {
-        clearInterval(this.task);
-      }
-    }
-    // console.log("****** " + this.Chart.data.datasets[0].data);
     if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
       this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
-      this.dataIndex = this.maxNumOfPoints - 1;
     }
-    // console.log("------ " + this.Chart.data.datasets[0].data);
-    this.valveOffChart.data = this.chart.data;
+    console.dir(this.chart.data.datasets[0].data);
     this.chart.update(0);
-    this.valveOffChart.update(0);
   }
 
   updateCurrentValue(): void {
     console.log("***tap");
-    let currentData: number = this.chart.data.datasets[0].data[this.dataIndex++];
+    let currentData: number = this.modelService.getCurrentFlow();
     if (currentData > this.endTappingValue) {
-      let changeData = Math.floor(Math.random() * 10);
-      if (currentData - changeData < this.endTappingValue) {
-        changeData = currentData - this.endTappingValue;
-      }
-      this.modelService.setCurrentFlow(currentData - changeData);
-      this.chart.data.datasets[0].data[this.dataIndex] = this.modelService.getCurrentFlow();
-      this.chart.data.labels[this.dataIndex] = this.dataIndex.toString();
+      let changeData = Math.floor(Math.random() * 8) + 2;
+      this.modelService.setCurrentFlow(Math.max(currentData - changeData, this.endTappingValue));
     }
   }
 
   text(): string {
-    return this.chart != undefined && this.chart!=null && this.chart.data.datasets[0].data[this.dataIndex] === 0 ? "Seems like the water flow stopped:" : "If there is still some flow suggest to:";
+    return this.modelService.getCurrentFlow() === 0 ? "Seems like the water flow stopped:" : "If there is still some flow suggest to:";
   }
 
-  refreshDataValve(): void {
-    this.valveOffChart.data.datasets[0].data.push(0);
-    if (this.valveOffChart.data.datasets[0].data[0] != 0) {
-      this.valveOffChart.data.datasets[0].data.shift();
-    } else {
-      clearInterval(this.taskValve);
-    }
-    this.chart.data = this.valveOffChart.data;
-    this.chart.update(0);
-    this.valveOffChart.update(0);
-
+  nextStep(): void {
+    this.step++;
   }
 
-  nextState(): void {
-    this.state++;
-  }
-
-  prevState(): void {
-    this.state--;
+  prevStep(): void {
+    this.step--;
   }
 
   nextButtonString(step: number): string {
@@ -175,18 +138,12 @@ export class CantseeLeakPage {
           text: "No",
           handler: () => {
             console.log("No clicked");
-            this.valveStatus = 0;
           }
         },
         {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked.");
-            this.valveStatus = 1;
-            clearInterval(this.task);
-            this.taskValve = setInterval(() => {
-              this.refreshDataValve();
-            }, 300);
             this.modelService.toggleAllValves(false);
           }
         }
