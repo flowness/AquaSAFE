@@ -2,6 +2,7 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
+      <ion-badge *ngIf="modelService.getCountOpenEvents() > 0">{{modelService.getCountOpenEvents()}}</ion-badge>
     </button>
     <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
   </ion-navbar>
@@ -13,12 +14,16 @@
     <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
       <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item>
       <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item>
+      <ion-item no-lines class="header-status-alert-ind">
+        Current Flow: {{modelService.getCurrentFlow()}}
+      </ion-item>
     </ion-item>
     <ion-list>
       <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
         <ion-icon [name]="module.icon" item-start></ion-icon>
         <ion-label>{{module.title}}</ion-label>
-        <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)" item-content></ion-toggle>
+        <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)"
+          item-content></ion-toggle>
         <div class="item-note" item-end>
           {{module.state}}
         </div>
@@ -30,10 +35,12 @@
     <div>
       <ion-item class="header-status leak">
         <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
+        <!-- <ion-badge>Press For Help</ion-badge> -->
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}
           <br>Detection Time: {{modelService.getLatestOpenEvent().timestamp}}
-          <br>Leak Size: {{modelService.getCurrentFlow()}} ({{modelService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow() > 5 ? "Decent Leak" : "Small Leak"}})
+          <br>Current Flow: {{modelService.getCurrentFlow()}} ({{modelService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow()
+          > 5 ? "Decent Leak" : "Small Leak"}})
         </ion-item>
       </ion-item>
       <ion-item text-center>Your response is important</ion-item>
@@ -41,19 +48,19 @@
         <ion-row justify-content-around>
           <ion-col text-center style="background-color:rgb(214, 35, 35)" (click)="eventItemTapped($event, 103)">
             <img src='assets/imgs/crying-50.png' item-start/>
-            <ion-item text-center style="background-color:rgb(214, 35, 35)" >I see a leak!</ion-item>
+            <ion-item text-center style="background-color:rgb(214, 35, 35)">I see a leak!</ion-item>
             <h6>Get guidnace during a real visible leak</h6>
           </ion-col>
           <ion-col text-center style="background-color:rgb(76, 179, 76)" (click)="eventItemTapped($event, 100)">
-              <img src='assets/imgs/cool-52.png' item-start/>
-              <ion-item text-center style="background-color:rgb(76, 179, 76)">Not A Leak</ion-item>
-              <h6>The mentioned water flow was caused by valid water consumption</h6>
+            <img src='assets/imgs/cool-52.png' item-start/>
+            <ion-item text-center style="background-color:rgb(76, 179, 76)">Not A Leak</ion-item>
+            <h6>The mentioned water flow was caused by valid water consumption</h6>
           </ion-col>
         </ion-row>
         <ion-row justify-content-around style="background-color:lightyellow">
           <ion-col text-center (click)="eventItemTapped($event, 102)">
             <img src='assets/imgs/sad-50.png' item-start/>
-            <ion-item text-center  style="background-color:lightyellow">I am not at home</ion-item>
+            <ion-item text-center style="background-color:lightyellow">I am not at home</ion-item>
             <h6>Get guidnace when you are not currently at home</h6>
           </ion-col>
           <ion-col text-center style="background-color:lightyellow" (click)="eventItemTapped($event, 101)">

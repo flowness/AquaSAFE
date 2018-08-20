@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, Platform } from "ionic-angular";
 import { HomePage } from "../../home/home";
+import { ModelService } from "../../../providers/model-service";
 
 /**
  * Generated class for the MenuStatisticsPage page.
@@ -17,7 +18,7 @@ import { HomePage } from "../../home/home";
 export class StatisticsPage {
   private unregisterFunc: Function;
 
-  constructor(public navCtrl: NavController, platform: Platform) {
+  constructor(public navCtrl: NavController, platform: Platform, public modelService: ModelService) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
     });

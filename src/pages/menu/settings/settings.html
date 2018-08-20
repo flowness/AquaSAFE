@@ -2,6 +2,7 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
+      <ion-badge *ngIf="modelService.getCountOpenEvents() > 0">{{modelService.getCountOpenEvents()}}</ion-badge>
     </button>
     <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
   </ion-navbar>

@@ -18,7 +18,7 @@
     <ion-list-header>
       <h2>Event Type: {{asEvent.type}}</h2>
       <h2>Event Date: {{asEvent.timestamp}}</h2>
-      <h2>Event Status: {{asEvent.open}}</h2>
+      <h2>Event Status: {{asEvent.open?"OPEN":"CLOSED"}}</h2>
     </ion-list-header>
     <ion-item *ngFor="let moment of asEvent.moments">
       <ion-label>

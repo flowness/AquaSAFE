@@ -80,6 +80,17 @@ export class ModelService {
     return this.events;
   }
 
+  public getCountOpenEvents(): number {
+    let count: number = 0;
+    for (let index = 0; index < this.events.length; index++) {
+      const element: asEvent = this.events[index];
+      if (element.open) {
+        count++;
+      }
+    }
+    return count;
+  }
+
   public getLatestOpenEvent(): asEvent {
     // console.log("getLatestOpenEvent");
     // console.dir(this.events);
@@ -302,7 +313,7 @@ export class ModelService {
     if (this.modules == null || !this.modelInited) {
       if (state === "leak") {
         this.setCurrentFlow(19);
-        this.addLeakageEventToModel("MP100", "04-07-2018 10:13");
+        this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
       }
 
       this.prepareSiteData(state);
