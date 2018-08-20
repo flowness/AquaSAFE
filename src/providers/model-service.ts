@@ -3,11 +3,11 @@ import { Injectable } from "../../node_modules/@angular/core";
 import { DateParsePipe } from "./date-parse-pipe";
 import { EventStatus, ModuleType } from "../lib/enums";
 import {
-  module,
   settings,
   asEvent,
   moduleData,
-  eventMoment
+  eventMoment,
+  module
 } from "../lib/interfaces";
 
 @Injectable()
@@ -231,10 +231,16 @@ export class ModelService {
         if (toStatus === EventStatus.CLOSED) {
           element.open = false;
         }
-        console.log("UNLIVE");
+        for (let j = 0; j < this.modules.length; j++) {
+          const module: module = this.modules[j];
+          if (module.type === ModuleType.MP100) {
+            module.state = "All Good";
+          }
+          console.log("UNLIVE");
+        }
       }
+      this.events = this.sortEvents(this.events, false);
     }
-    this.events = this.sortEvents(this.events, false);
   }
 
   /* Sets data with returned JSON array */
@@ -270,13 +276,13 @@ export class ModelService {
     }
     console.log(
       "System status: live:" +
-        hasLiveEvent +
-        " , open:" +
-        hasOpenEvent +
-        ", valve:" +
-        isValveOpen +
-        ", allgood:" +
-        isAllGood
+      hasLiveEvent +
+      " , open:" +
+      hasOpenEvent +
+      ", valve:" +
+      isValveOpen +
+      ", allgood:" +
+      isAllGood
     );
     if (hasLiveEvent) {
       this.status = "leak";
