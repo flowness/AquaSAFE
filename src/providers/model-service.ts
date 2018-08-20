@@ -2,36 +2,53 @@ import { DataFinder } from "./data-finder";
 import { Injectable } from "../../node_modules/@angular/core";
 import { DateParsePipe } from "./date-parse-pipe";
 import { EventStatus, ModuleType } from "../lib/enums";
-import { module, settings, asEvent, moduleData, eventMoment } from "../lib/interfaces";
+import {
+  module,
+  settings,
+  asEvent,
+  moduleData,
+  eventMoment
+} from "../lib/interfaces";
 
 @Injectable()
 export class ModelService {
+  private modelInited: boolean;
+
   private modules: module[];
   private status: string;
   private settings: settings;
   private currentFlow: number = 0;
-  private modelInited: boolean;
   private events: asEvent[] = [];
 
-  private icons: string[] = ["build", "water", "aperture", "cloud-outline", "wifi"];
-  private devices: string[] = ["MP100 Leak Sensor", "FD100 Flood detector", "VS100 Valve shutoff", "BS100 Base Station", "R100 RF repeater"];
-  private statuses: string[] = ["Low Battery", "Tamper", "Communication", "All Good"];
+  private icons: string[] = [
+    "build",
+    "water",
+    "aperture",
+    "cloud-outline",
+    "wifi"
+  ];
+  private devices: string[] = [
+    "MP100 Leak Sensor",
+    "FD100 Flood detector",
+    "VS100 Valve shutoff",
+    "BS100 Base Station",
+    "R100 RF repeater"
+  ];
+  private statuses: string[] = [
+    "Low Battery",
+    "Tamper",
+    "Communication",
+    "All Good"
+  ];
 
-  constructor(public dataFinder: DataFinder, public dateParsePipe: DateParsePipe) {
+  constructor(
+    public dataFinder: DataFinder,
+    public dateParsePipe: DateParsePipe
+  ) {
     console.log("constructor model-service");
     this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
       this.setEventsData(data);
     });
-  }
-
-  /* Sets data with returned JSON array */
-  private setEventsData(data: any): void {
-    console.log("events length1 = " + this.events.length);
-    for (let index = 0; index < data.length; index++) {
-      this.events.push(data[index]);
-    }
-    this.events = this.sortEvents(this.events, false);
-    console.log("events length2 = " + this.events.length);
   }
 
   public getStatus(): string {
@@ -76,7 +93,7 @@ export class ModelService {
 
   public getShutOffValveStatus(): boolean {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type ===  ModuleType.VS100) {
+      if (this.modules[index].type === ModuleType.VS100) {
         return this.modules[index].valve;
       }
     }
@@ -86,31 +103,35 @@ export class ModelService {
   public setCurrentFlow(f: number): void {
     console.log("setting current flow: " + f);
     this.currentFlow = f;
+    if (f === 0) {
+      this.unliveAnyLiveEvent("flow stopped");
+    }
+    this.updateSystemStatus();
   }
 
   public toggleValve(sn: string, valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
       if (this.modules[index].sn == sn) {
         this.modules[index].valve = valveValue;
-        this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
           this.setCurrentFlow(0);
         }
-        return;
+        break;
       }
     }
+    this.updateSystemStatus();
   }
 
   public toggleAllValves(valveValue: boolean): void {
     for (let index = 0; index < this.modules.length; index++) {
-      if (this.modules[index].type ===  ModuleType.VS100) {
+      if (this.modules[index].type === ModuleType.VS100) {
         this.modules[index].valve = valveValue;
-        this.changeStateAccordingToValve(valveValue);
         if (!valveValue) {
           this.setCurrentFlow(0);
         }
       }
     }
+    this.updateSystemStatus();
   }
 
   // private updateModel(module, property) {
@@ -123,18 +144,27 @@ export class ModelService {
 
   public updateModelSetAllGood() {
     if (this.modules != null) {
-      let isValveOpen = true;
       for (let index = 0; index < this.modules.length; index++) {
         this.modules[index].state = "All Good";
-        if (this.modules[index].type === ModuleType.VS100) {
-          isValveOpen = this.modules[index].valve;
-        }
       }
-      this.status = isValveOpen ? "good" : "warn";
+      this.updateSystemStatus();
     }
   }
 
-  public updateSettings(settingsItemTitle: string, settingsItemValue: boolean): void {
+  public getModuleData(sn: string): moduleData {
+    return {
+      sn: sn,
+      lastReading: new Date(),
+      address: "Haadarim St. Talmaz",
+      batteryStatus: Math.floor(Math.random() * 100),
+      tempC: Math.floor(Math.random() * 50) - 10
+    };
+  }
+
+  public updateSettings(
+    settingsItemTitle: string,
+    settingsItemValue: boolean
+  ): void {
     if (this.modules != null) {
       //set the settings object
       if (settingsItemTitle === "Leakage Alert") {
@@ -152,7 +182,6 @@ export class ModelService {
 
       // if we are here need to set leakage or warn
       if (settingsItemTitle === "Leakage Alert") {
-        this.status = "leak";
         this.setCurrentFlow(19);
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === ModuleType.MP100) {
@@ -162,12 +191,83 @@ export class ModelService {
         }
       }
       if (settingsItemTitle === "Irregularity Alert") {
-        this.status = "warn";
         for (let index = 0; index < this.modules.length; index++) {
-          this.modules[index].state = this.statuses[Math.floor(Math.random() * this.statuses.length)];
+          this.modules[index].state = this.statuses[
+            Math.floor(Math.random() * this.statuses.length)
+          ];
         }
       }
+      this.updateSystemStatus();
     }
+  }
+
+  private unliveAnyLiveEvent(title: string) {
+    for (let index = 0; index < this.events.length; index++) {
+      const element = this.events[index];
+      if (element.status === EventStatus.LIVE) {
+        let moment: eventMoment = {
+          title: title,
+          timestamp: this.formatDate(new Date()),
+          initiator: "MP100"
+        };
+        element.moments.push(moment);
+        element.status = EventStatus.OPEN;
+        console.log("UNLIVE");
+      }
+    }
+    this.events = this.sortEvents(this.events, false);
+  }
+
+  /* Sets data with returned JSON array */
+  private setEventsData(data: any): void {
+    console.log("events length1 = " + this.events.length);
+    for (let index = 0; index < data.length; index++) {
+      this.events.push(data[index]);
+    }
+    this.events = this.sortEvents(this.events, false);
+    console.log("events length2 = " + this.events.length);
+  }
+
+  private updateSystemStatus() {
+    let isAllGood: boolean = true;
+    let isValveOpen: boolean = true;
+    var hasLiveEvent: boolean = false;
+    let hasOpenEvent: boolean = false;
+    for (let index = 0; index < this.modules.length; index++) {
+      if (this.modules[index].state != "All Good") {
+        isAllGood = false;
+      }
+      if (this.modules[index].type === ModuleType.VS100) {
+        isValveOpen = this.modules[index].valve;
+      }
+    }
+    for (let index = 0; index < this.events.length; index++) {
+      if (this.events[index].open) {
+        hasOpenEvent = true;
+      }
+      if (this.events[index].status == EventStatus.LIVE) {
+        hasLiveEvent = true;
+      }
+    }
+    console.log(
+      "System status: live:" +
+        hasLiveEvent +
+        " , open:" +
+        hasOpenEvent +
+        ", valve:" +
+        isValveOpen +
+        ", allgood:" +
+        isAllGood
+    );
+    if (hasLiveEvent) {
+      this.status = "leak";
+      return;
+    }
+    if (hasOpenEvent || !isValveOpen || !isAllGood) {
+      this.status = "warn";
+      return;
+    }
+    this.status = "good";
   }
 
   private prepareData(): void {
@@ -193,29 +293,15 @@ export class ModelService {
 
     if (this.modules == null || !this.modelInited) {
       if (state === "leak") {
-        this.status = "leak";
         this.setCurrentFlow(19);
         this.addLeakageEventToModel("MP100", "04-07-2018 10:13");
-      } else if (state === "warn") {
-        this.status = "warn";
-      } else {
-        this.status = "good";
       }
 
-      this.prepareSiteData();
+      this.prepareSiteData(state);
       // this.prepareEvents();
       this.modelInited = true;
     }
-  }
-
-  public getModuleData(sn: string): moduleData {
-    return {
-      sn: sn,
-      lastReading: new Date(),
-      address: 'Haadarim St. Talmaz',
-      batteryStatus: Math.floor(Math.random() * 100),
-      tempC: Math.floor(Math.random() * 50) - 10
-    }
+    this.updateSystemStatus();
   }
 
   private formatDate(date: Date): string {
@@ -224,28 +310,38 @@ export class ModelService {
     var curr_year = date.getFullYear();
     let curr_hour = date.getHours();
     var curr_min = date.getMinutes();
-    return this.prefixZeroIfNeeded(curr_date) + "-" + this.prefixZeroIfNeeded(curr_month) + "-" + curr_year + " " + this.prefixZeroIfNeeded(curr_hour) + ":" + this.prefixZeroIfNeeded(curr_min);
+    return (
+      this.prefixZeroIfNeeded(curr_date) +
+      "-" +
+      this.prefixZeroIfNeeded(curr_month) +
+      "-" +
+      curr_year +
+      " " +
+      this.prefixZeroIfNeeded(curr_hour) +
+      ":" +
+      this.prefixZeroIfNeeded(curr_min)
+    );
   }
 
   private prefixZeroIfNeeded(s: number): string {
-    return (s < 10) ? "0" + s : "" + s;
+    return s < 10 ? "0" + s : "" + s;
   }
 
-  private prepareSiteData(): void {
+  private prepareSiteData(configuredStatus: string): void {
     let modules: module[] = [];
     // types 0=MP100, 1=FD100, 2=VS100
-    modules.push(this.getModule(ModuleType.MP100));
-    modules.push(this.getModule(ModuleType.VS100));
-    modules.push(this.getModule(ModuleType.FD100));
-    modules.push(this.getModule(ModuleType.FD100));
-    modules.push(this.getModule(ModuleType.FD100));
-    modules.push(this.getModule(ModuleType.FD100));
+    modules.push(this.getModule(ModuleType.MP100, configuredStatus));
+    modules.push(this.getModule(ModuleType.VS100, configuredStatus));
+    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
 
     this.modules = modules;
   }
 
-  private getModule(type: ModuleType): module {
-    let status = this.getModuleStatusByTypeAndSystemStatus(type);
+  private getModule(type: ModuleType, configuredStatus: string): module {
+    let status = this.getModuleStatusByTypeAndSystemStatus(type, configuredStatus);
     return {
       title: this.devices[type],
       state: status,
@@ -253,14 +349,16 @@ export class ModelService {
       type: type,
       valve: true,
       sn: this.getRandomSN(type)
-    }
+    };
   }
 
-  private getModuleStatusByTypeAndSystemStatus(moduleType: ModuleType): string {
-    if (moduleType == ModuleType.MP100 && this.status === "leak") {
+  private getModuleStatusByTypeAndSystemStatus(moduleType: ModuleType, configuredStatus: string): string {
+    if (moduleType == ModuleType.MP100 && configuredStatus === "leak") {
       return "Leak Detected";
     } else {
-      return (this.status != "warn" ? "All Good" : this.statuses[Math.floor(Math.random() * this.statuses.length)]);
+      return configuredStatus != "warn"
+        ? "All Good"
+        : this.statuses[Math.floor(Math.random() * this.statuses.length)];
     }
   }
 
@@ -278,11 +376,12 @@ export class ModelService {
       title: "detection",
       timestamp: date,
       initiator: indicator
-    }
+    };
     let event: asEvent = {
       title: "Leak Detection",
       timestamp: date,
       type: "leak",
+      open: true,
       status: EventStatus.LIVE,
       moments: [moment]
     };
@@ -291,28 +390,16 @@ export class ModelService {
     console.dir(this.events);
   }
 
-  private isAllGood(): boolean {
-    if (this.modules != null) {
-      for (let index = 0; index < this.modules.length; index++) {
-        if (this.modules[index].state != "All Good") {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  private changeStateAccordingToValve(valveValue: boolean): void {
-    if (valveValue) {
-      if (this.isAllGood()) {
-        this.status = "good";
-      }
-    } else {
-      if (this.status === "good") {
-        this.status = "warn"
-      }
-    }
-  }
+  // private isAllGood(): boolean {
+  //   if (this.modules != null) {
+  //     for (let index = 0; index < this.modules.length; index++) {
+  //       if (this.modules[index].state != "All Good") {
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // }
 
   private sortEvents(events: asEvent[], asc: boolean = true): asEvent[] {
     let result: asEvent[] = [];
@@ -346,7 +433,9 @@ export class ModelService {
 
   private getEffectiveDate(event: asEvent): Date {
     // console.log("date0= " + event.moments[0].timestamp);
-    let res = this.dateParsePipe.transform(event.moments[event.moments.length - 1].timestamp);
+    let res = this.dateParsePipe.transform(
+      event.moments[event.moments.length - 1].timestamp
+    );
     // console.log("date3= " + res);
     return res;
   }

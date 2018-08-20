@@ -1,4 +1,4 @@
-import { ModuleType } from "./enums";
+import { ModuleType, EventStatus } from "./enums";
 
 export interface module {
     title: string,
@@ -26,7 +26,8 @@ export interface asEvent {
     title: string,
     timestamp: string,
     type: string,
-    status: number,
+    open: boolean,
+    status: EventStatus,
     moments: eventMoment[]
 }
 

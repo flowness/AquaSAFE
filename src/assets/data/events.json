@@ -3,6 +3,7 @@
         "title": "Leak Detection",
         "timestamp": "07-08-2018 14:54",
         "type": "leak",
+        "open": false,
         "status": 3,
         "moments": [
             {
@@ -31,6 +32,7 @@
         "title": "Leak Detection",
         "timestamp": "07-06-2018 01:53",
         "type": "leak",
+        "open": false,
         "status": 3,
         "moments": [
             {
@@ -59,6 +61,7 @@
         "title": "Leak Detection",
         "timestamp": "07-04-2017 01:53",
         "type": "leak",
+        "open": false,
         "status": 3,
         "moments": [
             {
@@ -92,6 +95,7 @@
         "title": "Leak Detection",
         "timestamp": "07-07-2018 01:53",
         "type": "leak",
+        "open": false,
         "status": 3,
         "moments": [
             {
