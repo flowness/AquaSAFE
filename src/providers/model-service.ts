@@ -142,7 +142,12 @@ export class ModelService {
   //   }
   // }
 
-  public updateModelSetAllGood() {
+  public updateModelNotALeak() {
+    this.unliveAnyLiveEvent("User - not a leak", "User", EventStatus.CLOSED);
+    this.updateSystemStatus();
+  }
+
+  private updateModelSetAllGood() {
     if (this.modules != null) {
       for (let index = 0; index < this.modules.length; index++) {
         this.modules[index].state = "All Good";
@@ -201,17 +206,20 @@ export class ModelService {
     }
   }
 
-  private unliveAnyLiveEvent(title: string) {
+  private unliveAnyLiveEvent(title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.OPEN) {
     for (let index = 0; index < this.events.length; index++) {
-      const element = this.events[index];
+      const element: asEvent = this.events[index];
       if (element.status === EventStatus.LIVE) {
         let moment: eventMoment = {
           title: title,
           timestamp: this.formatDate(new Date()),
-          initiator: "MP100"
+          initiator: initiator
         };
         element.moments.push(moment);
-        element.status = EventStatus.OPEN;
+        element.status = toStatus;
+        if (toStatus === EventStatus.CLOSED) {
+          element.open = false;
+        }
         console.log("UNLIVE");
       }
     }

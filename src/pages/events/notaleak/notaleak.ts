@@ -125,7 +125,7 @@ export class NotALeakPage {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked");
-            this.modelService.updateModelSetAllGood();
+            this.modelService.updateModelNotALeak();
             this.navCtrl.pop();
           }
         }
@@ -143,7 +143,7 @@ export class NotALeakPage {
         {
           text: "OK",
           handler: () => {
-            this.modelService.updateModelSetAllGood();
+            this.modelService.updateModelNotALeak();
             this.navCtrl.pop();
           }
         }
