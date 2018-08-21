@@ -18,24 +18,13 @@
         Current Flow: {{modelService.getCurrentFlow()}}
       </ion-item>
     </ion-item>
-    <ion-list>
-      <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
-        <ion-icon [name]="module.icon" item-start></ion-icon>
-        <ion-label>{{module.title}}</ion-label>
-        <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)"
-          item-content></ion-toggle>
-        <div class="item-note" item-end>
-          {{module.state}}
-        </div>
-      </ion-item>
-    </ion-list>
   </div>
   <!-- LEAK status -->
   <ng-template #leak>
     <div>
       <ion-item class="header-status leak">
         <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
-        <!-- <ion-badge>Press For Help</ion-badge> -->
+        <ion-badge (click)="openHandleLeakPage()">Press For Help</ion-badge>
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}
           <br>Detection Time: {{modelService.getLatestOpenEvent().timestamp}}
@@ -43,75 +32,17 @@
           > 5 ? "Decent Leak" : "Small Leak"}})
         </ion-item>
       </ion-item>
-      <ion-item text-center>Your response is important</ion-item>
-      <ion-grid fixed>
-        <ion-row justify-content-around>
-          <ion-col text-center style="background-color:rgb(214, 35, 35)" (click)="eventItemTapped($event, 103)">
-            <img src='assets/imgs/crying-50.png' item-start/>
-            <ion-item text-center style="background-color:rgb(214, 35, 35)">I see a leak!</ion-item>
-            <h6>Get guidnace during a real visible leak</h6>
-          </ion-col>
-          <ion-col text-center style="background-color:rgb(76, 179, 76)" (click)="eventItemTapped($event, 100)">
-            <img src='assets/imgs/cool-52.png' item-start/>
-            <ion-item text-center style="background-color:rgb(76, 179, 76)">Not A Leak</ion-item>
-            <h6>The mentioned water flow was caused by valid water consumption</h6>
-          </ion-col>
-        </ion-row>
-        <ion-row justify-content-around style="background-color:lightyellow">
-          <ion-col text-center (click)="eventItemTapped($event, 102)">
-            <img src='assets/imgs/sad-50.png' item-start/>
-            <ion-item text-center style="background-color:lightyellow">I am not at home</ion-item>
-            <h6>Get guidnace when you are not currently at home</h6>
-          </ion-col>
-          <ion-col text-center style="background-color:lightyellow" (click)="eventItemTapped($event, 101)">
-            <img src='assets/imgs/sad-50.png' item-start/>
-            <ion-item text-center style="background-color:lightyellow">I do not see a leak</ion-item>
-            <h6>Get guidnace in case you are at home but see no leak</h6>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <!-- <ion-list>
-        <button ion-item (click)="eventItemTapped($event, 100)">
-          <img src='assets/imgs/cool-52.png' item-start/> Not A Leak
-          <div class="item-note" item-end>
-            Respond
-          </div>
-        </button>
-        <button ion-item (click)="eventItemTapped($event, 101)">
-          <img src='assets/imgs/sad-50.png' item-start/> I do not see a leak
-          <div class="item-note" item-end>
-            Quick Help
-          </div>
-        </button>
-        <button ion-item (click)="eventItemTapped($event, 102)">
-          <img src='assets/imgs/sad-50.png' item-start/> I am not at home
-          <div class="item-note" item-end>
-            Quick Help
-          </div>
-        </button>
-        <button ion-item (click)="eventItemTapped($event, 103)">
-          <img src='assets/imgs/crying-50.png' item-start/> I see a leak!
-          <div class="item-note" item-end>
-            Help!
-          </div>
-        </button>
-      </ion-list> -->
     </div>
   </ng-template>
-  <!-- <hr class="main-page-hr"/>
-  <div class="main-valve">
-    <div id="status-text">Main Valve</div>
-  </div>
-  <hr class="main-page-hr"/>
   <ion-list>
-    <button ion-item *ngFor="let item of modules" (click)="itemTapped($event, module)">
+    <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
       <ion-icon [name]="module.icon" item-start></ion-icon>
-      {{module.title}}
+      <ion-label>{{module.title}}</ion-label>
+      <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)"
+        item-content></ion-toggle>
       <div class="item-note" item-end>
         {{module.state}}
       </div>
-    </button>
-  </ion-list> -->
-
-  <!-- <button ion-button secondary menuToggle>Toggle Menu</button> -->
+    </ion-item>
+  </ion-list>
 </ion-content>

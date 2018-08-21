@@ -15,6 +15,7 @@ import { ModelService } from "../../providers/model-service";
 import { Page } from "ionic-angular/umd/navigation/nav-util";
 import { DataFinder } from "../../providers/data-finder";
 import { module } from "../../lib/interfaces";
+import { HandleLeakPage } from "../handle-leak/handle-leak";
 
 @Component({
   selector: "page-home",
@@ -60,6 +61,10 @@ export class HomePage {
       case 103:
         return IsALeakPage;
     }
+  }
+
+  openHandleLeakPage(): void {
+    this.navCtrl.push(HandleLeakPage);
   }
 
   handleToggleValveChange(checked: boolean, module: module): void {
