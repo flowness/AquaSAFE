@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, Platform } from "ionic-angular";
 import { HomePage } from "../../home/home";
 import { ModelService } from "../../../providers/model-service";
 import { EventPage } from "../../event/event";
+import { asEvent } from "../../../lib/interfaces";
+import { EventStatus } from "../../../lib/enums";
 
 /**
  * Generated class for the EventsPage page.
@@ -38,9 +40,17 @@ export class EventsPage {
     this.unregisterFunc();
   }
 
-  itemTapped(event, asEvent) {
+  itemTapped(event, asEvent: asEvent): void {
     this.navCtrl.push(EventPage, {
       event: asEvent
     });
+  }
+
+  isLiveEvent(e: asEvent): boolean {
+    return e.status === EventStatus.LIVE;
+  }
+
+  handleAsEvent(e: asEvent): void {
+    alert("soon to be filled. status: " + e.status);
   }
 }

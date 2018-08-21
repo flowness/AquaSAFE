@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { asEvent } from '../../lib/interfaces';
+import { EventStatus } from '../../lib/enums';
 
 /**
  * Generated class for the EventPage page.
@@ -27,4 +28,11 @@ export class EventPage {
     console.log('ionViewDidLoad EventPage');
   }
 
+  isLiveEvent(e: asEvent): boolean {
+    return e.status === EventStatus.LIVE;
+  }
+
+  handleAsEvent(e: asEvent): void {
+    alert("soon to be filled. status: " + e.status);
+  }
 }

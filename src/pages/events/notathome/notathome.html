@@ -29,12 +29,12 @@
     <div [hidden]="someOneHome">
       suggest to shut off the main valve
       <div align="center">
-        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.isSiteIncludeVs100() || !this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
           large>
           <ion-icon name="aperture"></ion-icon>
           shut off main valve
         </button>
-        <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+        <button ion-button ion-content item-center icon-start color="danger" [hidden]="!this.modelService.isSiteIncludeVs100() || this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
           large>
           <ion-icon name="aperture"></ion-icon>
           main valve is shut off
@@ -44,12 +44,12 @@
     <div [hidden]="!someOneHome">
       please request contact to Isolate / stop the leak source
       <div align="center">
-        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+        <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.isSiteIncludeVs100() || !this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
           large>
           <ion-icon name="aperture"></ion-icon>
           shut off main valve
         </button>
-        <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
+        <button ion-button ion-content item-center icon-start color="danger" [hidden]="!this.modelService.isSiteIncludeVs100() || this.modelService.getShutOffValveStatus()" (click)="shutValveOff()"
           large>
           <ion-icon name="aperture"></ion-icon>
           main valve is shut off

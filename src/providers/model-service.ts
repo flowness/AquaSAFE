@@ -177,6 +177,15 @@ export class ModelService {
     };
   }
 
+  public isSiteIncludeVs100(): boolean {
+    for (let index = 0; index < this.modules.length; index++) {
+      if (this.modules[index].type === ModuleType.VS100) {
+        return true;
+      }
+    }
+    return false;
+}
+
   public updateSettings(
     settingsItemTitle: string,
     settingsItemValue: boolean
@@ -217,7 +226,7 @@ export class ModelService {
     }
   }
 
-  private unliveAnyLiveEvent(title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.OPEN) {
+  private unliveAnyLiveEvent(title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.POST) {
     for (let index = 0; index < this.events.length; index++) {
       const element: asEvent = this.events[index];
       if (element.status === EventStatus.LIVE) {

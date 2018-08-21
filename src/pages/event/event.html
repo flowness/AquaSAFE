@@ -14,6 +14,10 @@
 
 
 <ion-content padding>
+  <button [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button
+    outline item-end>
+    {{isLiveEvent(asEvent) ? "Handle" : asEvent.open ? "Close" : "Update"}}
+  </button>
   <ion-list>
     <ion-list-header>
       <h2>Event Type: {{asEvent.type}}</h2>

@@ -9,7 +9,9 @@
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
-        <ion-badge *ngIf="p.title === 'Events' && modelService.getCountOpenEvents() > 0">{{modelService.getCountOpenEvents()}}</ion-badge>
+        <ion-badge *ngIf="(p.title === 'Events' && modelService.getCountOpenEvents() > 0) && (modelService.getStatus() === 'leak')"
+          color="danger">{{modelService.getCountOpenEvents()}}</ion-badge>
+        <ion-badge *ngIf="(p.title === 'Events' && modelService.getCountOpenEvents() > 0) && (modelService.getStatus() != 'leak')">{{modelService.getCountOpenEvents()}}</ion-badge>
       </button>
     </ion-list>
   </ion-content>

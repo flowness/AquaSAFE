@@ -8,7 +8,8 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <ion-badge *ngIf="modelService.getCountOpenEvents() > 0">{{modelService.getCountOpenEvents()}}</ion-badge>
+      <ion-badge *ngIf="(modelService.getCountOpenEvents() > 0) && (modelService.getStatus() === 'leak')" color="danger">{{modelService.getCountOpenEvents()}}</ion-badge>
+      <ion-badge *ngIf="(modelService.getCountOpenEvents() > 0) && (modelService.getStatus() != 'leak')">{{modelService.getCountOpenEvents()}}</ion-badge>
     </button>
     <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
   </ion-navbar>
@@ -20,10 +21,14 @@
             <h2> Events history</h2>
         </ion-list-header>
         <ion-item *ngFor="let asEvent of modelService.getEvents()" (click)="itemTapped($event, asEvent)">
-            <ion-icon [name]="asEvent.open ? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
+            <ion-icon item-start [name]="asEvent.open ? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
             <ion-label>
               {{asEvent.title}} {{asEvent.timestamp}}
             </ion-label>
+            <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> -->
+            <button *ngIf="asEvent.open" [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button outline item-end>
+              {{isLiveEvent(asEvent) ? "Handle" : "Close"}}
+            </button>
         </ion-item>
       </ion-list>
   </ion-content>

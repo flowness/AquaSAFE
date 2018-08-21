@@ -19,11 +19,11 @@
     {{ this.modelService.getCurrentFlow() === 0 ? 'Seems like the water flow stopped:' : 'If there is still some flow suggest
     to:' }}
     <div align="center">
-      <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.getShutOffValveStatus()" (click)="shutOffValve()" large>
+      <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.isSiteIncludeVs100() || !this.modelService.getShutOffValveStatus()" (click)="shutOffValve()" large>
         <ion-icon name="aperture"></ion-icon>
         shut off main valve
       </button>
-      <button ion-button ion-content item-center icon-start color="danger" [hidden]="this.modelService.getShutOffValveStatus()" (click)="shutOffValve()" large>
+      <button ion-button ion-content item-center icon-start color="danger" [hidden]="!this.modelService.isSiteIncludeVs100() || this.modelService.getShutOffValveStatus()" (click)="shutOffValve()" large>
         <ion-icon name="aperture"></ion-icon>
         main valve is shut off
       </button>

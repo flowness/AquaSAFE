@@ -3,7 +3,7 @@ export enum ModuleType {
 }
 
 export enum EventStatus {
-    LIVE, OPEN, COLD, CLOSED
+    LIVE, POST, COLD, CLOSED
 }
 
 export namespace EventStatus {
