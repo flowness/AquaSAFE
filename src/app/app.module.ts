@@ -36,6 +36,7 @@ import { HttpModule } from "@angular/http";
 import { DataFinder } from "../providers/data-finder";
 import { DateParsePipe } from "../providers/date-parse-pipe";
 import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
+import { EditEventPage } from "../pages/edit-event/edit-event";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
     CantseeLeakPage,
     PlumbersPage,
     EventPage,
-    HandleLeakPage
+    HandleLeakPage,
+    EditEventPage
   ],
   imports: [
     BrowserModule,
@@ -84,7 +86,8 @@ import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
     CantseeLeakPage,
     PlumbersPage,
     EventPage,
-    HandleLeakPage
+    HandleLeakPage,
+    EditEventPage
   ],
   providers: [
     StatusBar,

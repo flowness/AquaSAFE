@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { asEvent } from '../../lib/interfaces';
 import { EventStatus } from '../../lib/enums';
 import { HandleLeakPage } from '../handle-leak/handle-leak';
+import { EditEventPage } from '../edit-event/edit-event';
 
 /**
  * Generated class for the EventPage page.
@@ -19,7 +20,7 @@ import { HandleLeakPage } from '../handle-leak/handle-leak';
 export class EventPage {
   private asEvent: asEvent;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
     this.asEvent = navParams.get('event');
     console.log("event tapped");
     console.dir(this.asEvent);
@@ -40,8 +41,13 @@ export class EventPage {
         event: e
       });
     } else {
-      alert("soon to be filled. status: " + e.status);
+      // alert("soon to be filled. status: " + e.status);
+      this.openBasicModal();
     }
+  }
 
+  openBasicModal(): void {
+    let myModal = this.modalCtrl.create(EditEventPage);
+    myModal.present();
   }
 }
