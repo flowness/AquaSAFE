@@ -64,7 +64,7 @@ export class IsALeakPage {
       data: {
         labels: ["0"],
         datasets: [{
-          data: [19],
+          data: [this.modelService.getCurrentFlow()],
           borderWidth: 1,
           backgroundColor: "#0062ff",
         }]

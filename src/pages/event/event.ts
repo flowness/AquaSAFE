@@ -18,7 +18,7 @@ import { EditEventPage } from '../edit-event/edit-event';
   templateUrl: 'event.html',
 })
 export class EventPage {
-  private asEvent: asEvent;
+  asEvent: asEvent;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
     this.asEvent = navParams.get('event');

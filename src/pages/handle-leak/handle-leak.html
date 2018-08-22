@@ -7,14 +7,29 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>handleLeak</ion-title>
+    <ion-title>Handle Leak</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <!-- <ion-item text-center>Your response is important</ion-item> -->
+  <div><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
+  <ion-item text-wrap text-center item-content>
+    <div>
+      <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.isSiteIncludeVs100() || !this.modelService.getShutOffValveStatus()"
+        (click)="shutValve()" large>
+        <ion-icon name="aperture"></ion-icon>
+        shut off main valve
+      </button>
+      <button ion-button ion-content item-center icon-start color="danger" [hidden]="!this.modelService.isSiteIncludeVs100() || this.modelService.getShutOffValveStatus()"
+        (click)="shutValve()" large>
+        <ion-icon name="aperture"></ion-icon>
+        main valve is shut off
+      </button>
+    </div>
+    <br>
+  </ion-item>
   <ion-grid fixed>
     <ion-row justify-content-around>
       <ion-col text-center (click)="eventItemTapped($event, 103)">
@@ -28,18 +43,10 @@
         <h6>The mentioned water flow was caused by valid water consumption</h6>
       </ion-col>
     </ion-row>
-    <ion-row justify-content-around>
-      <ion-col text-center (click)="eventItemTapped($event, 102)">
-        <img src='assets/imgs/sad-50.png' item-start/>
-        <ion-item text-center>I am not at home</ion-item>
-        <h6>Get guidnace when you are not currently at home</h6>
-      </ion-col>
-      <ion-col text-center (click)="eventItemTapped($event, 101)">
-        <img src='assets/imgs/sad-50.png' item-start/>
-        <ion-item text-center>I do not see a leak</ion-item>
-        <h6>Get guidnace in case you are at home but see no leak</h6>
-      </ion-col>
-    </ion-row>
   </ion-grid>
+  <button ion-button ion-content item-center icon-start (click)="notAtHome()">
+    <ion-icon name="alert"></ion-icon>
+    I am not at home
+  </button>
 
 </ion-content>
