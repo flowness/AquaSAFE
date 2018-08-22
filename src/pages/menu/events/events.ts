@@ -5,6 +5,7 @@ import { ModelService } from "../../../providers/model-service";
 import { EventPage } from "../../event/event";
 import { asEvent } from "../../../lib/interfaces";
 import { EventStatus } from "../../../lib/enums";
+import { HandleLeakPage } from "../../handle-leak/handle-leak";
 
 /**
  * Generated class for the EventsPage page.
@@ -16,13 +17,17 @@ import { EventStatus } from "../../../lib/enums";
 @IonicPage()
 @Component({
   selector: "page-events",
-  templateUrl: "events.html",
+  templateUrl: "events.html"
 })
-
 export class EventsPage {
   private unregisterFunc: Function;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, platform: Platform, public modelService: ModelService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    platform: Platform,
+    public modelService: ModelService
+  ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
     });
@@ -51,6 +56,13 @@ export class EventsPage {
   }
 
   handleAsEvent(e: asEvent): void {
-    alert("soon to be filled. status: " + e.status);
+    console.log("item type = " + e.status);
+    if (e.status === EventStatus.LIVE) {
+      this.navCtrl.push(HandleLeakPage, {
+        event: e
+      });
+    } else {
+      alert("soon to be filled. status: " + e.status);
+    }
   }
 }
