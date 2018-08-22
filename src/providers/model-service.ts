@@ -12,6 +12,7 @@ import {
 
 @Injectable()
 export class ModelService {
+  private nextMockEventId: number = 0;
   private modelInited: boolean;
 
   private modules: module[];
@@ -158,6 +159,24 @@ export class ModelService {
     this.updateSystemStatus();
   }
 
+  public closeEvent(id: number) {
+    console.log("closing event. id=" + id);
+    for (let index = 0; index < this.events.length; index++) {
+      if (this.events[index].id === id) {
+        let moment: eventMoment = {
+          title: "closed by user",
+          timestamp: this.formatDate(new Date()),
+          initiator: "User"
+        };
+        this.events[index].moments.push(moment);
+        this.events[index].status = EventStatus.CLOSED;
+        this.events[index].open = false;
+        break;
+      }
+    }
+    this.updateSystemStatus();
+  }
+
   private updateModelSetAllGood() {
     if (this.modules != null) {
       for (let index = 0; index < this.modules.length; index++) {
@@ -244,8 +263,9 @@ export class ModelService {
           const module: module = this.modules[j];
           if (module.type === ModuleType.MP100) {
             module.state = "All Good";
+            console.log("UNLIVE");
+            break;
           }
-          console.log("UNLIVE");
         }
       }
       this.events = this.sortEvents(this.events, false);
@@ -256,6 +276,7 @@ export class ModelService {
   private setEventsData(data: any): void {
     console.log("events length1 = " + this.events.length);
     for (let index = 0; index < data.length; index++) {
+      data[index].id = this.generateMockEventId();
       this.events.push(data[index]);
     }
     this.events = this.sortEvents(this.events, false);
@@ -412,6 +433,7 @@ export class ModelService {
       initiator: indicator
     };
     let event: asEvent = {
+      id: this.generateMockEventId(),
       title: "Leak Detection",
       timestamp: date,
       type: "leak",
@@ -421,7 +443,7 @@ export class ModelService {
     };
     this.events.push(event);
     this.events = this.sortEvents(this.events, false);
-    console.dir(this.events);
+    // console.dir(this.events);
   }
 
   // private isAllGood(): boolean {
@@ -435,6 +457,10 @@ export class ModelService {
   //   return true;
   // }
 
+  private generateMockEventId(): number {
+    return this.nextMockEventId++;
+  }
+
   private sortEvents(events: asEvent[], asc: boolean = true): asEvent[] {
     let result: asEvent[] = [];
     let tempArray = [];
@@ -445,7 +471,7 @@ export class ModelService {
         asEvent: element
       });
     }
-    console.dir(tempArray);
+    // console.dir(tempArray);
     tempArray.sort((n1, n2) => {
       if (n1.effectiveDate > n2.effectiveDate) {
         return asc ? 1 : -1;

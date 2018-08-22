@@ -23,7 +23,7 @@ export class EventPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
     this.asEvent = navParams.get('event');
     console.log("event tapped");
-    console.dir(this.asEvent);
+    // console.dir(this.asEvent);
   }
 
   ionViewDidLoad() {
@@ -42,12 +42,14 @@ export class EventPage {
       });
     } else {
       // alert("soon to be filled. status: " + e.status);
-      this.openBasicModal();
+      this.openEditEventModal(e);
     }
   }
 
-  openBasicModal(): void {
-    let myModal = this.modalCtrl.create(EditEventPage);
+  openEditEventModal(e: asEvent): void {
+    let myModal = this.modalCtrl.create(EditEventPage, {
+      event: e
+    });
     myModal.present();
   }
 }

@@ -16,5 +16,11 @@
 
 
 <ion-content padding>
+  <h2>Event Type: {{theEvent.type}}</h2>
+  <h2>Event Date: {{theEvent.timestamp}}</h2>
+  <h2>Event Status: {{theEvent.open?"OPEN":"CLOSED"}}</h2>
+  <button (click)="closeEvent()" ion-button outline item-end>
+    Close Event
+  </button>
 
 </ion-content>

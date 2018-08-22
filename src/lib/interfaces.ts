@@ -23,6 +23,7 @@ export interface settings {
 }
 
 export interface asEvent {
+    id?: number,
     title: string,
     timestamp: string,
     type: string,

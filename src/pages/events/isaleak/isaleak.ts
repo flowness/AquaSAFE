@@ -120,7 +120,7 @@ export class IsALeakPage {
     if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
       this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
     }
-    console.dir(this.chart.data.datasets[0].data);
+    // console.dir(this.chart.data.datasets[0].data);
     this.chart.update(0);
   }
 

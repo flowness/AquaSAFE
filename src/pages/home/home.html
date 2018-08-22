@@ -24,7 +24,7 @@
     <div>
       <ion-item class="header-status leak">
         <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
-        <ion-badge (click)="openHandleLeakPage()">Press For Help</ion-badge>
+        <ion-badge (click)="openHandleLeakPage()">Handle Event</ion-badge>
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}
           <br>Detection Time: {{modelService.getLatestOpenEvent().timestamp}}

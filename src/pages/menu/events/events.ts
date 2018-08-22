@@ -1,11 +1,12 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, Platform } from "ionic-angular";
+import { IonicPage, NavController, NavParams, Platform, ModalController } from "ionic-angular";
 import { HomePage } from "../../home/home";
 import { ModelService } from "../../../providers/model-service";
 import { EventPage } from "../../event/event";
 import { asEvent } from "../../../lib/interfaces";
 import { EventStatus } from "../../../lib/enums";
 import { HandleLeakPage } from "../../handle-leak/handle-leak";
+import { EditEventPage } from "../../edit-event/edit-event";
 
 /**
  * Generated class for the EventsPage page.
@@ -26,7 +27,8 @@ export class EventsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     platform: Platform,
-    public modelService: ModelService
+    public modelService: ModelService,
+    public modalCtrl: ModalController
   ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
@@ -62,7 +64,14 @@ export class EventsPage {
         event: e
       });
     } else {
-      alert("soon to be filled. status: " + e.status);
+      this.openEditEventModal(e);
     }
+  }
+
+  openEditEventModal(e: asEvent): void {
+    let myModal = this.modalCtrl.create(EditEventPage, {
+      event: e
+    });
+    myModal.present();
   }
 }
