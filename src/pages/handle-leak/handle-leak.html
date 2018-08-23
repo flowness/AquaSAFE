@@ -14,7 +14,8 @@
 
 
 <ion-content padding>
-  <div><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div>
+  <!-- <div><canvas #sourceOffCanvas (click)="updateCurrentValue()"></canvas></div> -->
+  <div id="container" style="display: block; height: 30%;" (click)="updateCurrentValue()"></div>
   <ion-item text-wrap text-center item-content>
     <div>
       <button ion-button ion-content item-center icon-start [hidden]="!this.modelService.isSiteIncludeVs100() || !this.modelService.getShutOffValveStatus()"
@@ -37,16 +38,15 @@
         <ion-item text-center>I see a leak!</ion-item>
         <h6>Get guidnace during a real visible leak</h6>
       </ion-col>
-      <ion-col text-center (click)="eventItemTapped($event, 100)">
-        <img src='assets/imgs/cool-52.png' item-start/>
-        <ion-item text-center>Not A Leak</ion-item>
-        <h6>The mentioned water flow was caused by valid water consumption</h6>
-      </ion-col>
     </ion-row>
   </ion-grid>
   <button ion-button ion-content item-center icon-start (click)="notAtHome()">
     <ion-icon name="alert"></ion-icon>
     I am not at home
+  </button>
+  <button ion-button ion-content item-center icon-start (click)="notALeak()">
+    <ion-icon name="alert"></ion-icon>
+    This is not a leak
   </button>
 
 </ion-content>

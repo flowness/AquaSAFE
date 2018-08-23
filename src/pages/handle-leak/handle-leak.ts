@@ -6,8 +6,11 @@ import { Page } from "ionic-angular/umd/navigation/nav-util";
 import { CantseeLeakPage } from "../events/cantseeleak/cantseeleak";
 import { NotathomePage } from "../events/notathome/notathome";
 import { IsALeakPage } from "../events/isaleak/isaleak";
-import { Chart } from "chart.js";
-
+import * as HighCharts from "highcharts";
+import * as HighchartsMore from "highcharts/highcharts-more";
+import * as SolidGauge from "highcharts/modules/solid-gauge";
+HighchartsMore(HighCharts);
+SolidGauge(HighCharts);
 
 /**
  * Generated class for the HandleLeakPage page.
@@ -25,9 +28,8 @@ import { Chart } from "chart.js";
 export class HandleLeakPage {
 
   @ViewChild("sourceOffCanvas") sourceOffCanvas;
-  private chart: Chart;
+  private chart: any;
   private task: number;
-  private maxNumOfPoints: number = 12;
   private endTappingValue: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modelService: ModelService, private alertCtrl: AlertController) {
@@ -36,64 +38,94 @@ export class HandleLeakPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad HandleLeakPage");
-    let chartDefine = {
-      type: "line",
-      data: {
-        labels: ["0"],
-        datasets: [{
-          data: [this.modelService.getCurrentFlow()],
-          borderWidth: 1,
-          backgroundColor: "#0062ff",
-        }]
+    var gaugeOptions = {
+      chart: {
+        spacingTop: 10,
+        spacingBottom: 0,
+        marginTop: 0,
+        marginBottom: 0,
+        type: 'solidgauge'
       },
-      options: {
-        elements: {
-          point: {
-            radius: 0
+      title: null,
+      pane: {
+        center: ['50%', '50%'],
+        size: '90%',
+        startAngle: -90,
+        endAngle: 70,
+        background: {
+          backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
+          innerRadius: '60%',
+          outerRadius: '100%',
+          shape: 'arc'
+        }
+      },
+      tooltip: {
+        enabled: false
+      },
+      // the value axis
+      yAxis: {
+        stops: [
+          [0.1, '#55BF3B'], // green
+          [0.5, '#DDDF0D'], // yellow
+          [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+          y: -80
+        },
+        labels: {
+          y: 16
+        }
+      },
+    
+      plotOptions: {
+        solidgauge: {
+          dataLabels: {
+            y: 5,
+            borderWidth: 0,
+            useHTML: true
           }
-        },
-        responsive: false,
-        legend: {
-          display: false,
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              display: false,
-              min: 0,
-              max: 20
-            }
-          }],
-          xAxes: [{
-            ticks: {
-              display: false,
-            },
-            gridLines: {
-              display: false
-            }
-          }]
         }
       }
-    }
-
-    this.chart = new Chart(this.sourceOffCanvas.nativeElement, chartDefine);
+    };
+    
+    this.chart = HighCharts.chart('container', HighCharts.merge(gaugeOptions, {
+      yAxis: {
+        min: 0,
+        max: 20,
+        title: {
+          text: 'Flow'
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Consumption',
+        data: [this.modelService.getCurrentFlow()],
+        dataLabels: {
+          format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+            ((HighCharts.theme && HighCharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+               '<span style="font-size:12px;color:silver">Liter/Hour</span></div>'
+        },
+        tooltip: {
+          valueSuffix: ' l/h'
+        }
+      }]
+    
+    }));
 
     this.task = setInterval(() => {
-      this.refreshData();
+      this.refreshDataGauge();
     }, 1500);
   }
 
-  private refreshData(): void {
-    let currentFlow: number = this.modelService.getCurrentFlow();
-    console.log("current flow = " + currentFlow);
-    this.chart.data.datasets[0].data.push(currentFlow);
-    this.chart.data.labels[this.chart.data.datasets[0].data.length] = this.chart.data.datasets[0].data.length.toString()
+  refreshDataGauge(): void{
+    let     point = this.chart.series[0].points[0];
+    point.update(this.modelService.getCurrentFlow());
 
-    if (this.chart.data.datasets[0].data.length > this.maxNumOfPoints) {
-      this.chart.data.datasets[0].data = this.chart.data.datasets[0].data.slice(this.chart.data.datasets[0].data.length - this.maxNumOfPoints, this.chart.data.datasets[0].data.length);
-    }
-    // console.dir(this.chart.data.datasets[0].data);
-    this.chart.update(0);
   }
 
   updateCurrentValue(): void {
@@ -159,5 +191,11 @@ export class HandleLeakPage {
       buttons: ['Ok']
     });
     alert.present();
+  }
+
+  notALeak(): void{
+    this.navCtrl.push(NotALeakPage, {
+      event: this.modelService.getLatestOpenEvent()
+    });
   }
 }
