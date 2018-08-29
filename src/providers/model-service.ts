@@ -343,30 +343,35 @@ export class ModelService {
       irregularityAlert: false
     };
     //
-    let state: string = "";
+    let urlState: string = this.getUrlParam("state");
+    let urlVs100: string = this.getUrlParam("vs100");
+
+    if (this.modules == null || !this.modelInited) {
+      if (urlState === "leak") {
+        this.setCurrentFlow(19);
+        this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
+      }
+
+      this.prepareSiteData(urlState, urlVs100);
+      // this.prepareEvents();
+      this.modelInited = true;
+    }
+    this.updateSystemStatus();
+  }
+
+  private getUrlParam(param: string): string {
     if (document.URL.indexOf("?") > 0) {
       let splitURL = document.URL.split("?");
       let splitParams = splitURL[1].split("&");
       let i: any;
       for (i in splitParams) {
         let singleURLParam = splitParams[i].split("=");
-        if (singleURLParam[0] == "state") {
-          state = singleURLParam[1].toLowerCase();
+        if (singleURLParam[0] == param) {
+          return singleURLParam[1].toLowerCase();
         }
       }
     }
-
-    if (this.modules == null || !this.modelInited) {
-      if (state === "leak") {
-        this.setCurrentFlow(19);
-        this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
-      }
-
-      this.prepareSiteData(state);
-      // this.prepareEvents();
-      this.modelInited = true;
-    }
-    this.updateSystemStatus();
+    return "";
   }
 
   private formatDate(date: Date): string {
@@ -392,11 +397,12 @@ export class ModelService {
     return s < 10 ? "0" + s : "" + s;
   }
 
-  private prepareSiteData(configuredStatus: string): void {
+  private prepareSiteData(configuredStatus: string, vs100Status: string = "on"): void {
     let modules: module[] = [];
-    // types 0=MP100, 1=FD100, 2=VS100
     modules.push(this.getModule(ModuleType.MP100, configuredStatus));
-    modules.push(this.getModule(ModuleType.VS100, configuredStatus));
+    if (vs100Status!="off") {
+      modules.push(this.getModule(ModuleType.VS100, configuredStatus));
+    }
     modules.push(this.getModule(ModuleType.FD100, configuredStatus));
     modules.push(this.getModule(ModuleType.FD100, configuredStatus));
     modules.push(this.getModule(ModuleType.FD100, configuredStatus));

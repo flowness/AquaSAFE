@@ -20,18 +20,12 @@
   <ion-item text-wrap text-center item-content>
     <div>
       <button ion-button ion-content item-center icon-start [color]="!this.modelService.isSiteIncludeVs100() ||
-      !this.modelService.getShutOffValveStatus() ? 'danger' : 'primary'"
+      !this.modelService.getShutOffValveStatus() ? 'danger' : 'primary'" [hidden]="!this.modelService.isSiteIncludeVs100()"
         (click)="shutValve()" large>
         <ion-icon name="aperture"></ion-icon>
         {{(!this.modelService.isSiteIncludeVs100() ||
           this.modelService.getShutOffValveStatus()) ? "shut off main valve" : "main valve is shut off"}}
       </button>
-      <!-- <button ion-button ion-content item-center icon-start color="danger"
-        [hidden]="!this.modelService.isSiteIncludeVs100() ||
-        this.modelService.getShutOffValveStatus()" large>
-        <ion-icon name="aperture"></ion-icon>
-        main valve is shut off
-      </button> -->
     </div>
     <br>
   </ion-item>
