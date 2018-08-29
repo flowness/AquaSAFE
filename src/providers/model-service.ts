@@ -159,6 +159,12 @@ export class ModelService {
     this.updateSystemStatus();
   }
 
+  public updateEventNotALeak(e: asEvent) {
+    this.updateEventNotALeak1(e, "User - not a leak", "User", EventStatus.CLOSED);
+    this.sortEvents(this.events);
+    this.updateSystemStatus();
+  }
+
   public closeEvent(id: number) {
     console.log("closing event. id=" + id);
     for (let index = 0; index < this.events.length; index++) {
@@ -249,29 +255,32 @@ export class ModelService {
     for (let index = 0; index < this.events.length; index++) {
       const element: asEvent = this.events[index];
       if (element.status === EventStatus.LIVE) {
-        let moment: eventMoment = {
-          title: title,
-          timestamp: this.formatDate(new Date()),
-          initiator: initiator
-        };
-        element.moments.push(moment);
-        element.status = toStatus;
-        if (toStatus === EventStatus.CLOSED) {
-          element.open = false;
-        }
-        for (let j = 0; j < this.modules.length; j++) {
-          const module: module = this.modules[j];
-          if (module.type === ModuleType.MP100) {
-            module.state = "All Good";
-            console.log("UNLIVE");
-            break;
-          }
-        }
+        this.updateEventNotALeak1(element, title, initiator, toStatus);
       }
       this.events = this.sortEvents(this.events, false);
     }
   }
 
+  updateEventNotALeak1(element: asEvent, title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.POST): void{
+      let moment: eventMoment = {
+        title: title,
+        timestamp: this.formatDate(new Date()),
+        initiator: initiator
+      };
+      element.moments.push(moment);
+      element.status = toStatus;
+      if (toStatus === EventStatus.CLOSED) {
+        element.open = false;
+      }
+      for (let j = 0; j < this.modules.length; j++) {
+        const module: module = this.modules[j];
+        if (module.type === ModuleType.MP100) {
+          module.state = "All Good";
+          console.log("UNLIVE");
+          break;
+        }
+      }
+  }
   /* Sets data with returned JSON array */
   private setEventsData(data: any): void {
     console.log("events length1 = " + this.events.length);

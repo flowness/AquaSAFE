@@ -40,13 +40,16 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <button ion-button ion-content item-center icon-start (click)="notAtHome()">
-    <ion-icon name="alert"></ion-icon>
-    I am not at home
-  </button>
-  <button ion-button ion-content item-center icon-start (click)="notALeak()">
-    <ion-icon name="alert"></ion-icon>
-    This is not a leak
-  </button>
+  <ion-item item-end>
+    <button ion-button ion-content item-center icon-start (click)="notAtHome()">
+      <ion-icon name="alert"></ion-icon>
+      I am not at home
+    </button>
+    <button ion-button ion-content item-center icon-start (click)="notALeak()">
+      <ion-icon name="alert"></ion-icon>
+      This is not a leak
+    </button>
+    <ion-icon name="build" item-end (click)="openPlumbers()"></ion-icon>
+  </ion-item>
 
 </ion-content>

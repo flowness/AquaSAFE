@@ -9,6 +9,7 @@ import { IsALeakPage } from "../events/isaleak/isaleak";
 import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
 import * as SolidGauge from "highcharts/modules/solid-gauge";
+import { PlumbersPage } from "../plumbers/plumbers";
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
 
@@ -195,6 +196,12 @@ export class HandleLeakPage {
 
   notALeak(): void{
     this.navCtrl.push(NotALeakPage, {
+      event: this.modelService.getLatestOpenEvent()
+    });
+  }
+
+  openPlumbers(): void {
+    this.navCtrl.push(PlumbersPage, {
       event: this.modelService.getLatestOpenEvent()
     });
   }

@@ -125,7 +125,7 @@ export class NotALeakPage {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked");
-            this.modelService.updateModelNotALeak();
+            this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
           }
         }

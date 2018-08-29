@@ -4,6 +4,7 @@ import { asEvent } from '../../lib/interfaces';
 import { EventStatus } from '../../lib/enums';
 import { HandleLeakPage } from '../handle-leak/handle-leak';
 import { EditEventPage } from '../edit-event/edit-event';
+import { NotALeakPage } from '../events/notaleak/notaleak';
 
 /**
  * Generated class for the EventPage page.
@@ -46,6 +47,12 @@ export class EventPage {
     }
   }
 
+  handleNotALeak(e: asEvent): void {
+    this.navCtrl.push(NotALeakPage, {
+      event: e
+    });
+}
+  
   openEditEventModal(e: asEvent): void {
     let myModal = this.modalCtrl.create(EditEventPage, {
       event: e
