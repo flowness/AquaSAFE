@@ -23,8 +23,7 @@ export class EventPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
     this.asEvent = navParams.get('event');
-    console.log("event tapped");
-    // console.dir(this.asEvent);
+    console.dir(this.asEvent);
   }
 
   ionViewDidLoad() {

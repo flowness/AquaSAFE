@@ -36,4 +36,5 @@ export interface eventMoment {
     title: string,
     timestamp: string,
     initiator: string,
+    comment?: string
 }

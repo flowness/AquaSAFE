@@ -15,11 +15,14 @@
 
 <ion-content padding>
   <ion-item>
-      <button [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button
-      outline item-end>{{isLiveEvent(asEvent) ? "Handle Event" : asEvent.open ? "Close Event" : "Update Event"}}</button>
-    <button [hidden]="isLiveEvent(asEvent) || !asEvent.open" [color]="primary" (click)="handleNotALeak(asEvent);$event.stopPropagation()" ion-button
-    outline item-end>Not A Leak</button>
-</ion-item>
+    <button [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'"
+      (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button
+      outline item-end>{{isLiveEvent(asEvent) ? "Handle Event" : asEvent.open ?
+      "Close Event" : "Update Event"}}</button>
+    <button [hidden]="isLiveEvent(asEvent) || !asEvent.open" [color]="primary"
+      (click)="handleNotALeak(asEvent);$event.stopPropagation()" ion-button
+      outline item-end>Not A Leak</button>
+  </ion-item>
   <ion-list>
     <ion-list-header>
       <h2>Event Type: {{asEvent.type}}</h2>
@@ -27,9 +30,8 @@
       <h2>Event Status: {{asEvent.open?"OPEN":"CLOSED"}}</h2>
     </ion-list-header>
     <ion-item *ngFor="let moment of asEvent.moments">
-      <ion-label>
-        {{moment.title}} {{moment.timestamp}} {{moment.initiator}}
-      </ion-label>
+      <ion-item no-lines>{{moment.title}} {{moment.timestamp}} {{moment.initiator}}</ion-item>
+      <ion-item [hidden]="moment.comment == '' || moment.comment == undefined">{{moment.comment}}</ion-item>
     </ion-item>
   </ion-list>
 </ion-content>

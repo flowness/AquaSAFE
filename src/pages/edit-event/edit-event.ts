@@ -17,6 +17,7 @@ import { ModelService } from '../../providers/model-service';
 })
 export class EditEventPage {
   theEvent: asEvent;
+  public text: string = "";
 
   constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
     this.theEvent = navParams.get("event");
@@ -27,7 +28,7 @@ export class EditEventPage {
   }
 
   closeEvent(): void {
-    this.modelService.closeEvent(this.theEvent.id);
+    this.modelService.closeEvent(this.theEvent.id, this.text);
     this.dismiss();
   }
 

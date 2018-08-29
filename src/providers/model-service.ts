@@ -165,14 +165,15 @@ export class ModelService {
     this.updateSystemStatus();
   }
 
-  public closeEvent(id: number) {
+  public closeEvent(id: number, text: string="") {
     console.log("closing event. id=" + id);
     for (let index = 0; index < this.events.length; index++) {
       if (this.events[index].id === id) {
         let moment: eventMoment = {
           title: "closed by user",
           timestamp: this.formatDate(new Date()),
-          initiator: "User"
+          initiator: "User",
+          comment: text
         };
         this.events[index].moments.push(moment);
         this.events[index].status = EventStatus.CLOSED;
