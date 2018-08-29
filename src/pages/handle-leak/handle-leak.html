@@ -19,42 +19,35 @@
     (click)="updateCurrentValue()"></div>
   <ion-item text-wrap text-center item-content>
     <div>
-      <button ion-button ion-content item-center icon-start
-        [hidden]="!this.modelService.isSiteIncludeVs100() ||
-        !this.modelService.getShutOffValveStatus()"
+      <button ion-button ion-content item-center icon-start [color]="!this.modelService.isSiteIncludeVs100() ||
+      !this.modelService.getShutOffValveStatus() ? 'danger' : 'primary'"
         (click)="shutValve()" large>
         <ion-icon name="aperture"></ion-icon>
-        shut off main valve
+        {{(!this.modelService.isSiteIncludeVs100() ||
+          this.modelService.getShutOffValveStatus()) ? "shut off main valve" : "main valve is shut off"}}
       </button>
-      <button ion-button ion-content item-center icon-start color="danger"
+      <!-- <button ion-button ion-content item-center icon-start color="danger"
         [hidden]="!this.modelService.isSiteIncludeVs100() ||
-        this.modelService.getShutOffValveStatus()"
-        (click)="shutValve()" large>
+        this.modelService.getShutOffValveStatus()" large>
         <ion-icon name="aperture"></ion-icon>
         main valve is shut off
-      </button>
+      </button> -->
     </div>
     <br>
   </ion-item>
-  <ion-grid fixed>
-    <ion-row justify-content-around>
-      <ion-col text-center (click)="eventItemTapped($event, 103)">
-        <img src='assets/imgs/crying-50.png' item-start/>
-        <ion-item text-center>I see a leak!</ion-item>
-        <h6>Get guidnace during a real visible leak</h6>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-item item-end>
-    <button ion-button ion-content item-center icon-start (click)="notAtHome()">
+  <ion-item text-center>Get guidnace during a real visible leak</ion-item>
+  <ion-item style="position: absolute; bottom: 0px">
+    <button ion-button ion-content icon-start (click)="notAtHome()">
       <ion-icon name="alert"></ion-icon>
-      I am not at home
+      not on site
     </button>
-    <button ion-button ion-content item-center icon-start (click)="notALeak()">
+    <button ion-button ion-content icon-start (click)="notALeak()">
       <ion-icon name="alert"></ion-icon>
       This is not a leak
     </button>
-    <ion-icon name="build" item-end (click)="openPlumbers()"></ion-icon>
+    <button ion-button ion-content icon-start (click)="openPlumbers()">
+      <ion-icon name="build"></ion-icon>
+    </button>
   </ion-item>
 
 </ion-content>

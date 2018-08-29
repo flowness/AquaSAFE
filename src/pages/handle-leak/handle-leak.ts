@@ -163,6 +163,9 @@ export class HandleLeakPage {
   }
 
   shutValve(): void {
+    if (!this.modelService.getShutOffValveStatus()) {
+      return;
+    }
     let alert: Alert = this.alertCtrl.create({
       title: "Confirmation",
       message: "Are you sure you want to close the main valve?",
