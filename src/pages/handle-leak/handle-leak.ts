@@ -10,6 +10,7 @@ import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
 import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { PlumbersPage } from "../plumbers/plumbers";
+import { CameraOptions, Camera } from "@ionic-native/camera";
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
 
@@ -32,8 +33,9 @@ export class HandleLeakPage {
   private chart: any;
   private task: number;
   private endTappingValue: number;
+  public base64Image: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modelService: ModelService, private alertCtrl: AlertController) {
+  constructor(private camera: Camera, public navCtrl: NavController, public navParams: NavParams, public modelService: ModelService, private alertCtrl: AlertController) {
     this.endTappingValue = Math.random() < 0.5 ? 2 : 0;
   }
 
@@ -207,5 +209,25 @@ export class HandleLeakPage {
     this.navCtrl.push(PlumbersPage, {
       event: this.modelService.getLatestOpenEvent()
     });
+  }
+
+  takePicture(): void {
+    const options: CameraOptions = {
+      quality: 50,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    }
+
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.base64Image = "data:image/jpeg;base64," + imageData;
+    }, (err) => {
+      // Handle error
+    });
+
+    /*    this.camera.getPicture(this.onSuccess, this.onFail, options);*/
+
   }
 }
