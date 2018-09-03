@@ -26,11 +26,16 @@ export class StatisticsPage {
   private unregisterFunc: Function;
   private chart: any;
   chartType: string = "live";
-  private task: number;
+  private task: number = -1;
   private current: number = 30;
-  private url: string =
+  private liveUrl: string =
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=azarhome";
-
+  private volumeUrl: string =
+    "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/volume";
+  private volumeBodyHour: any = {
+    "moduleSN": "azarhome",
+    "Period": "Hour"
+  };
   constructor(
     public navCtrl: NavController,
     platform: Platform,
@@ -44,14 +49,30 @@ export class StatisticsPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad StatisticsPage");
-    this.drawLiveChart(this.http);
+    this.drawLiveChart();
     this.task = setInterval(() => {
       this.refreshData();
-    }, 2000);
+    }, 1000);
+  }
+
+  onSegmentChange(): void {
+    console.log("segment changed: " + this.chartType);
+    if (this.task >= 0) {
+      console.log("CLEARINTERVAL")
+      clearInterval(this.task);
+    }
+    if (this.chartType === "live") {
+      this.drawLiveChart();
+      this.task = setInterval(() => {
+        this.refreshData();
+      }, 1000);
+    } else {
+      this.drawBarChart();
+    }
   }
 
   private refreshData() {
-    this.getJSONDataAsync(this.url).then(data => {
+    this.getJSONDataAsync(this.liveUrl).then(data => {
       // console.log(data);
       let flow: number = 0;
       if (
@@ -61,29 +82,43 @@ export class StatisticsPage {
       ) {
         flow = data["body"]["Flow"];
       }
+      this.updateLiveChart(flow);
     });
   }
 
-  // private updateLiveChart(f: number): void {
-  //   console.log(f);
-  //   this.chart.series[0].addPoint(f, true, true);
-  // }
+  private updateLiveChart(f: number): void {
+    console.log(f);
+    this.chart.series[0].addPoint(f, true, true);
+  }
 
-  public getJSONDataAsync(url: string): Promise<any> {
+  private getJSONDataAsync(url: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http.get(url).subscribe(res => {
         if (!res.ok) {
           reject(
             "Failed with status: " +
-              res.status +
-              "\nTrying to find fil at " +
-              url
+            res.status +
+            "\nTrying to find fil at " +
+            url
           );
         }
+        resolve(res.json());
+      });
+    }).catch(reason => this.handleError(reason));
+  }
 
-        var jsonRes = res.json();
-
-        resolve(jsonRes);
+  private postJSONDataAsync(url: string, body: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.post(url, body).subscribe(res => {
+        if (!res.ok) {
+          reject(
+            "Failed with status: " +
+            res.status +
+            "\nTrying to find fil at " +
+            url
+          );
+        }
+        resolve(res.json());
       });
     }).catch(reason => this.handleError(reason));
   }
@@ -102,55 +137,16 @@ export class StatisticsPage {
     return Observable.throw(errMsg);
   }
 
-  private drawLiveChart(http): void {
-    this.chart = {
+  private drawLiveChart(): void {
+    let chartConfig = {
       title: {
         text: "CurrentFlow"
-      },
-      chart: {
-        events: {
-          load: function() {
-            console.log("load called");
-            // set up the updating of the chart each second
-            var series = this.series[0];
-            setInterval(function() {
-              new Promise((resolve, reject) => {
-                http.get("https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=azarhome").subscribe(res => {
-                  if (!res.ok) {
-                    reject(
-                      "Failed with status: " +
-                        res.status +
-                        "\nTrying to find file at url"
-                    );
-                  }
-          
-                  var jsonRes = res.json();
-          
-                  resolve(jsonRes);
-                });
-              }).catch(reason => console.log(reason)).then(data => {
-                // console.log(data);
-                let flow: number = 0;
-                if (
-                  data != undefined &&
-                  data["statusCode"] != undefined &&
-                  data["statusCode"] == 200
-                ) {
-                  flow = data["body"]["Flow"];
-                }
-                series.addPoint(flow, true, true);
-                console.log("flow=" + flow);
-              });
-              // var y = Math.round(Math.random() * 100);
-            }, 1000);
-          }
-        }
       },
       yAxis: {
         title: {
           enabled: false
         },
-        softMin: 0
+        min: 0
       },
       xAxis: {
         labels: {
@@ -178,7 +174,7 @@ export class StatisticsPage {
       series: [
         {
           name: "Installation",
-          data: (function() {
+          data: (function () {
             // generate an array of random data
             console.log("data called");
 
@@ -210,77 +206,94 @@ export class StatisticsPage {
         ]
       }
     };
-    HighCharts.chart("container", this.chart);
+    this.chart = HighCharts.chart("container", chartConfig);
   }
 
   private drawBarChart(): void {
-    this.chart = {
-      chart: {
-        type: "column"
-      },
-      title: {
-        text: "Water Usage"
-      },
-      subtitle: {
-        // text:
-        //   'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'
-      },
-      xAxis: {
-        type: "category",
-        labels: {
-          rotation: -45,
-          style: {
-            fontSize: "13px",
-            fontFamily: "Verdana, sans-serif"
-          }
+    this.postJSONDataAsync(this.volumeUrl, this.volumeBodyHour).then(data => {
+      if (
+        data != undefined &&
+        data["statusCode"] != undefined &&
+        data["statusCode"] == 200
+      ) {
+        // console.log(data["body"]);
+        let jsonBody = JSON.parse(data["body"])
+        // console.log(jsonBody);
+        for (let index = 0; index < jsonBody.length; index++) {
+          console.log(jsonBody[index]);
         }
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          enabled: false
-          // text: "Population (millions)"
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      legend: {
-        enabled: false
-      },
-      series: [
-        {
-          name: "Usage",
-          data: [
-            ["Shanghai", 24.2],
-            ["Beijing", 20.8],
-            ["Karachi", 14.9],
-            ["Shenzhen", 13.7],
-            ["Guangzhou", 13.1],
-            ["Istanbul", 12.7],
-            ["Mumbai", 12.4],
-            ["Moscow", 12.2],
-            ["São Paulo", 12.0],
-            ["Delhi", 11.7],
-            ["Kinshasa", 11.5]
-          ],
-          dataLabels: {
-            enabled: false,
-            rotation: -90,
-            color: "#FFFFFF",
-            align: "right",
-            format: "{point.y:.1f}", // one decimal
-            y: 10, // 10 pixels down from the top
-            style: {
-              fontSize: "13px",
-              fontFamily: "Verdana, sans-serif"
-            }
-          }
-        }
-      ]
-    };
 
-    HighCharts.chart("container", this.chart);
+        this.chart = {
+          chart: {
+            type: "column"
+          },
+          title: {
+            text: "Water Usage"
+          },
+          subtitle: {
+            // text:
+            //   'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'
+          },
+          xAxis: {
+            type: "category",
+            labels: {
+              rotation: -45,
+              style: {
+                fontSize: "13px",
+                fontFamily: "Verdana, sans-serif"
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              enabled: false
+              // text: "Population (millions)"
+            }
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            enabled: false
+          },
+          series: [
+            {
+              name: "Usage",
+              data: [
+                [jsonBody[0]["hour"], parseInt(jsonBody[0]["flow"])],
+                [jsonBody[1]["hour"], parseInt(jsonBody[1]["flow"])],
+                [jsonBody[2]["hour"], parseInt(jsonBody[2]["flow"])],
+                [jsonBody[3]["hour"], parseInt(jsonBody[3]["flow"])],
+                [jsonBody[4]["hour"], parseInt(jsonBody[4]["flow"])],
+                [jsonBody[5]["hour"], parseInt(jsonBody[5]["flow"])],
+                [jsonBody[6]["hour"], parseInt(jsonBody[6]["flow"])],
+                [jsonBody[7]["hour"], parseInt(jsonBody[7]["flow"])]
+              ],
+              dataLabels: {
+                enabled: false,
+                rotation: -90,
+                color: "#FFFFFF",
+                align: "right",
+                format: "{point.y:.1f}", // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                  fontSize: "13px",
+                  fontFamily: "Verdana, sans-serif"
+                }
+              }
+            }
+          ]
+        };
+    
+        this.chart = HighCharts.chart("container", this.chart);
+    
+
+
+
+      }
+    });
+
   }
 
   private backButton(): void {
@@ -289,5 +302,8 @@ export class StatisticsPage {
 
   ionViewDidLeave(): void {
     this.unregisterFunc();
+    if (this.task >= 0) {
+      clearInterval(this.task);
+    }
   }
 }
