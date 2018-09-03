@@ -37,6 +37,7 @@ import { DataFinder } from "../providers/data-finder";
 import { DateParsePipe } from "../providers/date-parse-pipe";
 import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
 import { EditEventPage } from "../pages/edit-event/edit-event";
+import { ScreenOrientation } from "@ionic-native/screen-orientation";
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { EditEventPage } from "../pages/edit-event/edit-event";
     DataFinder, 
     ModelService,
     Geolocation,
-    DateParsePipe
+    DateParsePipe,
+    ScreenOrientation
   ]
 })
 export class AppModule { }
