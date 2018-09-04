@@ -27,16 +27,19 @@ export class StatisticsPage {
   private chart: any;
   chartType: string = "live";
   private task: number = -1;
-  private current: number = 30;
   private liveUrl: string =
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=azarhome";
   private volumeUrl: string =
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/volume";
-  private volumeBodyHour: any = {
-    "moduleSN": "azarhome",
-    "Period": "Hour"
-  };
-  constructor(
+    private volumeBodyHour: any = {
+      moduleSN: "azarhome",
+      Period: "Hour"
+    };
+    private volumeBodyDay: any = {
+      moduleSN: "azarhome",
+      Period: "Day"
+    };
+      constructor(
     public navCtrl: NavController,
     platform: Platform,
     public modelService: ModelService,
@@ -58,7 +61,7 @@ export class StatisticsPage {
   onSegmentChange(): void {
     console.log("segment changed: " + this.chartType);
     if (this.task >= 0) {
-      console.log("CLEARINTERVAL")
+      console.log("CLEARINTERVAL");
       clearInterval(this.task);
     }
     if (this.chartType === "live") {
@@ -97,9 +100,9 @@ export class StatisticsPage {
         if (!res.ok) {
           reject(
             "Failed with status: " +
-            res.status +
-            "\nTrying to find fil at " +
-            url
+              res.status +
+              "\nTrying to find fil at " +
+              url
           );
         }
         resolve(res.json());
@@ -113,9 +116,9 @@ export class StatisticsPage {
         if (!res.ok) {
           reject(
             "Failed with status: " +
-            res.status +
-            "\nTrying to find fil at " +
-            url
+              res.status +
+              "\nTrying to find file at " +
+              url
           );
         }
         resolve(res.json());
@@ -173,14 +176,10 @@ export class StatisticsPage {
 
       series: [
         {
-          name: "Installation",
-          data: (function () {
-            // generate an array of random data
-            console.log("data called");
-
+          name: "Consumption",
+          data: (function() {
             var data = [],
               i;
-
             for (i = 0; i < 30; i += 1) {
               data.push([0]);
             }
@@ -210,18 +209,17 @@ export class StatisticsPage {
   }
 
   private drawBarChart(): void {
-    this.postJSONDataAsync(this.volumeUrl, this.volumeBodyHour).then(data => {
+    this.postJSONDataAsync(this.volumeUrl, this.chartType === "daily" ? this.volumeBodyHour : this.volumeBodyDay).then(data => {
       if (
         data != undefined &&
         data["statusCode"] != undefined &&
         data["statusCode"] == 200
       ) {
         // console.log(data["body"]);
-        let jsonBody = JSON.parse(data["body"])
+        let jsonBody = JSON.parse(data["body"]);
         // console.log(jsonBody);
-        for (let index = 0; index < jsonBody.length; index++) {
-          console.log(jsonBody[index]);
-        }
+
+        var preparedData: any[] = this.prepareData(jsonBody);
 
         this.chart = {
           chart: {
@@ -260,16 +258,7 @@ export class StatisticsPage {
           series: [
             {
               name: "Usage",
-              data: [
-                [jsonBody[0]["hour"], parseInt(jsonBody[0]["flow"])],
-                [jsonBody[1]["hour"], parseInt(jsonBody[1]["flow"])],
-                [jsonBody[2]["hour"], parseInt(jsonBody[2]["flow"])],
-                [jsonBody[3]["hour"], parseInt(jsonBody[3]["flow"])],
-                [jsonBody[4]["hour"], parseInt(jsonBody[4]["flow"])],
-                [jsonBody[5]["hour"], parseInt(jsonBody[5]["flow"])],
-                [jsonBody[6]["hour"], parseInt(jsonBody[6]["flow"])],
-                [jsonBody[7]["hour"], parseInt(jsonBody[7]["flow"])]
-              ],
+              data: preparedData,
               dataLabels: {
                 enabled: false,
                 rotation: -90,
@@ -285,15 +274,22 @@ export class StatisticsPage {
             }
           ]
         };
-    
+
         this.chart = HighCharts.chart("container", this.chart);
-    
-
-
-
       }
     });
+  }
 
+  private prepareData(jsonBody): any[] {
+    let ret: any[] = [];
+    for (let index = 0; index < jsonBody.length; index++) {
+      console.log(jsonBody[index]);
+      ret.push([this.chartType === "daily" ? jsonBody[index]["hour"] : jsonBody[index]["day"], parseInt(jsonBody[index]["flow"])]);
+    }
+    // console.dir(ret);
+    // ret.sort(function(a, b){return a[0] - b[0]})
+    // console.dir(ret);
+    return ret;
   }
 
   private backButton(): void {
