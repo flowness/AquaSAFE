@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, Platform } from "ionic-angular";
+import { IonicPage, NavController, Platform, LoadingController, Loading } from "ionic-angular";
 import { HomePage } from "../../home/home";
 import { ModelService } from "../../../providers/model-service";
 import * as HighCharts from "highcharts";
@@ -31,31 +31,37 @@ export class StatisticsPage {
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=azarhome";
   private volumeUrl: string =
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/volume";
-    private volumeBodyHour: any = {
-      moduleSN: "azarhome",
-      Period: "Hour"
-    };
-    private volumeBodyDay: any = {
-      moduleSN: "azarhome",
-      Period: "Day"
-    };
-      constructor(
+  private volumeBodyHour: any = {
+    moduleSN: "azarhome",
+    Period: "Hour"
+  };
+  private volumeBodyDay: any = {
+    moduleSN: "azarhome",
+    Period: "Day"
+  };
+  private eraOfChart: string = "N/A";
+  private months: string[] = new Array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
+  private loading: Loading;
+
+  constructor(
     public navCtrl: NavController,
     platform: Platform,
     public modelService: ModelService,
-    private http: Http
+    private http: Http,
+    public loadingCtrl: LoadingController
   ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
     });
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+
   }
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad StatisticsPage");
-    this.drawLiveChart();
-    this.task = setInterval(() => {
-      this.refreshData();
-    }, 1000);
+    this.onSegmentChange();
   }
 
   onSegmentChange(): void {
@@ -67,14 +73,14 @@ export class StatisticsPage {
     if (this.chartType === "live") {
       this.drawLiveChart();
       this.task = setInterval(() => {
-        this.refreshData();
+        this.refreshLiveData();
       }, 1000);
     } else {
       this.drawBarChart();
     }
   }
 
-  private refreshData() {
+  private refreshLiveData() {
     this.getJSONDataAsync(this.liveUrl).then(data => {
       // console.log(data);
       let flow: number = 0;
@@ -85,13 +91,9 @@ export class StatisticsPage {
       ) {
         flow = data["body"]["Flow"];
       }
-      this.updateLiveChart(flow);
+      console.log(flow);
+      this.chart.series[0].addPoint(flow, true, true);
     });
-  }
-
-  private updateLiveChart(f: number): void {
-    console.log(f);
-    this.chart.series[0].addPoint(f, true, true);
   }
 
   private getJSONDataAsync(url: string): Promise<any> {
@@ -100,9 +102,9 @@ export class StatisticsPage {
         if (!res.ok) {
           reject(
             "Failed with status: " +
-              res.status +
-              "\nTrying to find fil at " +
-              url
+            res.status +
+            "\nTrying to find fil at " +
+            url
           );
         }
         resolve(res.json());
@@ -116,9 +118,9 @@ export class StatisticsPage {
         if (!res.ok) {
           reject(
             "Failed with status: " +
-              res.status +
-              "\nTrying to find file at " +
-              url
+            res.status +
+            "\nTrying to find file at " +
+            url
           );
         }
         resolve(res.json());
@@ -126,24 +128,12 @@ export class StatisticsPage {
     }).catch(reason => this.handleError(reason));
   }
 
-  /* Takes an error, logs it to the console, and throws it */
-  private handleError(error: Response | any) {
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || "";
-      const err = JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ""} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
-  }
+
 
   private drawLiveChart(): void {
     let chartConfig = {
       title: {
-        text: "CurrentFlow"
+        text: "Current Flow"
       },
       yAxis: {
         title: {
@@ -177,7 +167,7 @@ export class StatisticsPage {
       series: [
         {
           name: "Consumption",
-          data: (function() {
+          data: (function () {
             var data = [],
               i;
             for (i = 0; i < 30; i += 1) {
@@ -209,7 +199,9 @@ export class StatisticsPage {
   }
 
   private drawBarChart(): void {
-    this.postJSONDataAsync(this.volumeUrl, this.chartType === "daily" ? this.volumeBodyHour : this.volumeBodyDay).then(data => {
+    this.loading.present();
+    var volumePostRequestBody = this.chartType === "daily" ? this.volumeBodyHour : this.volumeBodyDay
+    this.postJSONDataAsync(this.volumeUrl, volumePostRequestBody).then(data => {
       if (
         data != undefined &&
         data["statusCode"] != undefined &&
@@ -226,11 +218,11 @@ export class StatisticsPage {
             type: "column"
           },
           title: {
-            text: "Water Usage"
+            text: "Water Usage (" + this.eraOfChart + ")"
           },
           subtitle: {
             // text:
-            //   'Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>'
+            //   "Source: <a href="http://en.wikipedia.org/wiki/List_of_cities_proper_by_population">Wikipedia</a>"
           },
           xAxis: {
             type: "category",
@@ -276,20 +268,43 @@ export class StatisticsPage {
         };
 
         this.chart = HighCharts.chart("container", this.chart);
+        this.loading.dismiss();
+        this.loading = this.loadingCtrl.create({
+          content: 'Please wait...'
+        });
+    
       }
     });
   }
 
   private prepareData(jsonBody): any[] {
     let ret: any[] = [];
+    let dataXAxisKey: string = this.chartType === "daily" ? "hour" : "day";
     for (let index = 0; index < jsonBody.length; index++) {
       console.log(jsonBody[index]);
-      ret.push([this.chartType === "daily" ? jsonBody[index]["hour"] : jsonBody[index]["day"], parseInt(jsonBody[index]["flow"])]);
+      ret.push([jsonBody[index][dataXAxisKey], parseInt(jsonBody[index]["flow"])]);
+      this.eraOfChart = this.months[parseInt(jsonBody[index]["month"]) - 1];
+      if (this.chartType === "daily") {
+        const dayInt = parseInt(jsonBody[index]["day"]);
+        this.eraOfChart = this.months[parseInt(jsonBody[index]["month"]) - 1] + " " + dayInt + this.dayOfMonthSyffix(dayInt);
+      }
     }
     // console.dir(ret);
-    // ret.sort(function(a, b){return a[0] - b[0]})
+    ret.sort(function(a, b){return a[0] - b[0]})
     // console.dir(ret);
     return ret;
+  }
+
+  private dayOfMonthSyffix(dom: number): string {
+    if (dom >= 11 && dom <= 13) {
+      return "th";
+    }
+    switch (dom % 10) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
+    }
   }
 
   private backButton(): void {
@@ -301,5 +316,23 @@ export class StatisticsPage {
     if (this.task >= 0) {
       clearInterval(this.task);
     }
+  }
+
+  /* Takes an error, logs it to the console, and throws it */
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || "";
+      const err = JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ""} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    this.loading.dismiss();
+    this.loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    return Observable.throw(errMsg);
   }
 }
