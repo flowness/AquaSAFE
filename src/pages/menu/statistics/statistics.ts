@@ -135,6 +135,9 @@ export class StatisticsPage {
       title: {
         text: "Current Flow"
       },
+      tooltip: {
+        enabled: false
+      },
       yAxis: {
         title: {
           enabled: false
@@ -159,8 +162,7 @@ export class StatisticsPage {
           },
           marker: {
             enabled: false
-          },
-          pointStart: 2010
+          }
         }
       },
 
@@ -174,7 +176,11 @@ export class StatisticsPage {
               data.push([0]);
             }
             return data;
-          })()
+          })(),
+          marker: {
+            enabled: false,
+            radius: 0
+          }
         }
       ],
 
