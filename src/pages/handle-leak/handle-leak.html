@@ -22,11 +22,11 @@
       [color]="!this.modelService.isSiteIncludeVs100() ||
       !this.modelService.getShutOffValveStatus() ? 'danger' : 'primary'"
       [hidden]="!this.modelService.isSiteIncludeVs100()"
-      (click)="shutValve()" large>
+      (click)="shutValve()" large round>
       <ion-icon name="aperture"></ion-icon>
       {{(!this.modelService.isSiteIncludeVs100() ||
-      this.modelService.getShutOffValveStatus()) ? "shut off main valve" : "main
-      valve is shut off"}}
+      this.modelService.getShutOffValveStatus()) ? "main valve" : "main
+      valve closed"}}
     </button>
   </ion-item>
   <ion-list>
@@ -34,21 +34,21 @@
     <ion-item text-center>Do X</ion-item>
     <ion-item text-center>Do Y</ion-item>
     <ion-item text-center>If leak is visible. Take a picture
-      <button (click)="takePicture()" ion-button  item-end>
+      <button (click)="takePicture()" ion-button item-end round>
         <ion-icon name="camera"></ion-icon>
       </button>
     </ion-item>
   </ion-list>
-  <ion-item style="position: absolute; bottom: 0px">
-    <button ion-button ion-content icon-start (click)="notAtHome()">
+  <ion-item ion-center style="position: absolute; bottom: 0px">
+    <button ion-button ion-content icon-start (click)="notAtHome()" round>
       <ion-icon name="alert"></ion-icon>
       not on site
     </button>
-    <button ion-button ion-content icon-start (click)="notALeak()">
+    <button ion-button ion-content icon-start (click)="notALeak()" round>
       <ion-icon name="alert"></ion-icon>
       This is not a leak
     </button>
-    <button ion-button ion-content icon-start (click)="openPlumbers()">
+    <button ion-button (click)="openPlumbers()" round>
       <ion-icon name="build"></ion-icon>
     </button>
   </ion-item>

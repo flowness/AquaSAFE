@@ -30,7 +30,7 @@ SolidGauge(HighCharts);
 export class HandleLeakPage {
 
   @ViewChild("sourceOffCanvas") sourceOffCanvas;
-  private chart: any;
+  private chart: HighCharts.chart;
   private task: number;
   private endTappingValue: number;
   public base64Image: string;
@@ -82,7 +82,7 @@ export class HandleLeakPage {
           y: 16
         }
       },
-    
+
       plotOptions: {
         solidgauge: {
           dataLabels: {
@@ -93,7 +93,7 @@ export class HandleLeakPage {
         }
       }
     };
-    
+
     this.chart = HighCharts.chart('container', HighCharts.merge(gaugeOptions, {
       yAxis: {
         min: 0,
@@ -111,13 +111,13 @@ export class HandleLeakPage {
         dataLabels: {
           format: '<div style="text-align:center"><span style="font-size:25px;color:' +
             ((HighCharts.theme && HighCharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-               '<span style="font-size:12px;color:silver">Liter/Hour</span></div>'
+            '<span style="font-size:12px;color:silver">Liter/Hour</span></div>'
         },
         tooltip: {
           valueSuffix: ' l/h'
         }
       }]
-    
+
     }));
 
     this.task = setInterval(() => {
@@ -125,10 +125,9 @@ export class HandleLeakPage {
     }, 1500);
   }
 
-  refreshDataGauge(): void{
-    let     point = this.chart.series[0].points[0];
-    point.update(this.modelService.getCurrentFlow());
-
+  refreshDataGauge(): void {
+    // let point = this.chart.series[0].points[0];
+    this.chart.series[0].points[0].update(this.modelService.getCurrentFlow());
   }
 
   updateCurrentValue(): void {
@@ -199,7 +198,7 @@ export class HandleLeakPage {
     alert.present();
   }
 
-  notALeak(): void{
+  notALeak(): void {
     this.navCtrl.push(NotALeakPage, {
       event: this.modelService.getLatestOpenEvent()
     });

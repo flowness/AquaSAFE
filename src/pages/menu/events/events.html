@@ -25,7 +25,7 @@
               {{asEvent.title}} {{asEvent.timestamp}}
             </ion-label>
             <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> -->
-            <button *ngIf="asEvent.open" [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button outline item-end>
+            <button *ngIf="asEvent.open" [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button round item-end>
               {{isLiveEvent(asEvent) ? "Handle" : "Close"}}
             </button>
         </ion-item>

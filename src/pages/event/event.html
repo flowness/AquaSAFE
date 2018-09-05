@@ -17,11 +17,11 @@
   <ion-item>
     <button [color]="isLiveEvent(asEvent) ? 'danger' : 'primary'"
       (click)="handleAsEvent(asEvent);$event.stopPropagation()" ion-button
-      outline item-end>{{isLiveEvent(asEvent) ? "Handle Event" : asEvent.open ?
+      round item-end>{{isLiveEvent(asEvent) ? "Handle Event" : asEvent.open ?
       "Close Event" : "Update Event"}}</button>
     <button [hidden]="isLiveEvent(asEvent) || !asEvent.open" [color]="primary"
       (click)="handleNotALeak(asEvent);$event.stopPropagation()" ion-button
-      outline item-end>Not A Leak</button>
+      round item-end>Not A Leak</button>
   </ion-item>
   <ion-list>
     <ion-list-header>
