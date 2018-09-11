@@ -40,6 +40,7 @@ import { EditEventPage } from "../pages/edit-event/edit-event";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 
 import { Firebase } from "@ionic-native/firebase";
+import { FcmProvider } from '../providers/fcm/fcm';
 
 // const firebase = {
 //   // your firebase web config
@@ -109,6 +110,7 @@ import { Firebase } from "@ionic-native/firebase";
     DateParsePipe,
     ScreenOrientation,
     Firebase,
+    FcmProvider,
   ]
 })
 export class AppModule {}

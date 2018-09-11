@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { Nav, Platform } from "ionic-angular";
+import { Nav, Platform, ToastController } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
@@ -8,20 +8,51 @@ import { StatisticsPage } from "../pages/menu/statistics/statistics";
 import { SettingsPage } from "../pages/menu/settings/settings";
 import { EventsPage } from "../pages/menu/events/events";
 import { ModelService } from "../providers/model-service";
+import { FcmProvider } from "../providers/fcm/fcm";
+import { tap } from "rxjs/operators";
 
 @Component({
   templateUrl: "app.html"
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Nav)
+  nav: Nav;
 
   rootPage: any = HomePage;
 
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string; component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public modelService: ModelService) {
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public modelService: ModelService,
+    fcm: FcmProvider,
+    toastCtrl: ToastController
+  ) {
     this.initializeApp();
 
+    if (this.platform.is("cordova")) {
+      platform.ready().then(() => {
+        // Get a FCM token
+        fcm.getToken();
+
+        // Listen to incoming messages
+        fcm
+          .listenToNotifications()
+          .pipe(
+            tap(msg => {
+              // show a toast
+              const toast = toastCtrl.create({
+                message: msg.body,
+                duration: 3000
+              });
+              toast.present();
+            })
+          )
+          .subscribe();
+      });
+    }
     // used for an example of ngFor and navigation
     this.pages = [
       { title: "Home", component: HomePage },
@@ -29,7 +60,6 @@ export class MyApp {
       { title: "Settings", component: SettingsPage },
       { title: "Events", component: EventsPage }
     ];
-
   }
 
   initializeApp() {
@@ -37,7 +67,7 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault(); 
+      this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
   }
