@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "613326243152",
+    "firebase_url": "https://aquasafe-app.firebaseio.com",
+    "project_id": "aquasafe-app",
+    "storage_bucket": "aquasafe-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613326243152:android:fce89082b725dba6",
+        "android_client_info": {
+          "package_name": "app.aquasafe.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613326243152-jhqt5ft2pc0dmt3vaq5rqqrtqbp7pr73.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.aquasafe.io",
+            "certificate_hash": "159b923b248642f69ec353cf845b2826221a0519"
+          }
+        },
+        {
+          "client_id": "613326243152-3p25auup1vqvkvaeqgkpl1jldo4o3umt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmG3vi3h45ddrhUmcU9k3_E93sxGxvqdA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613326243152-3p25auup1vqvkvaeqgkpl1jldo4o3umt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
