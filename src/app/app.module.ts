@@ -39,6 +39,12 @@ import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
 import { EditEventPage } from "../pages/edit-event/edit-event";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 
+import { Firebase } from "@ionic-native/firebase";
+
+// const firebase = {
+//   // your firebase web config
+// };
+
 @NgModule({
   declarations: [
     MyApp,
@@ -97,11 +103,12 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation";
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     CallNumber,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    DataFinder, 
+    DataFinder,
     ModelService,
     Geolocation,
     DateParsePipe,
-    ScreenOrientation
+    ScreenOrientation,
+    Firebase,
   ]
 })
-export class AppModule { }
+export class AppModule {}
