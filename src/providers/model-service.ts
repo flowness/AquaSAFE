@@ -291,7 +291,6 @@ export class ModelService {
   }
   /* Sets data with returned JSON array */
   private setEventsData(data: any[]): void {
-    console.log("events length1 = " + this.events.length);
     for (let index = 0; index < data.length; index++) {
       // data[index].id = this.generateMockEventId();
       this.events.push(this.getEventFromSystemStatus(JSON.parse(data[index])));
@@ -302,14 +301,16 @@ export class ModelService {
 
   private getEventFromSystemStatus(systemStatus: any): asEvent {
     let event: asEvent = {
-      id: systemStatus["idsystem_status"],
-      title: systemStatus["Event_str"],
-      timestamp: systemStatus["timestamp"],
-      type: systemStatus["Event_str"],
+      id: systemStatus.idsystem_status,
+      title: systemStatus.Event_str,
+      timestamp: systemStatus.timestamp,
+      type: systemStatus.Event_str,
       open: false,
-      status: systemStatus["status"]
+      status: systemStatus.status,
+      eventId: systemStatus.event_ID,
+      moments: []
     }
-    console.dir(event);
+    // console.dir(event);
     return event;
   }
 

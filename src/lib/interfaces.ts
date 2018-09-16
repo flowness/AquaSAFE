@@ -29,7 +29,8 @@ export interface asEvent {
     type: string,
     open: boolean,
     status: EventStatus,
-    moments?: eventMoment[]
+    moments?: eventMoment[],
+    eventId?: number
 }
 
 export interface eventMoment {
