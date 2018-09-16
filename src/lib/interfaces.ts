@@ -29,7 +29,7 @@ export interface asEvent {
     type: string,
     open: boolean,
     status: EventStatus,
-    moments: eventMoment[]
+    moments?: eventMoment[]
 }
 
 export interface eventMoment {

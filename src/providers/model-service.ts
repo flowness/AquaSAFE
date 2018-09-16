@@ -9,6 +9,8 @@ import {
   eventMoment,
   module
 } from "../lib/interfaces";
+import { Http } from "@angular/http";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class ModelService {
@@ -20,6 +22,9 @@ export class ModelService {
   private settings: settings;
   private currentFlow: number = 0;
   private events: asEvent[] = [];
+
+  private eventsUrl: string =
+    "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?SN=azarhome&period=All&statusType=All";
 
   private icons: string[] = [
     "build",
@@ -44,12 +49,14 @@ export class ModelService {
 
   constructor(
     public dataFinder: DataFinder,
-    public dateParsePipe: DateParsePipe
+    public dateParsePipe: DateParsePipe,
+    private http: Http
   ) {
     console.log("constructor model-service");
-    this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
-      this.setEventsData(data);
-    });
+    // this.dataFinder.getJSONDataAsync("./assets/data/events.json").then(data => {
+    //   this.setEventsData(data);
+    // });
+    this.refreshEventsData();
   }
 
   public getStatus(): string {
@@ -165,7 +172,7 @@ export class ModelService {
     this.updateSystemStatus();
   }
 
-  public closeEvent(id: number, text: string="") {
+  public closeEvent(id: number, text: string = "") {
     console.log("closing event. id=" + id);
     for (let index = 0; index < this.events.length; index++) {
       if (this.events[index].id === id) {
@@ -210,7 +217,7 @@ export class ModelService {
       }
     }
     return false;
-}
+  }
 
   public updateSettings(
     settingsItemTitle: string,
@@ -262,35 +269,48 @@ export class ModelService {
     }
   }
 
-  updateEventNotALeak1(element: asEvent, title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.POST): void{
-      let moment: eventMoment = {
-        title: title,
-        timestamp: this.formatDate(new Date()),
-        initiator: initiator
-      };
-      element.moments.push(moment);
-      element.status = toStatus;
-      if (toStatus === EventStatus.CLOSED) {
-        element.open = false;
+  updateEventNotALeak1(element: asEvent, title: string, initiator: string = "MP100", toStatus: EventStatus = EventStatus.POST): void {
+    let moment: eventMoment = {
+      title: title,
+      timestamp: this.formatDate(new Date()),
+      initiator: initiator
+    };
+    element.moments.push(moment);
+    element.status = toStatus;
+    if (toStatus === EventStatus.CLOSED) {
+      element.open = false;
+    }
+    for (let j = 0; j < this.modules.length; j++) {
+      const module: module = this.modules[j];
+      if (module.type === ModuleType.MP100) {
+        module.state = "All Good";
+        console.log("UNLIVE");
+        break;
       }
-      for (let j = 0; j < this.modules.length; j++) {
-        const module: module = this.modules[j];
-        if (module.type === ModuleType.MP100) {
-          module.state = "All Good";
-          console.log("UNLIVE");
-          break;
-        }
-      }
+    }
   }
   /* Sets data with returned JSON array */
-  private setEventsData(data: any): void {
+  private setEventsData(data: any[]): void {
     console.log("events length1 = " + this.events.length);
     for (let index = 0; index < data.length; index++) {
-      data[index].id = this.generateMockEventId();
-      this.events.push(data[index]);
+      // data[index].id = this.generateMockEventId();
+      this.events.push(this.getEventFromSystemStatus(JSON.parse(data[index])));
     }
-    this.events = this.sortEvents(this.events, false);
+    // this.events = this.sortEvents(this.events, false);
     console.log("events length2 = " + this.events.length);
+  }
+
+  private getEventFromSystemStatus(systemStatus: any): asEvent {
+    let event: asEvent = {
+      id: systemStatus["idsystem_status"],
+      title: systemStatus["Event_str"],
+      timestamp: systemStatus["timestamp"],
+      type: systemStatus["Event_str"],
+      open: false,
+      status: systemStatus["status"]
+    }
+    console.dir(event);
+    return event;
   }
 
   private updateSystemStatus() {
@@ -306,14 +326,8 @@ export class ModelService {
         isValveOpen = this.modules[index].valve;
       }
     }
-    for (let index = 0; index < this.events.length; index++) {
-      if (this.events[index].open) {
-        hasOpenEvent = true;
-      }
-      if (this.events[index].status == EventStatus.LIVE) {
-        hasLiveEvent = true;
-      }
-    }
+    hasOpenEvent = this.hasOpenEvent();
+    hasLiveEvent = this.hasLiveEvent();
     console.log(
       "System status: live:" +
       hasLiveEvent +
@@ -333,6 +347,24 @@ export class ModelService {
       return;
     }
     this.status = "good";
+  }
+
+  public hasOpenEvent(): boolean {
+    for (let index = 0; index < this.events.length; index++) {
+      if (this.events[index].open) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public hasLiveEvent(): boolean {
+    for (let index = 0; index < this.events.length; index++) {
+      if (this.events[index].status == EventStatus.LIVE) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private prepareData(): void {
@@ -400,7 +432,7 @@ export class ModelService {
   private prepareSiteData(configuredStatus: string, vs100Status: string = "on"): void {
     let modules: module[] = [];
     modules.push(this.getModule(ModuleType.MP100, configuredStatus));
-    if (vs100Status!="off") {
+    if (vs100Status != "off") {
       modules.push(this.getModule(ModuleType.VS100, configuredStatus));
     }
     modules.push(this.getModule(ModuleType.FD100, configuredStatus));
@@ -515,4 +547,51 @@ export class ModelService {
     // console.log("date3= " + res);
     return res;
   }
+
+  private refreshEventsData() {
+    this.getJSONDataAsync(this.eventsUrl).then(data => {
+      // console.log(data);
+      let events: any[] = [];
+      if (
+        data != undefined &&
+        data["statusCode"] != undefined &&
+        data["statusCode"] == 200
+      ) {
+        events = data["body"];
+        this.setEventsData(events);
+      }
+      // console.log(events);
+    });
+  }
+
+  private getJSONDataAsync(url: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http.get(url).subscribe(res => {
+        if (!res.ok) {
+          reject(
+            "Failed with status: " +
+            res.status +
+            "\nTrying to find fil at " +
+            url
+          );
+        }
+        resolve(res.json());
+      });
+    }).catch(reason => this.handleError(reason));
+  }
+
+  /* Takes an error, logs it to the console, and throws it */
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || "";
+      const err = JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ""} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+
 }
