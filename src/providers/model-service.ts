@@ -168,7 +168,7 @@ export class ModelService {
 
   public updateEventNotALeak(e: asEvent) {
     this.updateEventNotALeak1(e, "User - not a leak", "User", EventStatus.CLOSED);
-    this.sortEvents(this.events);
+    this.sortEvents();
     this.updateSystemStatus();
   }
 
@@ -244,7 +244,7 @@ export class ModelService {
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === ModuleType.MP100) {
             this.modules[index].state = "Leak Detected";
-            this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
+            this.addLeakageEventToModel("MP100", new Date());
           }
         }
       }
@@ -265,7 +265,7 @@ export class ModelService {
       if (element.status === EventStatus.LIVE) {
         this.updateEventNotALeak1(element, title, initiator, toStatus);
       }
-      this.events = this.sortEvents(this.events, false);
+      this.sortEvents(false);
     }
   }
 
@@ -295,7 +295,7 @@ export class ModelService {
       // data[index].id = this.generateMockEventId();
       this.events.push(this.getEventFromSystemStatus(JSON.parse(data[index])));
     }
-    // this.events = this.sortEvents(this.events, false);
+    this.sortEvents(false);
     console.log("events length2 = " + this.events.length);
   }
 
@@ -304,6 +304,7 @@ export class ModelService {
       id: systemStatus.idsystem_status,
       title: systemStatus.Event_str,
       timestamp: systemStatus.timestamp,
+      epoch_timestamp: systemStatus.epoch_timestamp,
       type: systemStatus.Event_str,
       open: false,
       status: systemStatus.status,
@@ -382,7 +383,7 @@ export class ModelService {
     if (this.modules == null || !this.modelInited) {
       if (urlState === "leak") {
         this.setCurrentFlow(19);
-        this.addLeakageEventToModel("MP100", this.formatDate(new Date()));
+        this.addLeakageEventToModel("MP100", new Date());
       }
 
       this.prepareSiteData(urlState, urlVs100);
@@ -475,23 +476,26 @@ export class ModelService {
     return sn;
   }
 
-  private addLeakageEventToModel(indicator: string, date: string): void {
+  private addLeakageEventToModel(indicator: string, date: Date): void {
     let moment: eventMoment = {
       title: "detection",
-      timestamp: date,
+      timestamp: this.formatDate(date),
       initiator: indicator
     };
     let event: asEvent = {
       id: this.generateMockEventId(),
       title: "Leak Detection",
-      timestamp: date,
+      timestamp: this.formatDate(date),
+      epoch_timestamp: date.getTime(),
       type: "leak",
       open: true,
       status: EventStatus.LIVE,
       moments: [moment]
     };
+    console.log("Adding event:");
+    console.dir(event);
     this.events.push(event);
-    this.events = this.sortEvents(this.events, false);
+    this.sortEvents(false);
     // console.dir(this.events);
   }
 
@@ -510,44 +514,44 @@ export class ModelService {
     return this.nextMockEventId++;
   }
 
-  private sortEvents(events: asEvent[], asc: boolean = true): asEvent[] {
-    let result: asEvent[] = [];
-    let tempArray = [];
-    for (let index = 0; index < events.length; index++) {
-      const element = events[index];
-      tempArray.push({
-        effectiveDate: this.getEffectiveDate(element),
-        asEvent: element
-      });
-    }
+  private sortEvents(asc: boolean = true): void {
+    // let result: asEvent[] = [];
+    // let tempArray = [];
+    // for (let index = 0; index < events.length; index++) {
+    //   const element = events[index];
+    //   tempArray.push({
+    //     effectiveDate: this.getEffectiveDate(element),
+    //     asEvent: element
+    //   });
+    // }
     // console.dir(tempArray);
-    tempArray.sort((n1, n2) => {
-      if (n1.effectiveDate > n2.effectiveDate) {
+    this.events.sort((n1, n2) => {
+      if (n1.epoch_timestamp > n2.epoch_timestamp) {
         return asc ? 1 : -1;
       }
 
-      if (n1.effectiveDate < n2.effectiveDate) {
+      if (n1.epoch_timestamp < n2.epoch_timestamp) {
         return asc ? -1 : 1;
       }
 
       return 0;
     });
     // console.dir(tempArray);
-    for (let index = 0; index < tempArray.length; index++) {
-      const element = tempArray[index];
-      result.push(element.asEvent);
-    }
-    return result;
+    // for (let index = 0; index < tempArray.length; index++) {
+    //   const element = tempArray[index];
+    //   result.push(element.asEvent);
+    // }
+    // return result;
   }
 
-  private getEffectiveDate(event: asEvent): Date {
-    // console.log("date0= " + event.moments[0].timestamp);
-    let res = this.dateParsePipe.transform(
-      event.moments[event.moments.length - 1].timestamp
-    );
-    // console.log("date3= " + res);
-    return res;
-  }
+  // private getEffectiveDate(event: asEvent): Date {
+  //   // console.log("date0= " + event.moments[0].timestamp);
+  //   let res = this.dateParsePipe.transform(
+  //     event.moments[event.moments.length - 1].timestamp
+  //   );
+  //   // console.log("date3= " + res);
+  //   return res;
+  // }
 
   private refreshEventsData() {
     this.getJSONDataAsync(this.eventsUrl).then(data => {

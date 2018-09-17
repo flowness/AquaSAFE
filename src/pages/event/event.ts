@@ -51,6 +51,7 @@ export class EventPage {
 
   /* Sets data with returned JSON array */
   private setMomentsData(data: any[]): void {
+    this.asEvent.moments = [];
     for (let index = 0; index < data.length; index++) {
       // data[index].id = this.generateMockEventId();
       this.asEvent.moments.push(this.getMomentFromEvent(JSON.parse(data[index])));

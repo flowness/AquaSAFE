@@ -11,29 +11,29 @@
 <ion-content>
   <!-- OK status -->
   <div *ngIf="modelService.getStatus() != 'leak'; else leak">
-    <ion-item class="header-status" [ngClass]="{warn: modelService.getStatus() === 'warn'}">
-      <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item>
-      <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item>
+    <ion-item>
+      <!-- <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item> -->
+      <!-- <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item> -->
       <!-- <ion-item no-lines class="header-status-alert-ind">
         Current Flow: {{modelService.getCurrentFlow()}}
       </ion-item> -->
       <!-- <ion-item item-end id="gauge" style="width:100px"></ion-item> -->
-      <div item-end id="gauge" style="width:100px"></div>
+      <div id="gauge"></div>
     </ion-item>
   </div>
   <!-- LEAK status -->
   <ng-template #leak>
     <div>
-      <ion-item class="header-status leak">
-        <ion-item no-lines class="header-label">LEAK DETECTED</ion-item>
-        <ion-badge (click)="openHandleLeakPage()">Handle Event</ion-badge>
+      <ion-item>
+        <div id="gauge"></div>
+        <!-- <ion-item no-lines class="header-label">LEAK DETECTED</ion-item> -->
+        <ion-badge color="danger" (click)="openHandleLeakPage()">Handle Leak Event</ion-badge>
         <ion-item no-lines class="header-status-alert-ind">
           Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}
           <br>Detection Time: {{modelService.getLatestOpenEvent().timestamp}}
           <br>Current Flow: {{modelService.getCurrentFlow()}} ({{modelService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow()
           > 5 ? "Decent Leak" : "Small Leak"}})
         </ion-item>
-        <div item-end id="gauge" style="width:100px" ></div>
       </ion-item>
     </div>
   </ng-template>

@@ -26,6 +26,7 @@ export interface asEvent {
     id?: number,
     title: string,
     timestamp: string,
+    epoch_timestamp: number,
     type: string,
     open: boolean,
     status: EventStatus,
