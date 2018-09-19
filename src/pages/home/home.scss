@@ -1,5 +1,13 @@
 page-home {
 
+    .ion-content {
+        background: #283147 !important;
+    }
+
+    .bg {
+        background: linear-gradient(to bottom,#283147, #fff 100% );
+    }
+
     .scroll-content {
         overflow: hidden;
     }

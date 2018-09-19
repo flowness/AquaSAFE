@@ -38,7 +38,7 @@
     </div>
   </ng-template>
   <div>
-    <img width="100%" style="display:inline-block" src="assets/imgs/front_resized.png" />
+    <img id="statusImage" width="100%" style="display:inline-block" src="{{ststemStatusImageURL}}" />
   </div>
   <ion-list>
     <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">

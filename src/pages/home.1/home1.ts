@@ -29,6 +29,7 @@ import * as HighchartsMore from "highcharts/highcharts-more";
 import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
+import { Events } from 'ionic-angular';
 
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
@@ -47,7 +48,9 @@ export class HomePage1 {
   ];
   private chart: HighCharts.chart;
   private task: number;
-
+  private taskStatus: number;
+  private systemStatusCode: number = 0;
+  private ststemStatusImageURL: string;
 
   constructor(
     private http: Http,
@@ -86,7 +89,7 @@ export class HomePage1 {
         center: ['50%', '50%'],
         size: '90%',
         startAngle: -90,
-        endAngle: 70,
+        endAngle: 90,
         background: {
           backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
           innerRadius: '60%',
@@ -125,7 +128,7 @@ export class HomePage1 {
         name: 'Consumption',
         data: [this.modelService.getCurrentFlow()],
         dataLabels: {
-          format: '<div style="text-align:center"><span style="font-size:10px;color:black">{y}</span></div>'
+          format: '<div style="text-align:center"><span style="font-size:20px;color:black">{y} ml</span></div>'
         }
       }],
       plotOptions: {
@@ -140,11 +143,51 @@ export class HomePage1 {
     };
 
     this.chart = HighCharts.chart('gauge', gaugeOptions);
+    
+    this.updateStatusImage();
 
     this.task = setInterval(() => {
       this.refreshDataGauge();
     }, 1000);
 
+    this.taskStatus = setInterval(() => {
+      this.getStatus();
+    }, 2000);
+  }
+
+  
+  private systemStatusUrl: string =
+  "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?SN=azarhome&period=7%20DAY&statusType=1";
+
+  private getStatus(): void {
+    this.getJSONDataAsync(this.systemStatusUrl).then(data => {
+      // console.log(data);
+      let systemStatus: number = 0;
+      if (
+        data != undefined &&
+        data["statusCode"] != undefined &&
+        data["statusCode"] == 200
+      ) {
+        console.log("data[body][Event_str] = " + data["body"]);
+
+        if (Object.keys(data["body"]).length > 0 )
+          systemStatus = 1;
+      }
+      console.log("systemStatus = " + systemStatus);
+      //this.chart.series[0].addPoint(flow, true, true);
+      //return flow;
+      this.systemStatusCode = systemStatus;
+      this.updateStatusImage();
+    });
+  }
+
+  private updateStatusImage(): void {
+    switch (this.systemStatusCode)
+    {
+        case 0: this.ststemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
+        case 1: this.ststemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;
+        case 2: this.ststemStatusImageURL = "assets/imgs/front_resized_Trouble.png"; break;
+    }
   }
 
   private refreshDataGauge(): void {
