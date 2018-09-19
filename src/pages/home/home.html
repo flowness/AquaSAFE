@@ -4,7 +4,7 @@
       <ion-icon name="menu"></ion-icon>
       <ion-badge *ngIf="modelService.getCountOpenEvents() > 0" [color]="modelService.getStatus() === 'leak' ? 'danger' : 'primary'">{{modelService.getCountOpenEvents()}}</ion-badge>
     </button>
-    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
+    <!--<img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />-->
   </ion-navbar>
 </ion-header>
 
@@ -37,6 +37,9 @@
       </ion-item>
     </div>
   </ng-template>
+  <div>
+    <img width="100%" style="display:inline-block" src="assets/imgs/front_resized.png" />
+  </div>
   <ion-list>
     <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
       <ion-icon [name]="module.icon" item-start></ion-icon>

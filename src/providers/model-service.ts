@@ -434,13 +434,13 @@ export class ModelService {
   private prepareSiteData(configuredStatus: string, vs100Status: string = "on"): void {
     let modules: module[] = [];
     modules.push(this.getModule(ModuleType.MP100, configuredStatus));
-    if (vs100Status != "off") {
-      modules.push(this.getModule(ModuleType.VS100, configuredStatus));
-    }
-    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
-    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
-    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
-    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+//    if (vs100Status != "off") {
+//      modules.push(this.getModule(ModuleType.VS100, configuredStatus));
+//    }
+//    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+//    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+//    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
+//    modules.push(this.getModule(ModuleType.FD100, configuredStatus));
 
     this.modules = modules;
   }
