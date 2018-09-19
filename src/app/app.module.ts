@@ -5,6 +5,7 @@ import { IonicStorageModule } from "@ionic/storage";
 
 import { MyApp } from "./app.component";
 import { HomePage } from "../pages/home/home";
+import { HomePage1 } from "../pages/home.1/home1";
 import { StatisticsPage } from "../pages/menu/statistics/statistics";
 import { SettingsPage } from "../pages/menu/settings/settings";
 import { EventsPage } from "../pages/menu/events/events";
@@ -50,6 +51,7 @@ import { FcmProvider } from '../providers/fcm/fcm';
   declarations: [
     MyApp,
     HomePage,
+    HomePage1,
     StatisticsPage,
     SettingsPage,
     EventsPage,
@@ -79,6 +81,7 @@ import { FcmProvider } from '../providers/fcm/fcm';
   entryComponents: [
     MyApp,
     HomePage,
+    HomePage1,
     StatisticsPage,
     SettingsPage,
     EventsPage,
