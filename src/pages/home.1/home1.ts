@@ -30,6 +30,7 @@ import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { Events } from 'ionic-angular';
+import { Body } from "@angular/http/src/body";
 
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
@@ -49,7 +50,7 @@ export class HomePage1 {
   private chart: HighCharts.chart;
   private task: number;
   private taskStatus: number;
-  private systemStatusCode: number = 0;
+  private systemStatusCode: number = -1;
   private ststemStatusImageURL: string;
 
   constructor(
@@ -162,16 +163,27 @@ export class HomePage1 {
   private getStatus(): void {
     this.getJSONDataAsync(this.systemStatusUrl).then(data => {
       // console.log(data);
+       
       let systemStatus: number = 0;
       if (
-        data != undefined &&
-        data["statusCode"] != undefined &&
-        data["statusCode"] == 200
-      ) {
-        console.log("data[body][Event_str] = " + data["body"]);
-
-        if (Object.keys(data["body"]).length > 0 )
-          systemStatus = 1;
+          data != undefined &&
+          data["statusCode"] != undefined &&
+          data["statusCode"] == 200
+          ) {
+                //console.log("data[body][Event_str] = " + data.body["Event_str"]);
+                let statusLine = {};
+                if (data.body.length > 0) {
+                  for (var i of data.body) {
+                    statusLine = JSON.parse(i);
+                    console.log("################ statusLine = " + statusLine["Event_str"]);
+                    systemStatus = 1;
+                    this.modelService.updateSettings (statusLine["Event_str"],true);
+                  }
+                }
+                else { 
+                  console.log("^^^^^^^^  No Data.body");
+                  this.modelService.updateSettings ("",false);
+                }
       }
       console.log("systemStatus = " + systemStatus);
       //this.chart.series[0].addPoint(flow, true, true);
@@ -184,6 +196,7 @@ export class HomePage1 {
   private updateStatusImage(): void {
     switch (this.systemStatusCode)
     {
+        case -1: this.ststemStatusImageURL = "assets/imgs/front_resized.png"; break;
         case 0: this.ststemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
         case 1: this.ststemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;
         case 2: this.ststemStatusImageURL = "assets/imgs/front_resized_Trouble.png"; break;

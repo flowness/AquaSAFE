@@ -122,9 +122,9 @@ export class ModelService {
   public setCurrentFlow(f: number): void {
     console.log("setting current flow: " + f);
     this.currentFlow = f;
-    if (f === 0) {
-      this.unliveAnyLiveEvent("flow stopped");
-    }
+    //if (f === 0) {
+      //this.unliveAnyLiveEvent("flow stopped");
+    //}
     this.updateSystemStatus();
   }
 
@@ -223,12 +223,13 @@ export class ModelService {
     settingsItemTitle: string,
     settingsItemValue: boolean
   ): void {
+    console.log("@@@@@@@@@@@@@  settingsItemTitle = " + settingsItemTitle);
     if (this.modules != null) {
       //set the settings object
-      if (settingsItemTitle === "Leakage Alert") {
+      if (settingsItemTitle == "Leakage Alert" || settingsItemTitle == "Continues flow") {
         this.settings.leakageAlert = settingsItemValue;
       }
-      if (settingsItemTitle === "Irregularity Alert") {
+      if (settingsItemTitle == "Irregularity Alert") {
         this.settings.irregularityAlert = settingsItemValue;
       }
 
@@ -239,12 +240,13 @@ export class ModelService {
       }
 
       // if we are here need to set leakage or warn
-      if (settingsItemTitle === "Leakage Alert") {
-        this.setCurrentFlow(19);
+      if (settingsItemTitle === "Leakage Alert" || settingsItemTitle == "Continues flow") {
+        //this.setCurrentFlow(19);
         for (let index = 0; index < this.modules.length; index++) {
           if (this.modules[index].type === ModuleType.MP100) {
             this.modules[index].state = "Leak Detected";
-            this.addLeakageEventToModel("MP100", new Date());
+            //this.addLeakageEventToModel("MP100", new Date());
+            console.log("MP100 Leak detection !!! ");
           }
         }
       }
@@ -291,12 +293,14 @@ export class ModelService {
   }
   /* Sets data with returned JSON array */
   private setEventsData(data: any[]): void {
-    for (let index = 0; index < data.length; index++) {
-      // data[index].id = this.generateMockEventId();
-      this.events.push(this.getEventFromSystemStatus(JSON.parse(data[index])));
+    if (data != undefined) {
+      for (let index = 0; index < data.length; index++) {
+        // data[index].id = this.generateMockEventId();
+        this.events.push(this.getEventFromSystemStatus(JSON.parse(data[index])));
+      }
+      this.sortEvents(false);
+      console.log("events length2 = " + this.events.length);
     }
-    this.sortEvents(false);
-    console.log("events length2 = " + this.events.length);
   }
 
   private getEventFromSystemStatus(systemStatus: any): asEvent {

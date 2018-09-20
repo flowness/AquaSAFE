@@ -9,7 +9,7 @@ import { HomePage } from "../../home/home";
 })
 export class SettingsPage {
   items: Array<{ title: string, input: string, icon: string, value: any }>;
-  statuses = ["Low Battery", "Tamper", "Communication", "All Good"];
+  statuses = ["Low Battery", "Tamper", "Communication", "OK"];
   unregisterFunc: Function;
 
   constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController, private modelService: ModelService, platform: Platform) {
