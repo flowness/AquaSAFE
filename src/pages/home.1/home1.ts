@@ -175,13 +175,14 @@ export class HomePage1 {
                 if (data.body.length > 0) {
                   for (var i of data.body) {
                     statusLine = JSON.parse(i);
-                    console.log("################ statusLine = " + statusLine["Event_str"]);
+                    //console.log("################ statusLine = " + statusLine["Event_str"]);
                     systemStatus = 1;
                     this.modelService.updateSettings (statusLine["Event_str"],true);
+                    this.modelService.setStatus("leak");
                   }
                 }
                 else { 
-                  console.log("^^^^^^^^  No Data.body");
+                  //console.log("^^^^^^^^  No Data.body");
                   this.modelService.updateSettings ("",false);
                 }
       }

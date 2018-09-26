@@ -66,6 +66,10 @@ export class ModelService {
     return this.status;
   }
 
+  public setStatus (newStatus: string) {
+    this.status = newStatus;
+  }
+  
   public getModules(): module[] {
     if (this.modules == null || this.modelInited != true) {
       this.prepareData();
