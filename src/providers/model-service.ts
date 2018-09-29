@@ -61,8 +61,11 @@ export class ModelService {
 
   public getStatus(): string {
     if (this.modules == null || this.modelInited != true) {
+      console.log("getStatus, Preparing data");
       this.prepareData();
     }
+    console.log("getStatus, Status -> " + this.status);
+
     return this.status;
   }
 
@@ -350,13 +353,16 @@ export class ModelService {
     );
     if (hasLiveEvent) {
       this.status = "leak";
+      console.log("Status -> LEAK");
       return;
     }
     if (hasOpenEvent || !isValveOpen || !isAllGood) {
       this.status = "warn";
+      console.log("Status -> WARN");
       return;
     }
     this.status = "good";
+    console.log("Status -> GOOD");
   }
 
   public hasOpenEvent(): boolean {
@@ -390,7 +396,7 @@ export class ModelService {
 
     if (this.modules == null || !this.modelInited) {
       if (urlState === "leak") {
-        this.setCurrentFlow(19);
+        //this.setCurrentFlow(19);
         this.addLeakageEventToModel("MP100", new Date());
       }
 
@@ -484,7 +490,7 @@ export class ModelService {
     return sn;
   }
 
-  private addLeakageEventToModel(indicator: string, date: Date): void {
+  public addLeakageEventToModel(indicator: string, date: Date): void {
     let moment: eventMoment = {
       title: "detection",
       timestamp: this.formatDate(date),

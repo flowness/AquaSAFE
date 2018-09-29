@@ -6,6 +6,7 @@ import { IonicStorageModule } from "@ionic/storage";
 import { MyApp } from "./app.component";
 import { HomePage } from "../pages/home/home";
 import { HomePage1 } from "../pages/home.1/home1";
+import { HomePage2 } from "../pages/home.2/home2";
 import { StatisticsPage } from "../pages/menu/statistics/statistics";
 import { SettingsPage } from "../pages/menu/settings/settings";
 import { EventsPage } from "../pages/menu/events/events";
@@ -42,6 +43,9 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation";
 
 import { Firebase } from "@ionic-native/firebase";
 import { FcmProvider } from '../providers/fcm/fcm';
+import { FlowService } from "../providers/Flow-service";
+import { EventService } from "../providers/StatusEvent-service";
+import { AsyncJSONService } from "../providers/Async-JSON-service";
 
 // const firebase = {
 //   // your firebase web config
@@ -52,6 +56,7 @@ import { FcmProvider } from '../providers/fcm/fcm';
     MyApp,
     HomePage,
     HomePage1,
+    HomePage2,
     StatisticsPage,
     SettingsPage,
     EventsPage,
@@ -82,6 +87,7 @@ import { FcmProvider } from '../providers/fcm/fcm';
     MyApp,
     HomePage,
     HomePage1,
+    HomePage2,
     StatisticsPage,
     SettingsPage,
     EventsPage,
@@ -114,6 +120,9 @@ import { FcmProvider } from '../providers/fcm/fcm';
     ScreenOrientation,
     Firebase,
     FcmProvider,
+    AsyncJSONService,
+    FlowService,
+    EventService
   ]
 })
 export class AppModule {}
