@@ -34,13 +34,6 @@ export class FlowService {
                         }
                         console.log(lastFlow);
                         this.currentFlow = lastFlow;
-
-                        //this.chart.series[0].addPoint(flow, true, true);
-                        //return flow;
-                        
-                        //this.modelService.setCurrentFlow(flow);
-                        //this.chart.series[0].points[0].update(this.modelService.getCurrentFlow());
-
                     }
         );
       

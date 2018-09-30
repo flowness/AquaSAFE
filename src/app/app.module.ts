@@ -44,7 +44,7 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation";
 import { Firebase } from "@ionic-native/firebase";
 import { FcmProvider } from '../providers/fcm/fcm';
 import { FlowService } from "../providers/Flow-service";
-import { EventService } from "../providers/StatusEvent-service";
+import { StatusEventService } from "../providers/StatusEvent-service"; 
 import { AsyncJSONService } from "../providers/Async-JSON-service";
 
 // const firebase = {
@@ -122,7 +122,7 @@ import { AsyncJSONService } from "../providers/Async-JSON-service";
     FcmProvider,
     AsyncJSONService,
     FlowService,
-    EventService
+    StatusEventService
   ]
 })
 export class AppModule {}

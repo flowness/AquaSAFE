@@ -10,7 +10,7 @@ import * as SolidGauge from "highcharts/modules/solid-gauge";
 
 // In-Project imports
 import { MP100Page } from "../modules/mp100/mp100";
-//import { ModelService } from "../../providers/model-service";
+import { StatusEventService } from "../../providers/StatusEvent-service";
 import { HandleLeakPage } from "../handle-leak/handle-leak";
 import { AsyncJSONService } from "../../providers/Async-JSON-service";
 import { FlowService } from "../../providers/Flow-service";
@@ -26,9 +26,10 @@ SolidGauge(HighCharts);
 })
 export class HomePage2 {
   private pages: Page[] = [MP100Page];
-  private chart: HighCharts.chart;
+  private flowChart: HighCharts.chart;
   private intervalRefreshGaugeTask: number;
-  private intervalRefreshStatusTask: number;
+  //private intervalRefreshStatusTask: number;
+  private intervalRefreshStatusEventsTask: number;
   private systemStatusCode: number = -1;
   private systemStatusImageURL: string;
 
@@ -38,6 +39,7 @@ export class HomePage2 {
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
+    private statusEventService: StatusEventService,
     //private modelService: ModelService,
     private asyncJASONRequests: AsyncJSONService,
     private flowService: FlowService,
@@ -52,7 +54,9 @@ export class HomePage2 {
     }
   }
 
-  ionViewDidLoad(): void { console.log("ionViewDidLoad home");  }
+  ionViewDidLoad(): void { 
+    console.log("ionViewDidLoad home");  
+  }
 
   ionViewWillEnter(): void {
     console.log("ionViewWillEnter home");
@@ -120,11 +124,12 @@ export class HomePage2 {
         }
       }
     };
-    this.chart = HighCharts.chart('gauge', gaugeOptions);
+    this.flowChart = HighCharts.chart('gauge', gaugeOptions);
     
     this.updateStatusImage();
 
     this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
+    this.intervalRefreshStatusEventsTask = setInterval(() => { this.refreshStatusEvents(); }, 5000);
     //this.intervalRefreshStatusTask = setInterval(() => { this.getStatus(); }, 2000);
   }
 
@@ -172,8 +177,12 @@ export class HomePage2 {
   }
 
   private refreshDataGauge() { 
-    this.chart.series[0].points[0].update(this.flowService.getCurrentFlow());
+    this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
    }
+
+  private refreshStatusEvents() {
+    
+  }
 
   moduleTapped(event: any, module: any): void {
     console.log("module type = " + module.type);
@@ -188,7 +197,7 @@ export class HomePage2 {
 
   ionViewDidLeave(): void {
     clearInterval(this.intervalRefreshGaugeTask);
-    clearInterval(this.intervalRefreshStatusTask);
+    clearInterval(this.intervalRefreshStatusEventsTask);
   }
 
 }
