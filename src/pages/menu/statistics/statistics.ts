@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, Platform, LoadingController, Loading } from "ionic-angular";
-import { HomePage } from "../../home/home";
+import { HomePage2 } from "../../home.2/home2";
 import { ModelService } from "../../../providers/model-service";
 import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
@@ -314,7 +314,7 @@ export class StatisticsPage {
   }
 
   private backButton(): void {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(HomePage2);
   }
 
   ionViewDidLeave(): void {

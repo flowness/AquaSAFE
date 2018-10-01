@@ -32,7 +32,7 @@ export class FlowService {
                             ) {
                             lastFlow = data["body"]["Flow"];
                         }
-                        console.log(lastFlow);
+                        //console.log(lastFlow);
                         this.currentFlow = lastFlow;
                     }
         );

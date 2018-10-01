@@ -3,7 +3,6 @@ import { Nav, Platform, ToastController } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
-import { HomePage } from "../pages/home/home";
 import { HomePage2 } from "../pages/home.2/home2";
 
 import { StatisticsPage } from "../pages/menu/statistics/statistics";

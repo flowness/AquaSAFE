@@ -4,8 +4,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from "ionic-angular";
 import { IonicStorageModule } from "@ionic/storage";
 
 import { MyApp } from "./app.component";
-import { HomePage } from "../pages/home/home";
-import { HomePage1 } from "../pages/home.1/home1";
 import { HomePage2 } from "../pages/home.2/home2";
 import { StatisticsPage } from "../pages/menu/statistics/statistics";
 import { SettingsPage } from "../pages/menu/settings/settings";
@@ -54,8 +52,6 @@ import { AsyncJSONService } from "../providers/Async-JSON-service";
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    HomePage1,
     HomePage2,
     StatisticsPage,
     SettingsPage,
@@ -85,8 +81,6 @@ import { AsyncJSONService } from "../providers/Async-JSON-service";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    HomePage1,
     HomePage2,
     StatisticsPage,
     SettingsPage,

@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Platform, ModalController } from "ionic-angular";
-import { HomePage } from "../../home/home";
+import { HomePage2 } from "../../home.2/home2";
 import { EventPage } from "../../event/event";
 import { HandleLeakPage } from "../../handle-leak/handle-leak";
 import { EditEventPage } from "../../edit-event/edit-event";
@@ -32,7 +32,7 @@ export class EventsPage {
   }
 
   private backButton(): void {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(HomePage2);
   }
 
   ionViewDidLeave(): void {
@@ -41,7 +41,7 @@ export class EventsPage {
 
   itemTapped(event, e: SystemStatusEvent): void {
     this.navCtrl.push(EventPage, {
-      event: e
+      eventID: e.idsystem_status
     });
   } 
   
@@ -57,7 +57,7 @@ export class EventsPage {
     console.log("item type = " + e.status);
     if (e.status == Statuses.LIVE) {
       this.navCtrl.push(HandleLeakPage, {
-        event: e
+        eventID: e.idsystem_status
       });
     } else {
       this.openEditEventModal(e);
@@ -66,7 +66,7 @@ export class EventsPage {
 
   openEditEventModal(e: SystemStatusEvent): void {
     let myModal = this.modalCtrl.create(EditEventPage, {
-      event: e
+      eventID: e.idsystem_status
     });
     myModal.present();
   }

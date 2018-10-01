@@ -8,23 +8,25 @@
 
   <ion-navbar>
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">Close</button>
+      <button ion-button (click)="dismiss()">Back</button>
     </ion-buttons>
-    <ion-title>Edit Event</ion-title>
+    <ion-title>{{statusEventService.isOpenEvent(theEvent)?"Edit":"View"}} Event</ion-title>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <h2>Event Type: {{theEvent.type}}</h2>
+  <h2>Event Type: {{theEvent.Event_str}}</h2>
   <h2>Event Date: {{theEvent.timestamp}}</h2>
-  <h2>Event Status: {{theEvent.open?"OPEN":"CLOSED"}}</h2>
-  <ion-item>
-    <ion-label color="primary">What Say You?</ion-label>
-    <ion-input placeholder="Text Input" [(ngModel)]="text"></ion-input>
-  </ion-item>
-  <ion-item>
-    <button color="primary" (click)="closeEvent()" ion-button round
-      item-end>Close Event</button>
-  </ion-item>
+  <h2>Event Status: {{statusEventService.isOpenEvent(theEvent)?"OPEN":"CLOSED"}}</h2>
+  <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
+      <ion-item>
+        <ion-label color="primary">What Say You?</ion-label>
+        <ion-input placeholder="Text Input" [(ngModel)]="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button color="primary" (click)="closeEvent()" ion-button round
+          item-end>Close Event</button>
+      </ion-item>
+  </ion-content>
 </ion-content>

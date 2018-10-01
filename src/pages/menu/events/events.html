@@ -24,9 +24,11 @@
           <ion-label>
             {{curSystemEvent.Event_str}} <br> {{curSystemEvent.timestamp}}
           </ion-label>
-          <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> -->
-            <button *ngIf="isOpenEvent(curSystemEvent)" [color]="curSystemEvent.status == LIVE ? 'danger' : 'primary'" (click)="handleAsEvent(curSystemEvent);$event.stopPropagation()" ion-button round item-end>
-              {{curSystemEvent.status == LIVE ? "Handle" : "Close"}}
+          <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> 
+              
+          -->
+            <button  [color]="isLiveEvent(curSystemEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(curSystemEvent);$event.stopPropagation()" ion-button round item-end>
+              {{isLiveEvent(curSystemEvent) ? "Handle" : isOpenEvent(curSystemEvent)? "Close" : "View"}}
             </button>
       </ion-item>
     </ion-list>

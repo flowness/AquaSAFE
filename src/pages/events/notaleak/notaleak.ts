@@ -8,8 +8,9 @@ import {
   animate,
   transition
 } from "@angular/animations";
-import { ModelService } from "../../../providers/model-service";
-import { asEvent } from "../../../lib/interfaces";
+//import { ModelService } from "../../../providers/model-service";
+//import { asEvent } from "../../../lib/interfaces";
+import { StatusEventService, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
 
 @Component({
   selector: "page-notaleak",
@@ -90,7 +91,9 @@ import { asEvent } from "../../../lib/interfaces";
 })
 
 export class NotALeakPage {
-  currentEvent: asEvent;
+  eventID: number;
+  theEvent: SystemStatusEvent;
+  currentEvent: SystemStatusEvent;
   state0 = "opaque";
   state1 = "opaque";
   state2 = "opaque";
@@ -100,7 +103,14 @@ export class NotALeakPage {
   state6 = "opaque";
   numButtons = 7;
 
-  constructor(public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams, private modelService:ModelService, public loadingCtrl: LoadingController) {
+  constructor(public alertCtrl: AlertController, 
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private statusEventService: StatusEventService,
+              public loadingCtrl: LoadingController) {
+    this.eventID = navParams.get("eventID");
+    this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
+                        
     this.currentEvent = navParams.get("event");
     console.log("navParams = " + this.currentEvent.timestamp);
   }
@@ -125,7 +135,7 @@ export class NotALeakPage {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked");
-            this.modelService.updateEventNotALeak(this.currentEvent);
+            //this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
           }
         }
@@ -143,7 +153,7 @@ export class NotALeakPage {
         {
           text: "OK",
           handler: () => {
-            this.modelService.updateModelNotALeak();
+            //this.modelService.updateModelNotALeak();
             this.navCtrl.pop();
           }
         }

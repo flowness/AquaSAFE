@@ -1,14 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { asEvent } from '../../lib/interfaces';
-import { ModelService } from '../../providers/model-service';
-
-/**
- * Generated class for the EditEventPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
 
 @IonicPage()
 @Component({
@@ -16,11 +8,17 @@ import { ModelService } from '../../providers/model-service';
   templateUrl: 'edit-event.html',
 })
 export class EditEventPage {
-  theEvent: asEvent;
+  eventID: number;
   public text: string = "";
+  theEvent: SystemStatusEvent;
 
-  constructor(public viewCtrl: ViewController, public navCtrl: NavController, public navParams: NavParams, private modelService: ModelService) {
-    this.theEvent = navParams.get("event");
+  constructor(public viewCtrl: ViewController, 
+              public navCtrl: NavController, 
+              public navParams: NavParams, 
+              private statusEventService: StatusEventService) {
+    this.eventID = navParams.get("eventID");
+    this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
+  
   }
 
   ionViewDidLoad() {
@@ -28,7 +26,7 @@ export class EditEventPage {
   }
 
   closeEvent(): void {
-    this.modelService.closeEvent(this.theEvent.id, this.text);
+    this.statusEventService.closeStatusEvent(this.eventID, this.text);
     this.dismiss();
   }
 

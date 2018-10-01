@@ -32,8 +32,10 @@ export interface SystemStatusEvent {
 @Injectable()
 export class StatusEventService {
     private statusURL: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?";
-    private eventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event?EventID=";
+    private subEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event?parentEventID=";
+
     private intervalReceiveStatusEvents;
+    private intervalReceiveSubEvents;
 
     private globalSystemSeverity: GlobalSystemSeverityTypes;
     private statusEventList: SystemStatusEvent[] = [];
@@ -47,10 +49,27 @@ export class StatusEventService {
     public getLastEventID () {return this.lastStatusEventID;}
     public setLastEventID (newEventID: number) { this.lastStatusEventID = newEventID;}
 
+    public isLiveEvent(statusEvent: SystemStatusEvent): boolean { 
+        return statusEvent.status == Statuses.LIVE;
+      }
+    
+    public isOpenEvent(statusEvent: SystemStatusEvent): boolean {
+        return statusEvent.status != Statuses.CLOSED;
+      }
+
+    public getSystemStatusEventIndexByID (statusEventID: number){
+        for (let i = 0; i < this.statusEventList.length; i++) { 
+            if (this.statusEventList[i].idsystem_status == statusEventID)
+                return i
+        }
+        return -1;
+    }
+
     constructor( private asyncJASONRequests: AsyncJSONService ) {
         this.globalSystemSeverity = GlobalSystemSeverityTypes.NORMAL;
         this.lastStatusEventID = -1;
         this.intervalReceiveStatusEvents = setInterval(() => { this.PollingStatusEvents(); }, 5000);
+        this.intervalReceiveSubEvents = setInterval(() => { this.PollingSubEvents(); }, 10000);
         console.log("constructor Event-service");
     }
     
@@ -102,12 +121,15 @@ export class StatusEventService {
         let currentSystemSeverity = SeverityTypes.NORMAL;
 
         for (let index = 0; index < this.statusEventList.length; index++) { 
-            
-            if (this.statusEventList[index].severity == SeverityTypes.ALERT) 
-                currentSystemSeverity = this.statusEventList[index].severity;
-                break;
-            if (this.statusEventList[index].severity == SeverityTypes.WARNING) 
-                currentSystemSeverity = this.statusEventList[index].severity;
+            if (this.statusEventList[index].status == Statuses.LIVE)
+            {
+                if (this.statusEventList[index].severity == SeverityTypes.ALERT) {
+                    currentSystemSeverity = this.statusEventList[index].severity;
+                    break;
+                }
+                if (this.statusEventList[index].severity == SeverityTypes.WARNING) 
+                    currentSystemSeverity = this.statusEventList[index].severity;
+            }  
         }
 
         switch (currentSystemSeverity) {
@@ -134,7 +156,7 @@ export class StatusEventService {
             initiator: JSONStatusEvent.initiator,
             status: this.setStatusENUM(JSONStatusEvent.status), 
             severity: JSONStatusEvent.severity,
-                    rollingSubEvents: []
+            rollingSubEvents: []
         }
         this.statusEventList.push(newStatusEvent);
     }
@@ -158,9 +180,50 @@ export class StatusEventService {
         return openEventCounter;
     }
 
-    private PollingSubEvents(parenrEventID: number) {
+    public closeStatusEvent (eventID: number, closeDescription: string) {
 
     }
 
- 
+    private PollingSubEvents () {
+        for (let i = 0; i < this.statusEventList.length; i++) 
+            this.PollingSubEventsPerSystemStatus(this.statusEventList[i]);
+    }
+
+    private PollingSubEventsPerSystemStatus (statusEvent: SystemStatusEvent) {
+    let curSubEventsURL = this.subEventsUrl + statusEvent.event_ID;
+        this.asyncJASONRequests.getJSONDataAsync(curSubEventsURL).then(data => {
+          if (
+            data != undefined &&
+            data["statusCode"] != undefined &&
+            data["statusCode"] == 200
+          ) {
+            for (let index = 0; index < data.body.length; index++) { 
+                //console.log('data[index] = ' + data.body[index] );                             
+                this.pushNewSubEvent(statusEvent.event_ID, JSON.parse(data.body[index]));
+            }
+          }
+        });
+      }
+    
+      private pushNewSubEvent (statusEventID, JSONStatusEvent: any) {
+        let newSubsEvent: SystemStatusEvent = {
+            idsystem_status: JSONStatusEvent.idsystem_status,
+            timestamp: JSONStatusEvent.timestamp,
+            epoch_timestamp: JSONStatusEvent.epoch_timestamp,
+            cooldown: JSONStatusEvent.cooldown,
+            event_ID: JSONStatusEvent.event_ID,
+            Event_str: JSONStatusEvent.Event_str,
+            total_flow: JSONStatusEvent.total_flow,
+            parent_eventID: null,
+            initiator: JSONStatusEvent.initiator,
+            status: this.setStatusENUM(JSONStatusEvent.status), 
+            severity: JSONStatusEvent.severity,
+            rollingSubEvents: []
+        }
+        let statusEventIndex = this.getSystemStatusEventIndexByID(statusEventID);
+        if (statusEventIndex != -1)
+            this.statusEventList[statusEventIndex].rollingSubEvents.push(newSubsEvent);
+    }
+
+    
 }

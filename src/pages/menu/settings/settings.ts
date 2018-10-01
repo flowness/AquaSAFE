@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { NavController, NavParams, AlertController, LoadingController, Platform } from "ionic-angular";
 import { ModelService } from "../../../providers/model-service";
-import { HomePage } from "../../home/home";
+import { HomePage2 } from "../../home.2/home2";
 
 @Component({
   selector: "page-settings",
@@ -65,7 +65,7 @@ export class SettingsPage {
   }
 
   private backButton(): void {
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(HomePage2);
   }
 
   ionViewDidLeave(): void {
