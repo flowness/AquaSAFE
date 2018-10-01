@@ -2,7 +2,7 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <!--<ion-badge *ngIf="modelService.getCountOpenEvents() > 0" [color]="modelService.getStatus() === 'leak' ? 'danger' : 'primary'">{{modelService.getCountOpenEvents()}}</ion-badge>-->
+      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() != NORMAL" [color]="this.statusEventService.getGlobalSystemSeverity() === ALERT ? 'danger' : 'primary'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
     </button>
   </ion-navbar>
 </ion-header>
@@ -29,9 +29,6 @@
         <!-- <ion-item no-lines class="header-label">LEAK DETECTED</ion-item> -->
         <ion-badge color="danger" (click)="openHandleLeakPage()">Handle Leak Event</ion-badge>
         <ion-item no-lines class="header-status-alert-ind">
-          <!--
-          Alert Indicator: {{modelService.getLatestOpenEvent().moments[0].initiator}}
-          <br>Detection Time: {{modelService.getLatestOpenEvent().timestamp}}-->
           <br>Current Flow: {{flowService.getCurrentFlow()}} ({{flowService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow()
           > 5 ? "Decent Leak" : "Small Leak"}})
         </ion-item>
@@ -41,17 +38,4 @@
   <div>
     <img id="statusImage" width="100%" style="display:inline-block" src="{{this.systemStatusImageURL}}" />
   </div>
-  <ion-list>
-    <!--
-    <ion-item *ngFor="let module of modelService.getModules()" (click)="moduleTapped($event, module)">
-      <ion-icon [name]="module.icon" item-start></ion-icon>
-      <ion-label>{{module.title}}</ion-label>
-      <ion-toggle *ngIf="module.type === 2" [(ngModel)]="module.valve" (ngModelChange)="handleToggleValveChange($event, module)"
-        item-content></ion-toggle>
-      <div class="item-note" item-end>
-        {{module.state}}
-      </div>
-    </ion-item>
-  -->
-  </ion-list>
 </ion-content>

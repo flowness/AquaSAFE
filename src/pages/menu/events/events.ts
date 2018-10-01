@@ -1,20 +1,10 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams, Platform, ModalController } from "ionic-angular";
 import { HomePage } from "../../home/home";
-//import { ModelService } from "../../../providers/model-service";
 import { EventPage } from "../../event/event";
-//import { asEvent } from "../../../lib/interfaces";
-//import { EventStatus } from "../../../lib/enums";
 import { HandleLeakPage } from "../../handle-leak/handle-leak";
 import { EditEventPage } from "../../edit-event/edit-event";
-import { StatusEventService, GlobalSystemSeverityTypes, SeverityTypes, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
-
-/**
- * Generated class for the EventsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { StatusEventService, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
 
 @IonicPage()
 @Component({

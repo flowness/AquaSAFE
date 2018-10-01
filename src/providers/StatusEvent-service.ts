@@ -62,12 +62,12 @@ export class StatusEventService {
         curStatusURL += '&';
         if (this.lastStatusEventID == -1) {
             // No events received yet
-            console.log ('No event received yet');
+            //console.log ('No event received yet');
             curStatusURL += 'period=' + '1' + ' ' + 'DAY';
         }
         else {
             // Fetching only new events
-            console.log ('By latest')
+            //console.log ('By latest')
             curStatusURL += 'period=' + 'Latest';
             curStatusURL += '&';
             curStatusURL += 'lastEventID=' + this.lastStatusEventID;
@@ -93,10 +93,6 @@ export class StatusEventService {
                                     this.lastStatusEventID = data.body[data.body.length - 1].idsystem_status;
                                     this.GenerateGlobalSystemStatus();
                                 }
-                        }
-                        else
-                        {
-                            console.log ('data is BAD !')
                         }
                     }        
         );      

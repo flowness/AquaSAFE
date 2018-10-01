@@ -10,7 +10,7 @@ import * as SolidGauge from "highcharts/modules/solid-gauge";
 
 // In-Project imports
 import { MP100Page } from "../modules/mp100/mp100";
-import { StatusEventService } from "../../providers/StatusEvent-service";
+import { StatusEventService, GlobalSystemSeverityTypes } from "../../providers/StatusEvent-service";
 import { HandleLeakPage } from "../handle-leak/handle-leak";
 import { AsyncJSONService } from "../../providers/Async-JSON-service";
 import { FlowService } from "../../providers/Flow-service";
@@ -28,9 +28,6 @@ export class HomePage2 {
   private pages: Page[] = [MP100Page];
   private flowChart: HighCharts.chart;
   private intervalRefreshGaugeTask: number;
-  //private intervalRefreshStatusTask: number;
-  private intervalRefreshStatusEventsTask: number;
-  private systemStatusCode: number = -1;
   private systemStatusImageURL: string;
 
   constructor(
@@ -40,8 +37,6 @@ export class HomePage2 {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     private statusEventService: StatusEventService,
-    //private modelService: ModelService,
-    private asyncJASONRequests: AsyncJSONService,
     private flowService: FlowService,
     private screenOrientation: ScreenOrientation,
     public platform: Platform
@@ -129,10 +124,9 @@ export class HomePage2 {
     this.updateStatusImage();
 
     this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
-    this.intervalRefreshStatusEventsTask = setInterval(() => { this.refreshStatusEvents(); }, 5000);
-    //this.intervalRefreshStatusTask = setInterval(() => { this.getStatus(); }, 2000);
   }
 
+  /*
   private getStatus(): void {
       let systemStatusUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?SN=azarhome&period=7%20DAY&statusType=1";    
       this.asyncJASONRequests.getJSONDataAsync(systemStatusUrl).then(data => {
@@ -165,24 +159,20 @@ export class HomePage2 {
       this.updateStatusImage();
     });
   }
+*/
 
   private updateStatusImage(): void {
-    switch (this.systemStatusCode)
+    switch (this.statusEventService.getGlobalSystemSeverity())
     {
-        case -1: this.systemStatusImageURL = "assets/imgs/front_resized.png"; break;
-        case 0: this.systemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
-        case 1: this.systemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;
-        case 2: this.systemStatusImageURL = "assets/imgs/front_resized_Trouble.png"; break;
+        case (GlobalSystemSeverityTypes.NORMAL): this.systemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
+        case (GlobalSystemSeverityTypes.ALERT): this.systemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;
+        case (GlobalSystemSeverityTypes.WARNING): this.systemStatusImageURL = "assets/imgs/front_resized_Trouble.png"; break;
     }
   }
 
   private refreshDataGauge() { 
     this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
    }
-
-  private refreshStatusEvents() {
-    
-  }
 
   moduleTapped(event: any, module: any): void {
     console.log("module type = " + module.type);
@@ -197,7 +187,6 @@ export class HomePage2 {
 
   ionViewDidLeave(): void {
     clearInterval(this.intervalRefreshGaugeTask);
-    clearInterval(this.intervalRefreshStatusEventsTask);
   }
 
 }
