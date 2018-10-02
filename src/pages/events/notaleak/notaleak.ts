@@ -8,8 +8,6 @@ import {
   animate,
   transition
 } from "@angular/animations";
-//import { ModelService } from "../../../providers/model-service";
-//import { asEvent } from "../../../lib/interfaces";
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
 
 @Component({
@@ -93,7 +91,7 @@ import { StatusEventService, Statuses, SystemStatusEvent } from "../../../provid
 export class NotALeakPage {
   eventID: number;
   theEvent: SystemStatusEvent;
-  currentEvent: SystemStatusEvent;
+  //currentEvent: SystemStatusEvent;
   state0 = "opaque";
   state1 = "opaque";
   state2 = "opaque";
@@ -111,8 +109,8 @@ export class NotALeakPage {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
                         
-    this.currentEvent = navParams.get("event");
-    console.log("navParams = " + this.currentEvent.timestamp);
+//    this.currentEvent = navParams.get("event");
+//    console.log("navParams = " + this.currentEvent.timestamp);
   }
 
   doConfirm(waterUsage, i) {
@@ -135,6 +133,7 @@ export class NotALeakPage {
           text: "Yes",
           handler: () => {
             console.log("Yes clicked");
+            this.statusEventService.closeStatusEvent (this.eventID,"Not a leak - Its " + waterUsage)
             //this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
           }
@@ -153,6 +152,7 @@ export class NotALeakPage {
         {
           text: "OK",
           handler: () => {
+            this.statusEventService
             //this.modelService.updateModelNotALeak();
             this.navCtrl.pop();
           }

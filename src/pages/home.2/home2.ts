@@ -28,7 +28,9 @@ export class HomePage2 {
   private pages: Page[] = [MP100Page];
   private flowChart: HighCharts.chart;
   private intervalRefreshGaugeTask: number;
+  private intervalUpdateSystemSeverity: number;
   private systemStatusImageURL: string;
+  private GlobalSystemSeverity: GlobalSystemSeverityTypes;
 
   constructor(
     private http: Http,
@@ -124,6 +126,8 @@ export class HomePage2 {
     this.updateStatusImage();
 
     this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
+    this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
+
   }
 
   /*
@@ -160,9 +164,17 @@ export class HomePage2 {
     });
   }
 */
+  private updateGlobalSystemSeverity () {
+    let tempGlobalSystemSeverity = this.statusEventService.getGlobalSystemSeverity();
+    if (this.GlobalSystemSeverity != tempGlobalSystemSeverity) {
+
+      this.GlobalSystemSeverity = tempGlobalSystemSeverity;
+      this.updateStatusImage();
+    }
+  }
 
   private updateStatusImage(): void {
-    switch (this.statusEventService.getGlobalSystemSeverity())
+    switch (this.GlobalSystemSeverity)
     {
         case (GlobalSystemSeverityTypes.NORMAL): this.systemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
         case (GlobalSystemSeverityTypes.ALERT): this.systemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;

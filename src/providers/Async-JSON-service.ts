@@ -23,6 +23,26 @@ export class AsyncJSONService {
         }).catch(reason => this.handleError(reason));
     }
     
+    public postJSONDataAsync(url: string, body: any): Promise<any> {
+        console.log ('Now at JSON Post async');
+        return new Promise((resolve, reject) => {
+          this.http.post(url, body).subscribe(res => {
+            if (!res.ok) {
+              console.log('@@@@ res not OK at post JSON async');
+              reject(
+                "Failed with status: " +
+                res.status +
+                "\nTrying to find file at " +
+                url
+              );
+            }
+            console.log ('res == ' + res);
+            resolve(res.json());
+          });
+        }).catch(reason => this.handleError(reason));
+      }
+    
+
     /* Takes an error, logs it to the console, and throws it */
     public handleError(error: Response | any) {
         let errMsg: string;

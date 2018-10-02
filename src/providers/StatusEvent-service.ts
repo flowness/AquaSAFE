@@ -20,6 +20,7 @@ export interface SystemStatusEvent {
     epoch_timestamp: number,
     cooldown: number,
     event_ID: number,
+    last_eventID: number,
     Event_str: string,
     total_flow: number,
     parent_eventID: number,
@@ -33,6 +34,7 @@ export interface SystemStatusEvent {
 export class StatusEventService {
     private statusURL: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?";
     private subEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event?parentEventID=";
+    private postNewEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event";
 
     private intervalReceiveStatusEvents;
     private intervalReceiveSubEvents;
@@ -91,6 +93,7 @@ export class StatusEventService {
             curStatusURL += '&';
             curStatusURL += 'lastEventID=' + this.lastStatusEventID;
         }
+
         this.asyncJASONRequests.getJSONDataAsync(curStatusURL).then(
             data => {
                         //console.log('curStatusURL = ' + curStatusURL);
@@ -102,8 +105,6 @@ export class StatusEventService {
                                 data.body != undefined &&
                                 data.body != null
                             ) {  
-                                //console.log('@@ DATA = ' + data.body);
-                                
                                 for (let index = 0; index < data.body.length; index++) { 
                                     //console.log('data[index] = ' + data.body[index] );                             
                                     this.pushNewStatusEvent(JSON.parse(data.body[index]));
@@ -115,6 +116,57 @@ export class StatusEventService {
                         }
                     }        
         );      
+
+
+        let currentStatusIDs = '';
+        for (let i = 0; i < this.statusEventList.length; i++) {
+            currentStatusIDs = currentStatusIDs + this.statusEventList[i].idsystem_status;
+            if (i < this.statusEventList.length - 1)
+                currentStatusIDs = currentStatusIDs + ',';
+        }
+        
+        curStatusURL = this.statusURL;
+        curStatusURL += 'SN=' + 'azarhome';
+        curStatusURL += '&';
+        curStatusURL += 'statusType=' + 'All';
+        curStatusURL += '&';
+        curStatusURL += 'period=' + 'Current';
+        curStatusURL += '&';
+        curStatusURL += 'currentIDs=' + currentStatusIDs;
+        
+        this.asyncJASONRequests.getJSONDataAsync(curStatusURL).then(
+            data => {
+                        //console.log('curStatusURL = ' + curStatusURL);
+                        let lastFlow: number = 0;
+                        if (
+                                data != undefined &&
+                                data["statusCode"] != undefined &&
+                                data["statusCode"] == 200 &&
+                                data.body != undefined &&
+                                data.body != null
+                            ) {  
+                                for (let index = 0; index < data.body.length; index++) { 
+                                    //console.log('data[index] = ' + data.body[index] );                             
+                                    this.checkUpdateOnCurrentStatuEvent(JSON.parse(data.body[index]));
+                                }
+                                this.GenerateGlobalSystemStatus();
+                        }
+                    }        
+        );      
+    }
+
+    private checkUpdateOnCurrentStatuEvent (JSONStatusEvent: any) {
+        let curidsystem_status = JSONStatusEvent.idsystem_status;        
+        let curIndex = this.getSystemStatusEventIndexByID(curidsystem_status);
+        let curSystemStatusEvent = this.statusEventList[curIndex];
+
+        let curLast_eventID = JSONStatusEvent.last_eventID;
+        let curStatus = this.setStatusENUM(JSONStatusEvent.status);
+
+        if (curSystemStatusEvent.status != curStatus)
+            this.statusEventList[curIndex].status = curStatus;
+        if (curSystemStatusEvent.last_eventID != curLast_eventID)
+            this.PollingSubEventsPerSystemStatus(curSystemStatusEvent);
     }
 
     private GenerateGlobalSystemStatus(){
@@ -150,6 +202,7 @@ export class StatusEventService {
             epoch_timestamp: JSONStatusEvent.epoch_timestamp,
             cooldown: JSONStatusEvent.cooldown,
             event_ID: JSONStatusEvent.event_ID,
+            last_eventID: JSONStatusEvent.last_eventID,
             Event_str: JSONStatusEvent.Event_str,
             total_flow: JSONStatusEvent.total_flow,
             parent_eventID: null,
@@ -174,14 +227,42 @@ export class StatusEventService {
     public getCountOpenStatusEvents () {
         let openEventCounter = 0;
         for (let index = 0; index < this.statusEventList.length; index++) { 
-            if (this.statusEventList[index].status != Statuses.CLOSED)
+            if (this.statusEventList[index].status != Statuses.CLOSED) {
                 openEventCounter++;
+            }
         }
         return openEventCounter;
     }
 
-    public closeStatusEvent (eventID: number, closeDescription: string) {
+    public closeStatusEvent (idsystem_status: number, closeDescription: string) {
+        console.log('Cosing event at status service');
+        this.postEventToParent (idsystem_status, closeDescription, true, Statuses.CLOSED);
+    }
 
+    public postEventToParent (idsystem_status: number, 
+                            description: string, 
+                            setNewStatus:boolean, 
+                            newStatus: Statuses = Statuses.CLOSED) {
+        let parentEventID = this.statusEventList[this.getSystemStatusEventIndexByID(idsystem_status)].event_ID;
+        let postEventData : any = { 
+                    eventSTR: description,
+                    eventAge: "Existing",
+                    systemStatus: setNewStatus == true ? "SetStatus" : "Existing",
+                    newSystemStatus: newStatus,
+                    SN: "azarhome",
+                    parent_eventID: parentEventID 
+                    }
+
+        //console.log('data = ' + JSON.parse(postEventData));
+        this.asyncJASONRequests.postJSONDataAsync(this.postNewEventsUrl, postEventData).then(data => {
+          
+           if (
+            data != undefined &&
+            data["statusCode"] != undefined &&
+            data["statusCode"] == 200 )
+            { console.log('post event returned data = ' + data) }
+           
+        }); 
     }
 
     private PollingSubEvents () {
@@ -212,6 +293,7 @@ export class StatusEventService {
             epoch_timestamp: JSONStatusEvent.epoch_timestamp,
             cooldown: JSONStatusEvent.cooldown,
             event_ID: JSONStatusEvent.event_ID,
+            last_eventID: JSONStatusEvent.last_eventID,
             Event_str: JSONStatusEvent.Event_str,
             total_flow: JSONStatusEvent.total_flow,
             parent_eventID: null,
@@ -223,7 +305,5 @@ export class StatusEventService {
         let statusEventIndex = this.getSystemStatusEventIndexByID(statusEventID);
         if (statusEventIndex != -1)
             this.statusEventList[statusEventIndex].rollingSubEvents.push(newSubsEvent);
-    }
-
-    
+    }    
 }

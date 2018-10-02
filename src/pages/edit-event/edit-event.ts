@@ -26,6 +26,7 @@ export class EditEventPage {
   }
 
   closeEvent(): void {
+    console.log ('@@@@@@ Closing event. EventID = ' + this.eventID + ', text = ' + this.text);
     this.statusEventService.closeStatusEvent(this.eventID, this.text);
     this.dismiss();
   }

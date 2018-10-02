@@ -42,7 +42,7 @@ export class EventPage {
   }
 
   openEditEventModal(eventID: number): void {
-    let myModal = this.modalCtrl.create(EditEventPage, { eventID: e.event_ID });
+    let myModal = this.modalCtrl.create(EditEventPage, { eventID: eventID });
     myModal.present();
   }
 }
