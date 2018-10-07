@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { IonicPage, NavController, Platform, LoadingController, Loading } from "ionic-angular";
 import { HomePage2 } from "../../home.2/home2";
 import { ModelService } from "../../../providers/model-service";
+import { GlobalsService } from "../../../providers/Globals-service";
+
 import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
 HighchartsMore(HighCharts);
@@ -24,21 +26,16 @@ import "rxjs/add/operator/catch";
 })
 export class StatisticsPage {
   private unregisterFunc: Function;
+  private accountName: string = "";
   private chart: any;
   chartType: string = "live";
   private task: number = -1;
   private liveUrl: string =
-    "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=azarhome";
+    "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/currentflow?moduleSN=";
   private volumeUrl: string =
     "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/volume";
-  private volumeBodyHour: any = {
-    moduleSN: "azarhome",
-    Period: "Hour"
-  };
-  private volumeBodyDay: any = {
-    moduleSN: "azarhome",
-    Period: "Day"
-  };
+
+
   private eraOfChart: string = "N/A";
   private months: string[] = new Array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
   private loading: Loading;
@@ -48,7 +45,8 @@ export class StatisticsPage {
     platform: Platform,
     public modelService: ModelService,
     private http: Http,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private globalsService: GlobalsService
   ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
@@ -61,6 +59,10 @@ export class StatisticsPage {
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad StatisticsPage");
+    this.globalsService.getAccountName().then((account) => { 
+      this.accountName = account; 
+    });
+
     this.onSegmentChange();
   }
 
@@ -81,7 +83,8 @@ export class StatisticsPage {
   }
 
   private refreshLiveData() {
-    this.getJSONDataAsync(this.liveUrl).then(data => {
+    let cur_URL = this.liveUrl + this.accountName;
+    this.getJSONDataAsync(cur_URL).then(data => {
       // console.log(data);
       let flow: number = 0;
       if (
@@ -206,7 +209,12 @@ export class StatisticsPage {
 
   private drawBarChart(): void {
     this.loading.present();
-    var volumePostRequestBody = this.chartType === "daily" ? this.volumeBodyHour : this.volumeBodyDay
+
+    let volumeBodyDay = {moduleSN: this.accountName,Period: "Day" };
+    let volumeBodyHour = {moduleSN: this.accountName,Period: "Day" };
+
+
+    var volumePostRequestBody = this.chartType === "daily" ? volumeBodyHour : volumeBodyDay
     this.postJSONDataAsync(this.volumeUrl, volumePostRequestBody).then(data => {
       if (
         data != undefined &&

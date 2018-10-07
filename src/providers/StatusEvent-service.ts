@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AsyncJSONService } from "./Async-JSON-service";
+import { GlobalsService} from "./Globals-service";
 
 export enum GlobalSystemSeverityTypes{
     ALERT = 1, WARNING = 2, NORMAL = 3
@@ -12,7 +13,6 @@ export enum SeverityTypes {
 export enum Statuses {
     LIVE = 1, CLOSED = 2, POST = 3, COLD = 4
 }
-
 
 export interface SystemStatusEvent {
     idsystem_status: number,
@@ -35,6 +35,7 @@ export class StatusEventService {
     private statusURL: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?";
     private subEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event?parentEventID=";
     private postNewEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event";
+    private accountName: string = "";
 
     private intervalReceiveStatusEvents;
     private intervalReceiveSubEvents;
@@ -67,24 +68,35 @@ export class StatusEventService {
         return -1;
     }
 
-    constructor( private asyncJASONRequests: AsyncJSONService ) {
+    constructor( private asyncJASONRequests: AsyncJSONService,
+                 private globalsService: GlobalsService ) {
         this.globalSystemSeverity = GlobalSystemSeverityTypes.NORMAL;
         this.lastStatusEventID = -1;
+        this.PollingStatusEvents();
         this.intervalReceiveStatusEvents = setInterval(() => { this.PollingStatusEvents(); }, 5000);
-        this.intervalReceiveSubEvents = setInterval(() => { this.PollingSubEvents(); }, 10000);
+        //this.intervalReceiveSubEvents = setInterval(() => { this.PollingSubEvents(); }, 10000);
         console.log("constructor Event-service");
     }
     
     private PollingStatusEvents () {
         let curStatusURL = this.statusURL;
-        curStatusURL += 'SN=' + 'azarhome';
+
+        this.globalsService.getAccountName().then((account) => { 
+            this.accountName = account; 
+          });
+
+        if (this.accountName == "") {
+            console.log ("Status service - Account Name is NOT ready");
+            return;
+        }
+        curStatusURL += 'SN=' + this.accountName;
         curStatusURL += '&';
         curStatusURL += 'statusType=' + 'All';
         curStatusURL += '&';
         if (this.lastStatusEventID == -1) {
             // No events received yet
             //console.log ('No event received yet');
-            curStatusURL += 'period=' + '1' + ' ' + 'DAY';
+            curStatusURL += 'period=' + '7' + ' ' + 'DAY';
         }
         else {
             // Fetching only new events
@@ -126,7 +138,7 @@ export class StatusEventService {
         }
         
         curStatusURL = this.statusURL;
-        curStatusURL += 'SN=' + 'azarhome';
+        curStatusURL += 'SN=' + this.accountName;
         curStatusURL += '&';
         curStatusURL += 'statusType=' + 'All';
         curStatusURL += '&';
@@ -212,6 +224,8 @@ export class StatusEventService {
             rollingSubEvents: []
         }
         this.statusEventList.push(newStatusEvent);
+        this.PollingSubEventsPerSystemStatus(this.statusEventList[this.statusEventList.length-1]);
+
     }
 
     private setStatusENUM (intStatus: number) {
@@ -249,7 +263,7 @@ export class StatusEventService {
                     eventAge: "Existing",
                     systemStatus: setNewStatus == true ? "SetStatus" : "Existing",
                     newSystemStatus: newStatus,
-                    SN: "azarhome",
+                    SN: this.accountName,
                     parent_eventID: parentEventID 
                     }
 
@@ -279,8 +293,8 @@ export class StatusEventService {
             data["statusCode"] == 200
           ) {
             for (let index = 0; index < data.body.length; index++) { 
-                //console.log('data[index] = ' + data.body[index] );                             
-                this.pushNewSubEvent(statusEvent.event_ID, JSON.parse(data.body[index]));
+                //console.log('Sub event:  data[index] = ' + data.body[index] );                             
+                this.pushNewSubEvent(statusEvent.idsystem_status, JSON.parse(data.body[index]));
             }
           }
         });

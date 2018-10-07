@@ -16,9 +16,9 @@
 
 
 <ion-content padding>
-  <h2>Event Type: {{theEvent.Event_str}}</h2>
-  <h2>Event Date: {{theEvent.timestamp}}</h2>
-  <h2>Event Status: {{statusEventService.isOpenEvent(theEvent)?"OPEN":"CLOSED"}}</h2>
+  <h4>Event Type: {{theEvent.Event_str}}</h4>
+  <h4>Event Date: {{theEvent.timestamp}}</h4>
+  <h4>Event Status: {{statusEventService.isOpenEvent(theEvent)?"OPEN":"CLOSED"}}</h4>
   <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
       <ion-item>
         <ion-label color="primary">What Say You?</ion-label>
@@ -29,4 +29,16 @@
           item-end>Close Event</button>
       </ion-item>
   </ion-content>
+
+  <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
+    <ion-list-header> 
+        <h3> Event progress</h3>
+    </ion-list-header>
+    <ion-item *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents">
+        <ion-label>
+          {{curRollingEvent.Event_str}} <br> {{curRollingEvent.timestamp}}
+        </ion-label>
+
+    </ion-item>
+  </ion-list>
 </ion-content>

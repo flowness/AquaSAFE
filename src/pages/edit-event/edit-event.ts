@@ -18,7 +18,10 @@ export class EditEventPage {
               private statusEventService: StatusEventService) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
-  
+
+    for (let i=0;i<this.theEvent.rollingSubEvents.length;i++)
+      console.log('###### ' + this.theEvent.rollingSubEvents[i].Event_str)
+
   }
 
   ionViewDidLoad() {

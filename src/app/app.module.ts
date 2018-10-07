@@ -44,6 +44,7 @@ import { FcmProvider } from '../providers/fcm/fcm';
 import { FlowService } from "../providers/Flow-service";
 import { StatusEventService } from "../providers/StatusEvent-service"; 
 import { AsyncJSONService } from "../providers/Async-JSON-service";
+import { GlobalsService } from "../providers/Globals-service";
 
 // const firebase = {
 //   // your firebase web config
@@ -72,9 +73,9 @@ import { AsyncJSONService } from "../providers/Async-JSON-service";
     EditEventPage
   ],
   imports: [
+    IonicStorageModule.forRoot(),
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot(),
     BrowserAnimationsModule,
     HttpModule
   ],
@@ -101,6 +102,7 @@ import { AsyncJSONService } from "../providers/Async-JSON-service";
     EditEventPage
   ],
   providers: [
+    GlobalsService,
     StatusBar,
     SplashScreen,
     Camera,

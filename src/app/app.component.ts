@@ -3,6 +3,8 @@ import { Nav, Platform, ToastController } from "ionic-angular";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 
+import { GlobalsService} from "../providers/Globals-service"
+
 import { HomePage2 } from "../pages/home.2/home2";
 
 import { StatisticsPage } from "../pages/menu/statistics/statistics";
@@ -23,7 +25,8 @@ export class MyApp {
 
   pages: Array<{ title: string; component: any }>;
 
-  constructor(
+  constructor(    
+    private globalsService: GlobalsService,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -32,6 +35,8 @@ export class MyApp {
     toastCtrl: ToastController
   ) {
     this.initializeApp();
+
+    globalsService.setStorageReady();
 
     if (this.platform.is("cordova")) {
       platform.ready().then(() => {

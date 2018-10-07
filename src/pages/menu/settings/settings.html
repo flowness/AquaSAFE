@@ -2,21 +2,59 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <ion-badge *ngIf="modelService.getCountOpenEvents() > 0" [color]="modelService.getStatus() === 'leak' ? 'danger' : 'primary'">{{modelService.getCountOpenEvents()}}</ion-badge>
+      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() != NORMAL" [color]="this.statusEventService.getGlobalSystemSeverity() === ALERT ? 'danger' : 'primary'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
     </button>
     <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png" />
   </ion-navbar>
 </ion-header>
 
 <ion-content>
+  <form (ngSubmit)="storeData()">
+  <ion-item>
+       <!-- <button ion-button full type="submit" tappable type="submit">Next</button> -->
+      <button ion-button type="submit" block>Save</button>
+
+      <!-- <ion-button type="submit" name="Save" item-end></ion-button> -->
+  </ion-item>
   <ion-list>
-    <ion-list-header>
-      <h2>Settings</h2>
-    </ion-list-header>
+
+    <ion-item no-lines>
+      <ion-icon name="home" item-start></ion-icon>
+      <ion-input  type="text" placeholder="Account name" [(ngModel)]="txtAccountName" name="txtAccountName"></ion-input>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-icon name="mail" item-start></ion-icon>
+      <ion-input  type="text" placeholder="EMail" [(ngModel)]="txtEmail" name="txtEmail"></ion-input>
+    </ion-item>
+
+    <ion-item no-lines>
+        <ion-icon name="call" item-start></ion-icon>
+        <ion-input type="text" placeholder="Phone number (for SMS)" [(ngModel)]="txtPhone" name="txtPhone"></ion-input>
+    </ion-item>
+  
+    <ion-item no-lines>
+        <ion-icon name="alert" item-start></ion-icon>
+        <ion-label>Enable freeze alert</ion-label>
+        <ion-toggle name="freezeAlert" [(ngModel)]="freezeAlert" item-end></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+        <ion-icon name="alert" item-start></ion-icon>
+        <ion-label>Enable contnues flow alert</ion-label>
+        <ion-toggle name="continuesFlowAlert" [(ngModel)]="continuesFlowAlert" item-end></ion-toggle>
+    </ion-item>
+
+    <ion-item no-lines>
+        <ion-icon name="alert" item-start></ion-icon>
+        <ion-label>Enable No-Flow alert</ion-label>
+        <ion-toggle name="noFlowAlert" [(ngModel)]="noFlowAlert" item-end></ion-toggle>
+    </ion-item>
+<!--
     <ion-item no-lines *ngFor="let item of items">
       <ion-icon [name]="item.icon" item-start></ion-icon>
-      <ion-label *ngIf="item.input=='toggle'; else TextInput">{{item.title}}
-        <ion-row align-items-end *ngIf="item.value== true && item.title=='Zero-Flow Hours Alert:'">
+      <ion-label *ngIf="item.input=='toggle'">{{item.title}}
+        <ion-row align-items-end *ngIf="item.value== true && item.title=='Enable No-Flow between hours Alert:'">
           <ion-col>
             <ion-label>Start</ion-label>
             <ion-datetime placeholder="00:00" displayFormat="HH:mm"></ion-datetime>
@@ -27,15 +65,18 @@
           </ion-col>
         </ion-row>
       </ion-label>
+      <ion-input *ngIf="item.input=='text'" type="text" placeholder="{{item.value}}" name="title"></ion-input>
 
-      <ng-template #TextInput>
+       <ng-template #TextInput>
         <ion-label floating *ngIf="item.icon=='call'">Telephone number</ion-label>
         <ion-input type="tel" *ngIf="item.icon=='call'"></ion-input>
         <ion-label floating *ngIf="item.icon=='mail'">E-Mail</ion-label>
         <ion-input type="email" *ngIf="item.icon=='mail'"></ion-input>
-      </ng-template>
+      </ng-template> 
       <ion-toggle [(ngModel)]="item.value" *ngIf="item.input=='toggle'" (ngModelChange)="handleToggleChange($event, item)" item-end>
       </ion-toggle>
-    </ion-item>
+    </ion-item>-->
   </ion-list>
+</form>
 </ion-content>
+

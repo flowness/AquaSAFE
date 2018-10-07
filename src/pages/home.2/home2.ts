@@ -14,6 +14,7 @@ import { StatusEventService, GlobalSystemSeverityTypes } from "../../providers/S
 import { HandleLeakPage } from "../handle-leak/handle-leak";
 import { AsyncJSONService } from "../../providers/Async-JSON-service";
 import { FlowService } from "../../providers/Flow-service";
+import { GlobalsService} from "../../providers/Globals-service";
 
 // Highcharts Initialization ?
 HighchartsMore(HighCharts);
@@ -31,6 +32,7 @@ export class HomePage2 {
   private intervalUpdateSystemSeverity: number;
   private systemStatusImageURL: string;
   private GlobalSystemSeverity: GlobalSystemSeverityTypes;
+  private accountName: string = "";
 
   constructor(
     private http: Http,
@@ -41,9 +43,12 @@ export class HomePage2 {
     private statusEventService: StatusEventService,
     private flowService: FlowService,
     private screenOrientation: ScreenOrientation,
-    public platform: Platform
+    public platform: Platform,
+    private globalsService: GlobalsService,
   ) {
     console.log("constructor home");
+
+    //this.globalsService.loadDataFromStorage();
     if (!this.platform.is("mobileweb") && !this.platform.is("core")) {
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
     } else {
@@ -52,7 +57,18 @@ export class HomePage2 {
   }
 
   ionViewDidLoad(): void { 
-    console.log("ionViewDidLoad home");  
+/*     console.log("ionViewDidLoad home");     
+    console.log("AccountName1 = " + this.globalsService.getAccountName());
+    console.log("ionViewDidLoad 2 home");     
+ */    
+    this.globalsService.getAccountName().then((account) => { 
+      this.accountName = account; 
+      console.log("Home2 Account Name = " + this.accountName);
+    });
+    
+  } 
+
+  ngAfterViewInit  () {
   }
 
   ionViewWillEnter(): void {
