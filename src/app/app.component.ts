@@ -11,8 +11,9 @@ import { StatisticsPage } from "../pages/menu/statistics/statistics";
 import { SettingsPage } from "../pages/menu/settings/settings";
 import { EventsPage } from "../pages/menu/events/events";
 import { ModelService } from "../providers/model-service";
-import { FcmProvider } from "../providers/fcm/fcm";
+//import { FcmProvider } from "../providers/fcm/fcm";
 import { tap } from "rxjs/operators";
+import { FirebaseService } from "../providers/Firebase-service";
 
 @Component({
   templateUrl: "app.html"
@@ -24,15 +25,17 @@ export class MyApp {
   rootPage: any = HomePage2;
 
   pages: Array<{ title: string; component: any }>;
+  private accountName: string = "";
 
   constructor(    
     private globalsService: GlobalsService,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    public modelService: ModelService,
-    fcm: FcmProvider,
-    toastCtrl: ToastController
+    //public modelService: ModelService,
+    //fcm: FcmProvider,
+    toastCtrl: ToastController,
+    private firebaseService : FirebaseService
   ) {
     this.initializeApp();
 
@@ -41,6 +44,10 @@ export class MyApp {
     if (this.platform.is("cordova")) {
       platform.ready().then(() => {
         // Get a FCM token
+        console.log("Getting Token");
+        firebaseService.setFirebaseConfigurations();
+        console.log("end notification settings at app.components");
+/*
         fcm.getToken();
 
         // Listen to incoming messages
@@ -57,6 +64,8 @@ export class MyApp {
             })
           )
           .subscribe();
+*/
+
       });
     }
     // used for an example of ngFor and navigation

@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
+import { Device } from '@ionic-native/device';
 import { Camera } from "@ionic-native/camera";
 import { Geolocation } from "@ionic-native/geolocation";
 import { ModelService } from "../providers/model-service";
@@ -38,13 +39,15 @@ import { DateParsePipe } from "../providers/date-parse-pipe";
 import { HandleLeakPage } from "../pages/handle-leak/handle-leak";
 import { EditEventPage } from "../pages/edit-event/edit-event";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
+import { FCM } from '@ionic-native/fcm';
 
-import { Firebase } from "@ionic-native/firebase";
-import { FcmProvider } from '../providers/fcm/fcm';
+//import { FcmProvider } from '../providers/fcm/fcm';
 import { FlowService } from "../providers/Flow-service";
 import { StatusEventService } from "../providers/StatusEvent-service"; 
 import { AsyncJSONService } from "../providers/Async-JSON-service";
 import { GlobalsService } from "../providers/Globals-service";
+import { DeviceService } from "../providers/Device-service";
+import { FirebaseService } from "../providers/Firebase-service";
 
 // const firebase = {
 //   // your firebase web config
@@ -102,6 +105,8 @@ import { GlobalsService } from "../providers/Globals-service";
     EditEventPage
   ],
   providers: [
+    FCM,
+    Device,
     GlobalsService,
     StatusBar,
     SplashScreen,
@@ -114,11 +119,12 @@ import { GlobalsService } from "../providers/Globals-service";
     Geolocation,
     DateParsePipe,
     ScreenOrientation,
-    Firebase,
-    FcmProvider,
+    //FcmProvider,
     AsyncJSONService,
     FlowService,
-    StatusEventService
+    StatusEventService,
+    DeviceService,
+    FirebaseService
   ]
 })
 export class AppModule {}

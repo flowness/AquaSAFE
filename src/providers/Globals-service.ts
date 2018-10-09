@@ -7,6 +7,8 @@ export class GlobalsService {
 
     public AccountName = "";
 
+
+
     public async getAccountName () {
         if (this.AccountName == ""){
             console.log("Globals-Service - Account Name NOT assigned")
@@ -17,17 +19,13 @@ export class GlobalsService {
             return this.AccountName;
         }
     }
-/*
-    public getAccountName () :Promise<any> {
-         return new Promise (() => {
-            this.storage.ready().then(() => { 
-                return this.storage.get("AccountName").then((_AccountName) => {
-                    return _AccountName;
-                });
-            });
+
+    public getAccountName1 ()  {
+        return this.storage.get("AccountName").then((token) => {
+            this.AccountName = token;
         }); 
     }
-*/
+
     public Email: string = "";
     public Phone: string = "";
     public freezeAlert: boolean = false;
