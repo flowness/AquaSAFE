@@ -4,6 +4,7 @@ import { FCM } from '@ionic-native/fcm';
 import { Platform } from "ionic-angular";
 import { DeviceService } from '../providers/Device-service';
 import { AsyncJSONService } from "../providers/Async-JSON-service";
+import { Device } from '@ionic-native/device';
 
 @Injectable()
 export class FirebaseService {
@@ -21,7 +22,8 @@ export class FirebaseService {
     constructor (   
                     private platform : Platform,                  
                     private globalsService : GlobalsService,
-                    private deviceService: DeviceService,
+                    //private deviceService: DeviceService,
+                    private device : Device,
                     private fcm : FCM,
                     private asyncJSONService: AsyncJSONService
                 ) {
@@ -34,12 +36,19 @@ export class FirebaseService {
     }
     
     private registerTokenToDB () {
-        this.platform.ready().then(() => {
-            this.globalsService.getAccountName1().then(() => {
-                this.deviceService.deviceServiceReady().then(() => {
-            
-                    let instanceID = this.token.substring(1,this.token.indexOf(":"));
 
+        Promise.all ([  this.platform.ready(),
+                        this.globalsService.getAccountNamePromise(),
+        ]).then(() => {
+
+
+/*
+        this.platform.ready().then(() => {
+            this.globalsService.getAccountNamePromise().then(() => {
+                this.deviceService.getCordova().subscribe(data: string) => {
+            
+*/
+                    let instanceID = this.token.substring(1,this.token.indexOf(":"));
 
                     if (this.accountName == "") {
                         console.log ("Firebase service - Account Name is NOT ready, try again");
@@ -50,17 +59,17 @@ export class FirebaseService {
 
 
                     // store Token in database
-                    console.log("Ddevice details:");
-                    console.log("OS = " + this.deviceService.getPlatform());
-                    console.log("osVersion" + this.deviceService.getVersion());
-                    console.log("model = " + this.deviceService.getModel());
+                    console.log("Device details:");
+                    console.log("OS = " + this.device.platform);
+                    console.log("osVersion = " + this.device.version);
+                    console.log("model = " + this.device.model);
                     console.log("token = " + this.token);
                     console.log("instanceID = " + instanceID);
-                    console.log("moduleSN" + this.accountName);
+                    console.log("moduleSN = " + this.accountName);
                     let deviceDetails = {
-                                        "os": this.deviceService.getPlatform(),
-                                        "osVersion": this.deviceService.getVersion(),
-                                        "model":this.deviceService.getModel(),
+                                        "os": this.device.platform,
+                                        "osVersion": this.device.version,
+                                        "model":this.device.model,
                                         "instanceId": instanceID,
                                         "token": this.token,
                                         "moduleSN": this.accountName   }                       
@@ -80,8 +89,8 @@ export class FirebaseService {
                             console.log("Data = " + data);
                         }
                     });
-                });
-            });        
+           //     });
+           // });        
         });
     }
 

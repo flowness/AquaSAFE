@@ -20,7 +20,7 @@ export class GlobalsService {
         }
     }
 
-    public getAccountName1 ()  {
+    public getAccountNamePromise ()  {
         return this.storage.get("AccountName").then((token) => {
             this.AccountName = token;
         }); 
