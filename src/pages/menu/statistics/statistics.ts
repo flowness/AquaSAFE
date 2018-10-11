@@ -11,6 +11,7 @@ import { Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import { StatusEventService, GlobalSystemSeverityTypes } from "../../../providers/StatusEvent-service";
 
 /**
  * Generated class for the MenuStatisticsPage page.
@@ -46,7 +47,8 @@ export class StatisticsPage {
     public modelService: ModelService,
     private http: Http,
     public loadingCtrl: LoadingController,
-    private globalsService: GlobalsService
+    private globalsService: GlobalsService,
+    private statusEventService: StatusEventService,
   ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
@@ -211,7 +213,7 @@ export class StatisticsPage {
     this.loading.present();
 
     let volumeBodyDay = {moduleSN: this.accountName,Period: "Day" };
-    let volumeBodyHour = {moduleSN: this.accountName,Period: "Day" };
+    let volumeBodyHour = {moduleSN: this.accountName,Period: "Hour" };
 
 
     var volumePostRequestBody = this.chartType === "daily" ? volumeBodyHour : volumeBodyDay
