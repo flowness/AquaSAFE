@@ -99,7 +99,7 @@ export class FirebaseService {
         this.platform.ready().then(() => {
             //Notifications
             //this.fcm.subscribeToTopic('all');
-            this.fcm.unsubscribeFromTopic('all');
+            //this.fcm.unsubscribeFromTopic('all');
 
             this.fcm.getToken().then(token=>{
 
