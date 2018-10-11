@@ -32,8 +32,7 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    //public modelService: ModelService,
-    //fcm: FcmProvider,
+    
     toastCtrl: ToastController,
     private firebaseService : FirebaseService
   ) {
@@ -46,7 +45,6 @@ export class MyApp {
         // Get a FCM token
         console.log("Getting Token");
         firebaseService.setFirebaseConfigurations();
-        console.log("end notification settings at app.components");
 /*
         fcm.getToken();
 

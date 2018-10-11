@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="app.aquasafe.io" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>AquaSAFE</name>
-    <description>An awesome AquaSAFE app.</description>
+    <name>AquaSAFE leak detection</name>
+    <description>AquaSAFE leak detection and water usage application</description>
     <author email="info@aquasafe.io" href="http://aquasafe.io/">AquaSAFE</author>
     <content src="index.html" />
     <access origin="*" />

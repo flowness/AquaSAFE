@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { GlobalsService } from "./Globals-service";
 import { FCM } from '@ionic-native/fcm';
-import { Platform } from "ionic-angular";
-import { DeviceService } from '../providers/Device-service';
+import { Platform, ToastController } from "ionic-angular";
+//import { DeviceService } from '../providers/Device-service';
 import { AsyncJSONService } from "../providers/Async-JSON-service";
 import { Device } from '@ionic-native/device';
 
@@ -22,7 +22,7 @@ export class FirebaseService {
     constructor (   
                     private platform : Platform,                  
                     private globalsService : GlobalsService,
-                    //private deviceService: DeviceService,
+                    private toastCtrl: ToastController,
                     private device : Device,
                     private fcm : FCM,
                     private asyncJSONService: AsyncJSONService
@@ -48,7 +48,7 @@ export class FirebaseService {
                 this.deviceService.getCordova().subscribe(data: string) => {
             
 */
-                    let instanceID = this.token.substring(1,this.token.indexOf(":"));
+                    let instanceID = this.token.substring(0,this.token.indexOf(":"));
 
                     if (this.accountName == "") {
                         console.log ("Firebase service - Account Name is NOT ready, try again");
@@ -82,12 +82,13 @@ export class FirebaseService {
                             data["statusCode"] != undefined &&
                             data["statusCode"] == 200
                             ) {
-                                console.log("Registered new push device")
+                                console.log("Registered new push device");
+                                
                         }    
                         else {
-                            console.log("Error registering push device")
-                            console.log("Data = " + data);
+                            console.log("Error registering push device");
                         }
+                        console.log("data.body = " + data.body);
                     });
            //     });
            // });        
@@ -97,23 +98,37 @@ export class FirebaseService {
     public setFirebaseConfigurations () {
         this.platform.ready().then(() => {
             //Notifications
-            this.fcm.subscribeToTopic('all');
+            //this.fcm.subscribeToTopic('all');
+            this.fcm.unsubscribeFromTopic('all');
+
             this.fcm.getToken().then(token=>{
-                
+
                 this.token = token;
                 console.log("token recieved = " + token);
                 this.registerTokenToDB();
             })
             this.fcm.onNotification().subscribe(data=>{
-            if(data.wasTapped){
-                console.log("Received in background");
-            } else {
-                console.log("Received in foreground");
-            };
-            })
+                if(data.wasTapped){
+                    console.log("Received in background");
+                        // show a toast
+                        const toast = this.toastCtrl.create({
+                        message: data.body,
+                        duration: 3000
+                        });
+                        toast.present();
+                } else {
+                    console.log("Received in foreground");
+                    const toast = this.toastCtrl.create({
+                        message: data.body,
+                        duration: 3000
+                    });
+                    toast.present();
+                };
+            });
             this.fcm.onTokenRefresh().subscribe(token=>{
                 this.token = token;
                 console.log("token refreshed" + token);
+                this.registerTokenToDB();
             });
         });
 

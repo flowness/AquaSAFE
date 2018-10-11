@@ -46,7 +46,6 @@ import { FlowService } from "../providers/Flow-service";
 import { StatusEventService } from "../providers/StatusEvent-service"; 
 import { AsyncJSONService } from "../providers/Async-JSON-service";
 import { GlobalsService } from "../providers/Globals-service";
-import { DeviceService } from "../providers/Device-service";
 import { FirebaseService } from "../providers/Firebase-service";
 
 // const firebase = {
@@ -123,7 +122,6 @@ import { FirebaseService } from "../providers/Firebase-service";
     AsyncJSONService,
     FlowService,
     StatusEventService,
-    DeviceService,
     FirebaseService
   ]
 })
