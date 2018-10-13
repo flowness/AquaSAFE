@@ -19,7 +19,7 @@
 
     <ion-item no-lines>
       <ion-icon name="home" item-start></ion-icon>
-      <ion-input  type="text" placeholder="Account name" [(ngModel)]="txtAccountName" name="txtAccountName"></ion-input>
+      <ion-input  type="text" placeholder="Account name" [(ngModel)]="txtAccountName" name="txtAccountName" (keyup)="onKeyUp($event)"></ion-input>
     </ion-item>
 
     <ion-item no-lines>

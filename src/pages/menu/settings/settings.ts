@@ -90,4 +90,14 @@ export class SettingsPage {
     this.storeLocalData("noFlowAlert",this.noFlowAlert); */
   }
 
+  public onKeyUp(event: any) {
+
+    let newValue = event.target.value;
+
+    let regExp = new RegExp('^[A-Za-z0-9? ]+$');
+
+    if (! regExp.test(newValue)) {
+      event.target.value = newValue.slice(0, -1);
+    }
+  }
 }
