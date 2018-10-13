@@ -44,7 +44,19 @@ export class EventsPage {
       eventID: e.idsystem_status
     });
   } 
-  
+
+  getActionButtonTitle (e: SystemStatusEvent): string {
+    let curStatus = "";
+    if (this.isLiveEvent(e))
+      curStatus = "HANDLE_EVENT";
+    else
+      if (this.isOpenEvent(e))
+        curStatus = "CLOSE_EVENT";
+      else 
+        curStatus = "VIEW_EVENT"
+    return curStatus;
+  }
+
   isLiveEvent(e: SystemStatusEvent): boolean {
     return e.status == Statuses.LIVE;
   }

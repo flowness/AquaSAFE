@@ -12,10 +12,9 @@
   <form (ngSubmit)="storeData()">
   <ion-item>
        <!-- <button ion-button full type="submit" tappable type="submit">Next</button> -->
-      <button ion-button type="submit" block>Save</button>
-
-      <!-- <ion-button type="submit" name="Save" item-end></ion-button> -->
+    <button ion-button type="submit" block >{{"SAVE_SETTINGS" | translate}}</button>
   </ion-item>
+      <!-- <ion-button type="submit" name="Save" item-end></ion-button> -->
   <ion-list>
 
     <ion-item no-lines>
@@ -35,19 +34,19 @@
   
     <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
-        <ion-label>Enable freeze alert</ion-label>
+        <ion-label>{{"ENABLE_FREEZE_ALERT_SETTING" | translate}}</ion-label>
         <ion-toggle name="freezeAlert" [(ngModel)]="freezeAlert" item-end></ion-toggle>
     </ion-item>
 
     <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
-        <ion-label>Enable contnues flow alert</ion-label>
+        <ion-label>{{"ENABLE_CONT_ALERT_SETTING" | translate}}</ion-label>
         <ion-toggle name="continuesFlowAlert" [(ngModel)]="continuesFlowAlert" item-end></ion-toggle>
     </ion-item>
 
     <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
-        <ion-label>Enable No-Flow alert</ion-label>
+        <ion-label>{{"ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING" | translate}}</ion-label>
         <ion-toggle name="noFlowAlert" [(ngModel)]="noFlowAlert" item-end></ion-toggle>
     </ion-item>
 <!--

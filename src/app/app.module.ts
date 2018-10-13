@@ -86,7 +86,11 @@ import { FirebaseService } from "../providers/Firebase-service";
   imports: [
     IonicStorageModule.forRoot(),
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+    }),
     BrowserAnimationsModule,
     HttpModule,
     HttpClientModule,

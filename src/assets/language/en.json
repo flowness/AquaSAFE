@@ -15,6 +15,18 @@
     "SETTINGS_PAGE_MENU": "Settings",
     "EVENTS_PAGE_MENU": "Events",
 
-    "MENU": "Menu"
+    "MENU": "Menu",
+
+    "CLOSE_EVENT": "Close",
+    "VIEW_EVENT": "View",
+    "HANDLE_EVENT": "Handle",
+    "EVENT_LIST_TITLE": "Event list",
+
+    "Continues flow": "Continues flow",
+
+    "SAVE_SETTINGS": "Save settings",
+    "ENABLE_FREEZE_ALERT_SETTING": "Enable freeze alert",
+    "ENABLE_CONT_ALERT_SETTING": "Enable continues flow alert",
+    "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "Enable 'NO-Flow' between hours alert"
 
 }

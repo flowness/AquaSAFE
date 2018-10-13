@@ -17,18 +17,19 @@
   <ion-content>
     <ion-list>
       <ion-list-header> 
-          <h2> Events history</h2>
+          <h2> {{"EVENT_LIST_TITLE" | translate}}</h2>
       </ion-list-header>
       <ion-item *ngFor="let curSystemEvent of this.statusEventService.getEventList()"> <!-- (click)="itemTapped($event, asEvent)"> -->
           <ion-icon item-start [name]="isLiveEvent(curSystemEvent)? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
           <ion-label>
-            {{curSystemEvent.Event_str}} <br> {{curSystemEvent.timestamp}}
+            {{curSystemEvent.Event_str | translate}} <br> {{curSystemEvent.timestamp}}
           </ion-label>
           <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> 
               
           -->
             <button  [color]="isLiveEvent(curSystemEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(curSystemEvent);$event.stopPropagation()" ion-button round item-end>
-              {{isLiveEvent(curSystemEvent) ? "Handle" : isOpenEvent(curSystemEvent)? "Close" : "View"}}
+              <!-- {{isLiveEvent(curSystemEvent) ? "Handle" : isOpenEvent(curSystemEvent)? "Close" : "View"}} -->
+              {{getActionButtonTitle(curSystemEvent) | translate}}
             </button>
       </ion-item>
     </ion-list>
