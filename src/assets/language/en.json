@@ -1,0 +1,20 @@
+{
+    "SYSTEM_OK": "System OK", 
+    "SYSTEM_ALERT": "Alert", 
+    "SYSTEM_TROUBLE": "Trouble",
+    
+    "MILLILITER_SHORT": "ml",
+    
+    "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized.png",
+    "STATUS_IMG_OK": "assets/imgs/front_resized_OK.png",
+    "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble.png",
+    "STATUS_IMG_ALERT": "assets/imgs/front_resized_Leak.png",
+
+    "HOME_PAGE_MENU": "Home",
+    "STATISTICS_PAGE_MENU": "Statistics",
+    "SETTINGS_PAGE_MENU": "Settings",
+    "EVENTS_PAGE_MENU": "Events",
+
+    "MENU": "Menu"
+
+}

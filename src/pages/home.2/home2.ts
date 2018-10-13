@@ -8,6 +8,8 @@ import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
 import * as SolidGauge from "highcharts/modules/solid-gauge";
 
+import { TranslateService } from '@ngx-translate/core';
+
 // In-Project imports
 import { MP100Page } from "../modules/mp100/mp100";
 import { StatusEventService, GlobalSystemSeverityTypes } from "../../providers/StatusEvent-service";
@@ -31,8 +33,9 @@ export class HomePage2 {
   private intervalRefreshGaugeTask: number;
   private intervalUpdateSystemSeverity: number;
   private systemStatusImageURL: string;
-  private GlobalSystemSeverity: GlobalSystemSeverityTypes;
+  private GlobalSystemSeverity: GlobalSystemSeverityTypes = GlobalSystemSeverityTypes.UNKNOWN;
   private accountName: string = "";
+  private ML = "Default-ML";
 
   constructor(
     private http: Http,
@@ -45,8 +48,15 @@ export class HomePage2 {
     private screenOrientation: ScreenOrientation,
     public platform: Platform,
     private globalsService: GlobalsService,
+    public translate: TranslateService
   ) {
     console.log("constructor home");
+    
+    //this.lang = 'he';
+    this.translate.setDefaultLang('he');
+    this.translate.use('he');
+    
+    //this.translate.use(this.lang);
 
     //this.globalsService.loadDataFromStorage();
     if (!this.platform.is("mobileweb") && !this.platform.is("core")) {
@@ -73,113 +83,79 @@ export class HomePage2 {
 
   ionViewWillEnter(): void {
     console.log("ionViewWillEnter home");
-    var gaugeOptions = {
-      chart: {
-        spacing: [0, 0, 0, 0],
-        type: 'solidgauge',
-        height: '50%',
-        backgroundColor: null
-      },
-      title: null,
-      pane: {
-        center: ['50%', '50%'],
-        size: '90%',
-        startAngle: -90,
-        endAngle: 90,
-        background: {
-          backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
-          innerRadius: '60%',
-          outerRadius: '100%',
-          shape: 'arc'
-        }
-      },
-      tooltip: {
-        enabled: false
-      },
-      // the value axis
-      yAxis: {
-        min: 0,
-        max: 600,
-        title: {
-          text: 'Flow',
-          y: -80
+
+    this.translate.get('MILLILITER_SHORT').subscribe(value => {this.ML = value;});
+      var gaugeOptions = {
+        chart: {
+          spacing: [0, 0, 0, 0],
+          type: 'solidgauge',
+          height: '50%',
+          backgroundColor: null
         },
-        stops: [
-          [0.1, '#55BF3B'], // green
-          [0.5, '#DDDF0D'], // yellow
-          [0.9, '#DF5353'] // red
-        ],
-        lineWidth: 0,
-        minorTickInterval: null,
-        tickAmount: 2,
-        labels: {
-          y: 16,
+        title: null,
+        pane: {
+          center: ['50%', '50%'],
+          size: '90%',
+          startAngle: -90,
+          endAngle: 90,
+          background: {
+            backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+          }
+        },
+        tooltip: {
           enabled: false
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      series: [{
-        name: 'Consumption',
-        data: [this.flowService.getCurrentFlow()],
-        dataLabels: {
-          format: '<div style="text-align:center"><span style="font-size:20px;color:black">{y} ml</span></div>'
-        }
-      }],
-      plotOptions: {
-        solidgauge: {
+        },
+        // the value axis
+        yAxis: {
+          min: 0,
+          max: 600,
+          title: {
+            text: 'Flow',
+            y: -80
+          },
+          stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+          ],
+          lineWidth: 0,
+          minorTickInterval: null,
+          tickAmount: 2,
+          labels: {
+            y: 16,
+            enabled: false
+          }
+        },
+        credits: {
+          enabled: false
+        },
+        series: [{
+          name: 'Consumption',
+          data: [this.flowService.getCurrentFlow()],
           dataLabels: {
-            y: 5,
-            borderWidth: 0,
-            useHTML: true
+            format: '<div style="text-align:center"><span style="font-size:20px;color:black">{y} ' + this.ML + '</span></div>'
+          }
+        }],
+        plotOptions: {
+          solidgauge: {
+            dataLabels: {
+              y: 5,
+              borderWidth: 0,
+              useHTML: true
+            }
           }
         }
-      }
-    };
-    this.flowChart = HighCharts.chart('gauge', gaugeOptions);
-    
+      };
+      this.flowChart = HighCharts.chart('gauge', gaugeOptions);
     this.updateStatusImage();
-
     this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
     this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
 
   }
 
-  /*
-  private getStatus(): void {
-      let systemStatusUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?SN=azarhome&period=7%20DAY&statusType=1";    
-      this.asyncJASONRequests.getJSONDataAsync(systemStatusUrl).then(data => {
-      let systemStatus: number = 0;
-      if (
-          data != undefined &&
-          data["statusCode"] != undefined &&
-          data["statusCode"] == 200
-          ) {
-                let statusLine = {};
-                if (data.body.length > 0) {
-                  for (var i of data.body) {
-                    statusLine = JSON.parse(i);
-                    systemStatus = 1;
-                    
-                    //this.modelService.addLeakageEventToModel("MP100", new Date());
-                    //console.log("################ Added leak event");
-                    
-                    //this.modelService.updateSettings (statusLine["Event_str"],true);          
-                    //this.modelService.setStatus("leak");                    
-                  }
-                }
-                else { 
-                  //console.log("^^^^^^^^  No Data.body");
-                  //this.modelService.updateSettings ("",false);
-                }
-      }
-      console.log("systemStatus = " + systemStatus);
-      this.systemStatusCode = systemStatus;
-      this.updateStatusImage();
-    });
-  }
-*/
   private updateGlobalSystemSeverity () {
     let tempGlobalSystemSeverity = this.statusEventService.getGlobalSystemSeverity();
     if (this.GlobalSystemSeverity != tempGlobalSystemSeverity) {
@@ -190,12 +166,25 @@ export class HomePage2 {
   }
 
   private updateStatusImage(): void {
+    /*
     switch (this.GlobalSystemSeverity)
     {
+        case (GlobalSystemSeverityTypes.UNKNOWN): this.systemStatusImageURL = "assets/imgs/front_resized.png"; break;
         case (GlobalSystemSeverityTypes.NORMAL): this.systemStatusImageURL = "assets/imgs/front_resized_OK.png"; break;
         case (GlobalSystemSeverityTypes.ALERT): this.systemStatusImageURL = "assets/imgs/front_resized_Leak.png"; break;
         case (GlobalSystemSeverityTypes.WARNING): this.systemStatusImageURL = "assets/imgs/front_resized_Trouble.png"; break;
     }
+    */
+   let theImage = "";
+   switch (this.GlobalSystemSeverity) {
+       case (GlobalSystemSeverityTypes.UNKNOWN): theImage = "STATUS_IMG_UNKNOWN"; break;
+       case (GlobalSystemSeverityTypes.NORMAL): theImage = "STATUS_IMG_OK"; break;
+       case (GlobalSystemSeverityTypes.ALERT): theImage = "STATUS_IMG_ALERT"; break;
+       case (GlobalSystemSeverityTypes.WARNING): theImage = "STATUS_IMG_TROUBLE"; break;
+   }
+   if (theImage != "")
+      this.translate.get(theImage).subscribe(value => {this.systemStatusImageURL = value;});
+
   }
 
   private refreshDataGauge() { 

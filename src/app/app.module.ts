@@ -41,6 +41,15 @@ import { EditEventPage } from "../pages/edit-event/edit-event";
 import { ScreenOrientation } from "@ionic-native/screen-orientation";
 import { FCM } from '@ionic-native/fcm';
 
+// Multi language support
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../assets/language/', '.json');
+}
+
+
 //import { FcmProvider } from '../providers/fcm/fcm';
 import { FlowService } from "../providers/Flow-service";
 import { StatusEventService } from "../providers/StatusEvent-service"; 
@@ -79,7 +88,15 @@ import { FirebaseService } from "../providers/Firebase-service";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     BrowserAnimationsModule,
-    HttpModule
+    HttpModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

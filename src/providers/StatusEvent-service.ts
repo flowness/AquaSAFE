@@ -3,7 +3,7 @@ import { AsyncJSONService } from "./Async-JSON-service";
 import { GlobalsService} from "./Globals-service";
 
 export enum GlobalSystemSeverityTypes{
-    ALERT = 1, WARNING = 2, NORMAL = 3
+    ALERT = 1, WARNING = 2, NORMAL = 3, UNKNOWN = 4
 }
 
 export enum SeverityTypes {
@@ -70,7 +70,7 @@ export class StatusEventService {
 
     constructor( private asyncJASONRequests: AsyncJSONService,
                  private globalsService: GlobalsService ) {
-        this.globalSystemSeverity = GlobalSystemSeverityTypes.NORMAL;
+        this.globalSystemSeverity = GlobalSystemSeverityTypes.UNKNOWN;
         this.lastStatusEventID = -1;
         this.PollingStatusEvents();
         this.intervalReceiveStatusEvents = setInterval(() => { this.PollingStatusEvents(); }, 5000);

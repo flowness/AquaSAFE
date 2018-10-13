@@ -1,0 +1,20 @@
+{
+    "SYSTEM_OK": "מערכת תקינה", 
+    "SYSTEM_ALERT": "התראה", 
+    "SYSTEM_TROUBLE": "בעיית מערכת",
+    
+    "MILLILITER_SHORT": "מיליליטר",
+
+    "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized_he.png",
+    "STATUS_IMG_OK": "assets/imgs/front_resized_OK_he.png",
+    "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble_he.png",
+    "STATUS_IMG_ALERT": "assets/imgs/front_resized_Leak_he.png",
+
+    "HOME_PAGE_MENU": "ראשי",
+    "STATISTICS_PAGE_MENU": "סטטיסטיקה",
+    "SETTINGS_PAGE_MENU": "הגדרות",
+    "EVENTS_PAGE_MENU": "ארועים",
+
+    "MENU": "תפריט"
+
+}

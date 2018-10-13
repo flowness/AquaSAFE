@@ -67,11 +67,11 @@ export class MyApp {
       });
     }
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: "Home", component: HomePage2 },
-      { title: "Statistics", component: StatisticsPage },
-      { title: "Settings", component: SettingsPage },
-      { title: "Events", component: EventsPage }
+      this.pages = [
+      { title: "HOME_PAGE_MENU", component: HomePage2 },
+      { title: "STATISTICS_PAGE_MENU", component: StatisticsPage },
+      { title: "SETTINGS_PAGE_MENU", component: SettingsPage },
+      { title: "EVENTS_PAGE_MENU", component: EventsPage }
     ];
   }
 
