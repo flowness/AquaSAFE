@@ -37,4 +37,19 @@ export class EditEventPage {
   dismiss() {
     this.viewCtrl.dismiss();
   }
+
+  getStatusEventString(isOpen): string {
+    if (isOpen) 
+      return "OPEN_EVENT"
+    else
+      return "CLOSED_EVENT"
+  }
+
+  getStatusActionString(isOpen): string{
+    if (isOpen) 
+      return "EDIT_EVENT_DETAILS"
+    else
+      return "VIEW_EVENT_DETAILS"
+  }
+
 }

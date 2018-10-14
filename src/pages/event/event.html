@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Event Details</ion-title>
+    <ion-title>{{EVENT_DETAILS | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -25,12 +25,12 @@
   </ion-item>
   <ion-list>
     <ion-list-header>
-      <h2>Event Type: {{asEvent.type}}</h2>
-      <h2>Event Date: {{asEvent.timestamp}}</h2>
-      <h2>Event Status: {{asEvent.open?"OPEN":"CLOSED"}}</h2>
+      <h2>{{"EVENT_TYPE"}}: {{asEvent.type | translate}}</h2>
+      <h2>{{"EVENT_DATE"}}: {{asEvent.timestamp}}</h2>
+      <h2>{{"EVENT_STATUS"}}: {{asEvent.open?"OPEN":"CLOSED"}}</h2>
     </ion-list-header>
     <ion-item *ngFor="let moment of asEvent.moments">
-      <ion-item no-lines>{{moment.title}} {{moment.timestamp}} {{moment.initiator}}</ion-item>
+      <ion-item no-lines>{{moment.title | translate}} {{moment.timestamp}} {{moment.initiator}}</ion-item>
       <ion-item [hidden]="moment.comment == '' || moment.comment == undefined">{{moment.comment}}</ion-item>
     </ion-item>
   </ion-list>

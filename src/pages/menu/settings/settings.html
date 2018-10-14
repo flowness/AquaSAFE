@@ -19,17 +19,17 @@
 
     <ion-item no-lines>
       <ion-icon name="home" item-start></ion-icon>
-      <ion-input  type="text" placeholder="Account name" [(ngModel)]="txtAccountName" name="txtAccountName" (keyup)="onKeyUp($event)"></ion-input>
+      <ion-input  type="text" placeholder='{{"ACCOUNT_NAME_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtAccountName" name="txtAccountName" (keyup)="onKeyUp($event)"></ion-input>
     </ion-item>
 
     <ion-item no-lines>
       <ion-icon name="mail" item-start></ion-icon>
-      <ion-input  type="text" placeholder="EMail" [(ngModel)]="txtEmail" name="txtEmail"></ion-input>
+      <ion-input  type="text" placeholder='{{"EMAIL_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtEmail" name="txtEmail"></ion-input>
     </ion-item>
 
     <ion-item no-lines>
         <ion-icon name="call" item-start></ion-icon>
-        <ion-input type="text" placeholder="Phone number (for SMS)" [(ngModel)]="txtPhone" name="txtPhone"></ion-input>
+        <ion-input type="text" placeholder='{{"PHONE_NUMBER_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtPhone" name="txtPhone"></ion-input>
     </ion-item>
   
     <ion-item no-lines>

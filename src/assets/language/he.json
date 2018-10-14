@@ -23,10 +23,42 @@
     "EVENT_LIST_TITLE": "רשימת ארועי מערכת",
 
     "Continues flow": "זרימה ממושכת",
+    "Continues flow stopped": "זרימה ממושכת הפסיקה",
 
     "SAVE_SETTINGS": "שמור הגדרות",
     "ENABLE_FREEZE_ALERT_SETTING": "התראה על קפיאה",
     "ENABLE_CONT_ALERT_SETTING": "התראה על זרימה ממושכת",
-    "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "התראה אם מים זורמים בשעות שלא אמורים"
+    "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "התראה אם מים זורמים בשעות שלא אמורים",
+    "ACCOUNT_NAME_SETTING_PLACEHOLDER":"שם החשבון",
+    "EMAIL_SETTING_PLACEHOLDER":"Email",
+    "PHONE_NUMBER_SETTING_PLACEHOLDER":"מספר טלפון",
 
+    "EVENT_DETAILS": "פרטי ארוע",
+
+    "EVENT_TYPE": "סוג הארוע",
+    "EVENT_DATE": "תאריך",
+    "EVENT_STATUS": "סטטוס",
+    "OPEN_EVENT": "ארוע פתוח",
+    "CLOSED_EVENT": "ארוע סגור",
+    "EDIT_EVENT_DETAILS": "עריכת פרטי ארוע",
+    "VIEW_EVENT_DETAILS": "צפייה בפרטי ארוע",
+    "BACK_FROM_EVENT_DETAILS": "חזרה",
+
+    "HANDLE_LEAK": "טיפול בדליפה",
+    "NOT_IN_SITE": "אני לא במבנה",
+    "NOT_A_LEAK_TO_HANDLE": "זו לא דליפת מים",
+
+    "SUGGEST_TO_TAKE_A_PICTURE": "רואה את דליפת המים? צלם תמונה",
+    "HANDLE_LEAK_GUIDANCE_LINE_1": "הדרכה בסיסית לטיפול בדליפת מים:",
+    "HANDLE_LEAK_GUIDANCE_LINE_2": "אם הדליפה גלויה לעין, סגור את המגוף הרלוונטי או את המגוף הראשי כדי להפסיק באופן מיידי את הדליפה",
+    "HANDLE_LEAK_GUIDANCE_LINE_3": "אם הדליפה אינה גלויה לעין, וודא כי כל הברזים המבנה סגורים, ואין צרכני מים פעילים",
+    "HANDLE_LEAK_GUIDANCE_LINE_4": "שעון המים הוא אינדיקטור טוב לקיום דליפות הגדולות מטפטוף, כל עוד שהשעון רץ - המים זורמים",
+    "HANDLE_LEAK_GUIDANCE_LINE_5": "אם הדליפה נמשכת יש לבדוק בכל תחומי המבנה וסביבתו ולנסות לאתר את הדליפה",
+    "HANDLE_LEAK_GUIDANCE_LINE_6": "ההמלצה היא שגם אם לא נמצא מקור הנזילה, כדאי לסגור את המגוף הראשי ולהזמין בעל מקצוע",
+
+    "SUB_EVENTS_TITLE": "התגלגלות הארוע",
+
+    "CLOSE_THE_EVENT": "סיים את הארוע",
+    "CLOSING_EVENT_DETAILS_TEXT": "הוסף בטקסט חופשי פרטים נוספים על הארוע והסיבות לסגירתו",
+    "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים"
 }

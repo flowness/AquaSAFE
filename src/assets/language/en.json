@@ -23,10 +23,43 @@
     "EVENT_LIST_TITLE": "Event list",
 
     "Continues flow": "Continues flow",
+    "Continues flow stopped": "Continues flow stopped",
 
     "SAVE_SETTINGS": "Save settings",
     "ENABLE_FREEZE_ALERT_SETTING": "Enable freeze alert",
     "ENABLE_CONT_ALERT_SETTING": "Enable continues flow alert",
-    "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "Enable 'NO-Flow' between hours alert"
+    "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "Enable 'NO-Flow' between hours alert",
+    "ACCOUNT_NAME_SETTING_PLACEHOLDER":"Account name",
+    "EMAIL_SETTING_PLACEHOLDER":"Email",
+    "PHONE_NUMBER_SETTING_PLACEHOLDER":"Phone number",
+
+    "EVENT_DETAILS": "Event details",
+
+    "EVENT_TYPE": "Event type",
+    "EVENT_DATE": "Date",
+    "EVENT_STATUS": "Status",
+    "OPEN_EVENT": "Open",
+    "CLOSED_EVENT": "Closed",
+    "EDIT_EVENT_DETAILS": "Edit event",
+    "VIEW_EVENT_DETAILS": "View event",
+    "BACK_FROM_EVENT_DETAILS": "Back",
+
+    "HANDLE_LEAK": "Handle leak",
+    "NOT_IN_SITE": "Away from property?",
+    "NOT_A_LEAK_TO_HANDLE": "This is not a leak",
+
+    "SUGGEST_TO_TAKE_A_PICTURE": "If leak is visible. Take a picture",
+    "HANDLE_LEAK_GUIDANCE_LINE_1": "Basic guidnace for handling water leak:",
+    "HANDLE_LEAK_GUIDANCE_LINE_2": "If you see the leak source, close the relevant valve or the main valve to immediately stop the leak",
+    "HANDLE_LEAK_GUIDANCE_LINE_3": "The water meter for the property helps to indicate the leak existance.",
+    "HANDLE_LEAK_GUIDANCE_LINE_4": "If the leak is not visible, verify first that all the taps are fully closed and check the water meter",
+    "HANDLE_LEAK_GUIDANCE_LINE_5": "If leak continues, take a tour around the property (inside and out) and try to find the leak",
+    "HANDLE_LEAK_GUIDANCE_LINE_6": "Its always recommanded to close the main valve in evenry suspicios of leakage",
+
+    "SUB_EVENTS_TITLE": "Event progress",
+
+    "CLOSE_THE_EVENT": "Close event",
+    "CLOSING_EVENT_DETAILS_TEXT": "Please share text details describing the event and the reason for closure",
+    "EVENT_DETAILS_PLACEHOLDER": "Add extra free text details here"
 
 }
