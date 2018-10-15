@@ -3,8 +3,9 @@
     "SYSTEM_ALERT": "Alert", 
     "SYSTEM_TROUBLE": "Trouble",
     
-    "MILLILITER_SHORT": "ml",
-    
+    "MILLILITER_SHORT_R": "ml",
+    "MILLILITER_SHORT_L": "",
+
     "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized.png",
     "STATUS_IMG_OK": "assets/imgs/front_resized_OK.png",
     "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble.png",
@@ -60,6 +61,10 @@
 
     "CLOSE_THE_EVENT": "Close event",
     "CLOSING_EVENT_DETAILS_TEXT": "Please share text details describing the event and the reason for closure",
-    "EVENT_DETAILS_PLACEHOLDER": "Add extra free text details here"
+    "EVENT_DETAILS_PLACEHOLDER": "Add extra free text details here",
+
+    "LIVE_DATA_STATISTICS": "Live flow data",
+    "DAY_DATA_STATISTICS": "Today's statistics",
+    "MONTH_DATA_STATISTICS": "Monthly statistics"
 
 }

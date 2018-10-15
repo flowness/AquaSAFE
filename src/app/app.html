@@ -1,13 +1,13 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>{{ "MENU" | translate }}</ion-title>
+      <ion-title start>{{ "MENU" | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+    <ion-list >
+      <button  menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title | translate}}
         <!-- <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() != NORMAL" [color]="this.statusEventService.getGlobalSystemSeverity() === ALERT ? 'danger' : 'primary'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge> -->
       </button>

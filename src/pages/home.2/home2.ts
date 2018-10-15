@@ -35,7 +35,8 @@ export class HomePage2 {
   private systemStatusImageURL: string;
   private GlobalSystemSeverity: GlobalSystemSeverityTypes = GlobalSystemSeverityTypes.UNKNOWN;
   private accountName: string = "";
-  private ML = "Default-ML";
+  private MLright = "Default-MLright";
+  private MLleft = "Default-MLleft";
 
   constructor(
     private http: Http,
@@ -51,11 +52,11 @@ export class HomePage2 {
     public translate: TranslateService
   ) {
     console.log("constructor home");
-    
+    console.log("direction from home2 = " + platform.dir());
     //this.lang = 'he';
-    this.translate.setDefaultLang('he');
-    this.translate.use('he');
-    
+    //this.translate.setDefaultLang('he');
+    //this.translate.use('he');
+
     //this.translate.use(this.lang);
 
     //this.globalsService.loadDataFromStorage();
@@ -84,8 +85,10 @@ export class HomePage2 {
   ionViewWillEnter(): void {
     console.log("ionViewWillEnter home");
 
-    this.translate.get('MILLILITER_SHORT').subscribe(value => {this.ML = value;});
-      var gaugeOptions = {
+    this.translate.get('MILLILITER_SHORT_R').subscribe(value => {this.MLright = value;});
+    this.translate.get('MILLILITER_SHORT_L').subscribe(value => {this.MLleft = value;});
+
+    var gaugeOptions = {
         chart: {
           spacing: [0, 0, 0, 0],
           type: 'solidgauge',
@@ -136,7 +139,7 @@ export class HomePage2 {
           name: 'Consumption',
           data: [this.flowService.getCurrentFlow()],
           dataLabels: {
-            format: '<div style="text-align:center"><span style="font-size:20px;color:black">{y} ' + this.ML + '</span></div>'
+            format: '<div style="text-align:center"><span style="font-size:20px;color:black">' + this.MLleft + ' {y} ' + this.MLright + '</span><span></span></div>'
           }
         }],
         plotOptions: {

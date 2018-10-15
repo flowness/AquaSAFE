@@ -12,14 +12,14 @@
 <ion-content padding>
   <div padding>
     <ion-segment [(ngModel)]="chartType" (ionChange)="onSegmentChange()">
-      <ion-segment-button value="live">
-        Live
+      <ion-segment-button value="live" start>
+        {{"LIVE_DATA_STATISTICS" | translate }}
       </ion-segment-button>
       <ion-segment-button value="daily">
-        Day
+        {{"DAY_DATA_STATISTICS" | translate }} 
       </ion-segment-button>
       <ion-segment-button value="monthly">
-        Month
+        {{"MONTH_DATA_STATISTICS" | translate}}
       </ion-segment-button>
     </ion-segment>
   </div>

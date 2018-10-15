@@ -3,9 +3,10 @@
     "SYSTEM_ALERT": "התראה", 
     "SYSTEM_TROUBLE": "בעיית מערכת",
     
-    "MILLILITER_SHORT": "מיליליטר",
+    "MILLILITER_SHORT_R": "",
+    "MILLILITER_SHORT_L": "מיליליטר",
 
-    "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized_he.png",
+    "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized.png",
     "STATUS_IMG_OK": "assets/imgs/front_resized_OK_he.png",
     "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble_he.png",
     "STATUS_IMG_ALERT": "assets/imgs/front_resized_Leak_he.png",
@@ -29,7 +30,7 @@
     "ENABLE_FREEZE_ALERT_SETTING": "התראה על קפיאה",
     "ENABLE_CONT_ALERT_SETTING": "התראה על זרימה ממושכת",
     "ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING": "התראה אם מים זורמים בשעות שלא אמורים",
-    "ACCOUNT_NAME_SETTING_PLACEHOLDER":"שם החשבון",
+    "ACCOUNT_NAME_SETTING_PLACEHOLDER":"שם החשבון באנגלית",
     "EMAIL_SETTING_PLACEHOLDER":"Email",
     "PHONE_NUMBER_SETTING_PLACEHOLDER":"מספר טלפון",
 
@@ -60,5 +61,9 @@
 
     "CLOSE_THE_EVENT": "סיים את הארוע",
     "CLOSING_EVENT_DETAILS_TEXT": "הוסף בטקסט חופשי פרטים נוספים על הארוע והסיבות לסגירתו",
-    "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים"
+    "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים",
+
+    "LIVE_DATA_STATISTICS": "זמן אמת",
+    "DAY_DATA_STATISTICS": "סיכום יומי",
+    "MONTH_DATA_STATISTICS": "סיכום חדשי"
 }

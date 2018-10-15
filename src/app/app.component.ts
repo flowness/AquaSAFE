@@ -14,6 +14,7 @@ import { ModelService } from "../providers/model-service";
 //import { FcmProvider } from "../providers/fcm/fcm";
 import { tap } from "rxjs/operators";
 import { FirebaseService } from "../providers/Firebase-service";
+import { TranslateService, LangChangeEvent  } from '@ngx-translate/core';
 
 @Component({
   templateUrl: "app.html"
@@ -32,13 +33,35 @@ export class MyApp {
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    
+    public translate: TranslateService,
+
     toastCtrl: ToastController,
     private firebaseService : FirebaseService
   ) {
     this.initializeApp();
 
     globalsService.setStorageReady();
+      this.translate.setDefaultLang('he');
+      this.translate.use('he');
+      platform.setDir('ltr', false);
+      platform.setDir('rtl', true);
+
+      //this.translate.use('en');
+      console.log("direction from app.components = " + platform.dir());
+
+
+      this.translate.onLangChange.subscribe((event: LangChangeEvent) =>  {
+          if(event.lang == 'he') {
+            platform.setDir('ltr', false);
+            platform.setDir('rtl', true);
+            console.log("set direction to rtl - he");
+          }
+          else {
+            platform.setDir('rtl', false);
+            platform.setDir('ltr', true);
+            console.log("set language to ltr - not he")
+          }
+        });
 
     if (this.platform.is("cordova")) {
       platform.ready().then(() => {
