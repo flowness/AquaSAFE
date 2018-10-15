@@ -139,3 +139,12 @@ resources - Original/ios/splash/Default-Portrait~ipad.png
 resources - Original/ios/splash/Default@2x~iphone.png
 resources - Original/ios/splash/Default@2x~universal~anyany.png
 resources - Original/ios/splash/Default~iphone.png
+/AppPackages
+/Simulation
+/bin
+/bld
+*.pfx
+/.vs
+/build.json
+*.js
+*.map
