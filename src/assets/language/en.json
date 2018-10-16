@@ -65,6 +65,22 @@
 
     "LIVE_DATA_STATISTICS": "Live flow data",
     "DAY_DATA_STATISTICS": "Today's statistics",
-    "MONTH_DATA_STATISTICS": "Monthly statistics"
+    "MONTH_DATA_STATISTICS": "Monthly statistics",
+    "REAL_TIME_GRAPH_TITLE": "Current flow ml/s",
+    "DAY_GRAPH_TITLE": "Total daily usage",
+    "MONTH_GRAPH_TITLE": "Total monthly usage",
+
+    "MONTH_NAME_1":"January",
+    "MONTH_NAME_2":"February",
+    "MONTH_NAME_3":"March",
+    "MONTH_NAME_4":"April",
+    "MONTH_NAME_5":"May",
+    "MONTH_NAME_6":"June",
+    "MONTH_NAME_7":"July",
+    "MONTH_NAME_8":"August",
+    "MONTH_NAME_9":"September",
+    "MONTH_NAME_10":"October",
+    "MONTH_NAME_11":"November",
+    "MONTH_NAME_12":"December"
 
 }

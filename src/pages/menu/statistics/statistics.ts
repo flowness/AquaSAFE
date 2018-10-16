@@ -12,6 +12,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import { StatusEventService, GlobalSystemSeverityTypes } from "../../../providers/StatusEvent-service";
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Generated class for the MenuStatisticsPage page.
@@ -49,6 +50,7 @@ export class StatisticsPage {
     public loadingCtrl: LoadingController,
     private globalsService: GlobalsService,
     private statusEventService: StatusEventService,
+    public translate: TranslateService
   ) {
     this.unregisterFunc = platform.registerBackButtonAction(() => {
       this.backButton();
@@ -136,9 +138,12 @@ export class StatisticsPage {
 
 
   private drawLiveChart(): void {
+    let graphTitle = ""
+    this.translate.get("REAL_TIME_GRAPH_TITLE").subscribe(value => {graphTitle = value;});
+
     let chartConfig = {
       title: {
-        text: "Current Flow"
+        text: graphTitle
       },
       tooltip: {
         enabled: false
@@ -208,7 +213,7 @@ export class StatisticsPage {
     };
     this.chart = HighCharts.chart("container", chartConfig);
   }
-
+  
   private drawBarChart(): void {
     this.loading.present();
 
@@ -217,6 +222,9 @@ export class StatisticsPage {
 
 
     var volumePostRequestBody = this.chartType === "daily" ? volumeBodyHour : volumeBodyDay
+    let graphTitle = "";
+    let graphDate = "";
+
     this.postJSONDataAsync(this.volumeUrl, volumePostRequestBody).then(data => {
       if (
         data != undefined &&
@@ -225,7 +233,16 @@ export class StatisticsPage {
       ) {
         // console.log(data["body"]);
         let jsonBody = JSON.parse(data["body"]);
-        // console.log(jsonBody);
+        console.log(jsonBody);
+        this.translate.get("MONTH_NAME_" + jsonBody[0]["month"]).subscribe(value => {graphDate = value;});
+        if (this.chartType == "daily") {
+            this.translate.get("DAY_GRAPH_TITLE").subscribe(value => {graphTitle = value;});
+            let x = jsonBody[0]["day"] + graphDate;
+            graphDate = x;
+        }
+        else 
+            this.translate.get("MONTH_GRAPH_TITLE").subscribe(value => {graphTitle = value;});
+        
 
         var preparedData: any[] = this.prepareData(jsonBody);
 
@@ -234,7 +251,7 @@ export class StatisticsPage {
             type: "column"
           },
           title: {
-            text: "Water Usage (" + this.eraOfChart + ")"
+            text: graphTitle + " - " + graphDate
           },
           subtitle: {
             // text:

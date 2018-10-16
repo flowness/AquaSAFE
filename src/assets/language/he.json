@@ -65,5 +65,24 @@
 
     "LIVE_DATA_STATISTICS": "זמן אמת",
     "DAY_DATA_STATISTICS": "סיכום יומי",
-    "MONTH_DATA_STATISTICS": "סיכום חדשי"
+    "MONTH_DATA_STATISTICS": "סיכום חדשי",
+    "REAL_TIME_GRAPH_TITLE": "זרימת מים מ'ל לשניה",
+    "DAY_GRAPH_TITLE": "סך הצריכה היומית",
+    "MONTH_GRAPH_TITLE": "סך הצריכה החודשית",
+
+    "MONTH_NAME_1":"ינואר",
+    "MONTH_NAME_2":"פברואר",
+    "MONTH_NAME_3":"מרץ",
+    "MONTH_NAME_4":"אפריל",
+    "MONTH_NAME_5":"מאי",
+    "MONTH_NAME_6":"יוני",
+    "MONTH_NAME_7":"יולי",
+    "MONTH_NAME_8":"אוגוסט",
+    "MONTH_NAME_9":"ספטמבר",
+    "MONTH_NAME_10":"אוקטובר",
+    "MONTH_NAME_11":"נובמבר",
+    "MONTH_NAME_12":"דצמבר"
+
+
+
 }
