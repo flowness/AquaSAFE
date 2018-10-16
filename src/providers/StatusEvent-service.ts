@@ -292,6 +292,8 @@ export class StatusEventService {
             data["statusCode"] != undefined &&
             data["statusCode"] == 200
           ) {
+            this.statusEventList[this.getSystemStatusEventIndexByID(statusEvent.idsystem_status)].rollingSubEvents = [];
+
             for (let index = 0; index < data.body.length; index++) { 
                 //console.log('Sub event:  data[index] = ' + data.body[index] );                             
                 this.pushNewSubEvent(statusEvent.idsystem_status, JSON.parse(data.body[index]));
