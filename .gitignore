@@ -148,3 +148,4 @@ resources - Original/ios/splash/Default~iphone.png
 /build.json
 *.js
 *.map
+/AquaSAFE.jsproj.user
