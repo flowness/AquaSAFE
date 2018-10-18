@@ -136,6 +136,7 @@ export class NotALeakPage {
             this.statusEventService.closeStatusEvent (this.eventID,"Not a leak - Its " + waterUsage)
             //this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
+            this.navCtrl.pop();
           }
         }
       ]

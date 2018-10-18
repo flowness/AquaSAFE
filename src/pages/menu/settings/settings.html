@@ -10,46 +10,57 @@
 
 <ion-content>
   <form (ngSubmit)="storeData()">
-  <ion-item>
-       <!-- <button ion-button full type="submit" tappable type="submit">Next</button> -->
-    <button ion-button type="submit" block >{{"SAVE_SETTINGS" | translate}}</button>
-  </ion-item>
-      <!-- <ion-button type="submit" name="Save" item-end></ion-button> -->
-  <ion-list>
+    <ion-list>
 
-    <ion-item no-lines>
-      <ion-icon name="home" item-start></ion-icon>
-      <ion-input type="text" placeholder='{{"ACCOUNT_NAME_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtAccountName" name="txtAccountName" (keyup)="onKeyUp($event)"></ion-input>
-    </ion-item>
+      <ion-item no-lines>
+        <ion-icon name="home" item-start></ion-icon>
+        <ion-input type="text" placeholder='{{"ACCOUNT_NAME_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtAccountName" name="txtAccountName" (keyup)="onKeyUp($event)"></ion-input>
+      </ion-item>
 
-    <ion-item no-lines>
-      <ion-icon name="mail" item-start></ion-icon>
-      <ion-input  type="text" placeholder='{{"EMAIL_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtEmail" name="txtEmail"></ion-input>
-    </ion-item>
+      <ion-item no-lines>
+        <ion-icon name="mail" item-start></ion-icon>
+        <ion-input type="text" placeholder='{{"EMAIL_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtEmail" name="txtEmail"></ion-input>
+      </ion-item>
 
-    <ion-item no-lines>
+      <ion-item no-lines>
         <ion-icon name="call" item-start></ion-icon>
         <ion-input type="text" placeholder='{{"PHONE_NUMBER_SETTING_PLACEHOLDER" | translate}}' [(ngModel)]="txtPhone" name="txtPhone"></ion-input>
-    </ion-item>
-  
-    <ion-item no-lines>
+      </ion-item>
+
+      <ion-item no-lines>
+        <ion-icon name="globe" item-start></ion-icon>
+        <ion-select [(ngModel)]="langSelect" name="langSelect" interface="popover" item-start>
+          <ion-option value="en">English</ion-option>
+          <ion-option value="he">עברית</ion-option>
+          <ion-option value="ru">русский</ion-option>
+          <ion-option value="de">Deutsch</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
         <ion-label>{{"ENABLE_FREEZE_ALERT_SETTING" | translate}}</ion-label>
         <ion-toggle name="freezeAlert" [(ngModel)]="freezeAlert" item-end></ion-toggle>
-    </ion-item>
+      </ion-item>
 
-    <ion-item no-lines>
+      <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
         <ion-label>{{"ENABLE_CONT_ALERT_SETTING" | translate}}</ion-label>
         <ion-toggle name="continuesFlowAlert" [(ngModel)]="continuesFlowAlert" item-end></ion-toggle>
-    </ion-item>
+      </ion-item>
 
-    <ion-item no-lines>
+      <ion-item no-lines>
         <ion-icon name="alert" item-start></ion-icon>
         <ion-label>{{"ENABLE_NO_FLOW_BETWEEN_HOURS_SETTING" | translate}}</ion-label>
         <ion-toggle name="noFlowAlert" [(ngModel)]="noFlowAlert" item-end></ion-toggle>
-    </ion-item>
-<!--
+      </ion-item>
+
+      <ion-item>
+        <!-- <button ion-button full type="submit" tappable type="submit">Next</button> -->
+        <button ion-button type="submit" block>{{"SAVE_SETTINGS" | translate}}</button>
+      </ion-item>
+      <!-- <ion-button type="submit" name="Save" item-end></ion-button> -->
+      <!--
     <ion-item no-lines *ngFor="let item of items">
       <ion-icon [name]="item.icon" item-start></ion-icon>
       <ion-label *ngIf="item.input=='toggle'">{{item.title}}
@@ -71,11 +82,11 @@
         <ion-input type="tel" *ngIf="item.icon=='call'"></ion-input>
         <ion-label floating *ngIf="item.icon=='mail'">E-Mail</ion-label>
         <ion-input type="email" *ngIf="item.icon=='mail'"></ion-input>
-      </ng-template> 
+      </ng-template>
       <ion-toggle [(ngModel)]="item.value" *ngIf="item.input=='toggle'" (ngModelChange)="handleToggleChange($event, item)" item-end>
       </ion-toggle>
     </ion-item>-->
-  </ion-list>
+    </ion-list>
 </form>
 </ion-content>
 

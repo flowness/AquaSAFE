@@ -19,26 +19,27 @@
   <h4>{{"EVENT_TYPE" | translate}}: {{theEvent.Event_str | translate}}</h4>
   <h4>{{"EVENT_DATE" | translate}}: {{theEvent.timestamp}}</h4>
   <h4>{{"EVENT_STATUS" | translate}}: {{getStatusEventString(statusEventService.isOpenEvent(theEvent)) | translate}}</h4>
-  <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
-      <H4 color="primary">{{"CLOSING_EVENT_DETAILS_TEXT" | translate}}</H4>
-      <ion-item>
-        <ion-input placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <button color="primary" (click)="closeEvent()" ion-button round
-          item-end>{{"CLOSE_THE_EVENT" | translate}}</button>
-      </ion-item>
-  </ion-content>
-
   <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
-    <ion-list-header> 
-        <h3> {{"SUB_EVENTS_TITLE" | translate}}</h3>
+    <ion-list-header>
+      <h3> {{"SUB_EVENTS_TITLE" | translate}}</h3>
     </ion-list-header>
-    <ion-item *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents">
-        <ion-label>
-          {{curRollingEvent.Event_str | translate}} <br> {{curRollingEvent.timestamp}}
-        </ion-label>
+    <ion-item *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
+      <ion-label>
+        {{curRollingEvent.Event_str | translate}} <br> {{curRollingEvent.timestamp}}
+      </ion-label>
 
     </ion-item>
   </ion-list>
+  <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
+    <H4 color="primary">{{"CLOSING_EVENT_DETAILS_TEXT" | translate}}</H4>
+    <ion-item>
+      <ion-input placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <button color="primary" (click)="closeEvent()" ion-button round
+              item-end>
+        {{"CLOSE_THE_EVENT" | translate}}
+      </button>
+    </ion-item>
+  </ion-content>
 </ion-content>

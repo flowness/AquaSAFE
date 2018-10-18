@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Storage } from '@ionic/storage';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Injectable()
@@ -28,20 +29,23 @@ export class GlobalsService {
 
     public Email: string = "";
     public Phone: string = "";
+    public Language: string = "en";
     public freezeAlert: boolean = false;
     public continuesFlowAlert: boolean = false;
     public noFlowAlert: boolean = false;
-
+    private translate: TranslateService;
 
 
     constructor ( 
-                    private storage: Storage 
+      private storage: Storage,
                 ) {
         console.log("Storage constructor");
         this.loadDataFromStorage();
+        
     }
 
-    public setStorageReady () {
+    public setStorageReady(myAppTranslate) {
+        this.translate = myAppTranslate;
         this.loadDataFromStorage();
     }
 
@@ -49,19 +53,17 @@ export class GlobalsService {
         console.log("load data from storage function")
 
         
-        this.storage.ready().then(() => { 
-            this.storage.get('AccountName').then((data)=>{this.AccountName = data;});
-            this.storage.get('Email').then((data)=>{this.Email = data;});
-            this.storage.get('Phone').then((data)=>{this.Phone = data;});
-            this.storage.get('freezeAlert').then((data)=>{this.freezeAlert = data;});
-            this.storage.get('continuesFlowAlert').then((data)=>{this.continuesFlowAlert = data;});
-            this.storage.get('noFlowAlert').then((data)=>{this.noFlowAlert = data;});
-/*             console.log(this.AccountName);
-            console.log(this.Email);
-            console.log(this.Phone);
-            console.log(this.freezeAlert);
-            console.log(this.continuesFlowAlert);
-            console.log(this.noFlowAlert); */
+        this.storage.ready().then(() => {
+          this.storage.get('AccountName').then((data) => { this.AccountName = data; });
+          this.storage.get('Email').then((data) => { this.Email = data; });
+          this.storage.get('Phone').then((data) => { this.Phone = data; });
+          this.storage.get('freezeAlert').then((data) => { this.freezeAlert = data; });
+          this.storage.get('continuesFlowAlert').then((data) => { this.continuesFlowAlert = data; });
+          this.storage.get('noFlowAlert').then((data) => { this.noFlowAlert = data; });
+          this.storage.get('Language').then((data) => {
+            this.translate.use(data)
+            this.Language = data
+          });
     });
 
     }
@@ -76,7 +78,11 @@ export class GlobalsService {
         this.storeLocalData("Phone",this.Phone);
         this.storeLocalData("freezeAlert",this.freezeAlert);
         this.storeLocalData("continuesFlowAlert",this.continuesFlowAlert);
-        this.storeLocalData("noFlowAlert",this.noFlowAlert);
+        this.storeLocalData("noFlowAlert", this.noFlowAlert);
+        this.storeLocalData("Language", this.Language);
+        this.translate.use(this.Language)
+
+
       }
 
 }

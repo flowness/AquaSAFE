@@ -73,7 +73,7 @@ export class StatusEventService {
         this.globalSystemSeverity = GlobalSystemSeverityTypes.UNKNOWN;
         this.lastStatusEventID = -1;
         this.PollingStatusEvents();
-        this.intervalReceiveStatusEvents = setInterval(() => { this.PollingStatusEvents(); }, 5000);
+        this.intervalReceiveStatusEvents = setInterval(() => { this.PollingStatusEvents(); }, 1000);
         //this.intervalReceiveSubEvents = setInterval(() => { this.PollingSubEvents(); }, 10000);
         console.log("constructor Event-service");
     }
@@ -117,12 +117,12 @@ export class StatusEventService {
                                 data.body != undefined &&
                                 data.body != null
                             ) {  
-                                for (let index = 0; index < data.body.length; index++) { 
+                          for (let index = data.body.length-1; index >= 0 ; index--) { 
                                     //console.log('data[index] = ' + data.body[index] );                             
                                     this.pushNewStatusEvent(JSON.parse(data.body[index]));
                                 }
-                                if (data.body.length > 0) {
-                                    this.lastStatusEventID = data.body[data.body.length - 1].idsystem_status;
+                          if (data.body.length > 0) {
+                                  this.lastStatusEventID = JSON.parse(data.body[0]).idsystem_status;
                                     this.GenerateGlobalSystemStatus();
                                 }
                         }
@@ -223,8 +223,8 @@ export class StatusEventService {
             severity: JSONStatusEvent.severity,
             rollingSubEvents: []
         }
-        this.statusEventList.push(newStatusEvent);
-        this.PollingSubEventsPerSystemStatus(this.statusEventList[this.statusEventList.length-1]);
+        this.statusEventList.unshift(newStatusEvent);
+        this.PollingSubEventsPerSystemStatus(this.statusEventList[0]);
 
     }
 

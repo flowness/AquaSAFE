@@ -40,11 +40,7 @@ export class MyApp {
   ) {
     this.initializeApp();
 
-    globalsService.setStorageReady();
-      this.translate.setDefaultLang('he');
-      this.translate.use('he');
-      platform.setDir('ltr', false);
-      platform.setDir('rtl', true);
+      this.translate.setDefaultLang('en');
 
       //this.translate.use('en');
       console.log("direction from app.components = " + platform.dir());
@@ -63,7 +59,9 @@ export class MyApp {
           }
         });
 
-    if (this.platform.is("cordova")) {
+      globalsService.setStorageReady(translate);
+
+      if (this.platform.is("cordova")) {
       platform.ready().then(() => {
         // Get a FCM token
         console.log("Getting Token");

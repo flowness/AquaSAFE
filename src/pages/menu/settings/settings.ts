@@ -21,6 +21,7 @@ export class SettingsPage {
   freezeAlert: boolean = false;
   continuesFlowAlert: boolean = false;
   noFlowAlert: boolean = false;
+  langSelect: string = "";
 
   constructor(public alertCtrl: AlertController, 
               public navCtrl: NavController, 
@@ -48,6 +49,7 @@ export class SettingsPage {
     this.txtAccountName = this.globalsService.AccountName;
     this.txtEmail = this.globalsService.Email;
     this.txtPhone = this.globalsService.Phone;
+    this.langSelect = this.globalsService.Language;
     this.freezeAlert = this.globalsService.freezeAlert;
     this.continuesFlowAlert = this.globalsService.continuesFlowAlert;
     this.noFlowAlert = this.globalsService.noFlowAlert;
@@ -66,6 +68,7 @@ export class SettingsPage {
     console.log(this.txtAccountName);
     console.log(this.txtEmail);
     console.log(this.txtPhone);
+    console.log(this.langSelect);
     console.log(this.freezeAlert);
     console.log(this.continuesFlowAlert);
     console.log(this.noFlowAlert);
@@ -74,6 +77,7 @@ export class SettingsPage {
     this.globalsService.AccountName = this.txtAccountName;
     this.globalsService.Email = this.txtEmail;
     this.globalsService.Phone = this.txtPhone;
+    this.globalsService.Language = this.langSelect;
     this.globalsService.freezeAlert = this.freezeAlert;
     this.globalsService.continuesFlowAlert = this.continuesFlowAlert;
     this.globalsService.noFlowAlert = this.noFlowAlert;
