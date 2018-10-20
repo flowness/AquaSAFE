@@ -11,6 +11,7 @@ import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { PlumbersPage } from "../plumbers/plumbers";
 import { CameraOptions, Camera } from "@ionic-native/camera";
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
+import { TranslateService } from '@ngx-translate/core';
 
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
@@ -32,6 +33,7 @@ export class HandleLeakPage {
               public navCtrl: NavController, 
               public navParams: NavParams, 
               private statusEventService: StatusEventService,
+              private translate: TranslateService,
               private alertCtrl: AlertController) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
@@ -63,10 +65,15 @@ export class HandleLeakPage {
 
 
   notAtHome(): void {
+    let notAtHomeTitle, notAtHomeSubTitle, notAtHomeOK = "";
+    this.translate.get('NOT_AT_HOME_TITLE').subscribe(value => {notAtHomeTitle = value;});
+    this.translate.get('NOT_AT_HOME_SUB_TITLE').subscribe(value => {notAtHomeSubTitle= value;});
+    this.translate.get('NOT_AT_HOME_OK').subscribe(value => {notAtHomeOK = value;});
+
     let alert = this.alertCtrl.create({
-      title: 'Not at Home?',
-      subTitle: 'Please contact person that can assist controlling the event!',
-      buttons: ['Ok']
+      title: notAtHomeTitle,
+      subTitle: notAtHomeSubTitle,
+      buttons: [notAtHomeOK]
     });
     alert.present();
   }
