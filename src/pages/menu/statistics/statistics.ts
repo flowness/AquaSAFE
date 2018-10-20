@@ -99,6 +99,10 @@ export class StatisticsPage {
         flow = data["body"]["Flow"];
       }
       console.log(flow);
+      if (flow < 0)
+      {
+        flow = 0;
+      }
       this.chart.series[0].addPoint(flow, true, true);
     });
   }
@@ -315,7 +319,11 @@ export class StatisticsPage {
     let dataXAxisKey: string = this.chartType === "daily" ? "hour" : "day";
     for (let index = 0; index < jsonBody.length; index++) {
       console.log(jsonBody[index]);
-      ret.push([jsonBody[index][dataXAxisKey], parseInt(jsonBody[index]["flow"])]);
+      let dataValue = parseInt(jsonBody[index]["flow"]);
+      if (dataValue < 0) {
+        dataValue = 0;
+      }
+      ret.push([jsonBody[index][dataXAxisKey], dataValue]);
       this.eraOfChart = this.months[parseInt(jsonBody[index]["month"]) - 1];
       if (this.chartType === "daily") {
         const dayInt = parseInt(jsonBody[index]["day"]);

@@ -49,6 +49,9 @@
   "NOT_IN_SITE": "אני לא במבנה",
   "NOT_A_LEAK_TO_HANDLE": "זו לא דליפת מים",
 
+  "LIVE_EVENT_DETECTED": "זוהתה דליפה בזמן אמת",
+  "EVENT_HAS_STARTED": "דלפיה התחילה ב",
+  "EVENT_TOTAL_FLOW": "סה\"כ מים שבוזבזו",
   "SUGGEST_TO_TAKE_A_PICTURE": "רואה את דליפת המים? צלם תמונה",
   "HANDLE_LEAK_GUIDANCE_LINE_1": "הדרכה בסיסית לטיפול בדליפת מים:",
   "HANDLE_LEAK_GUIDANCE_LINE_2": "אם הדליפה גלויה לעין, סגור את המגוף הרלוונטי או את המגוף הראשי כדי להפסיק באופן מיידי את הדליפה",

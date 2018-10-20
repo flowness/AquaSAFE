@@ -52,9 +52,37 @@ export class StatusEventService {
     public getLastEventID () {return this.lastStatusEventID;}
     public setLastEventID (newEventID: number) { this.lastStatusEventID = newEventID;}
 
-    public isLiveEvent(statusEvent: SystemStatusEvent): boolean { 
-        return statusEvent.status == Statuses.LIVE;
+    public isLiveEventInSystem(): boolean {
+      for (let i = 0; i < this.statusEventList.length; i++) {
+        if (this.statusEventList[i].status == Statuses.LIVE)
+          return true;
       }
+      return false;
+    }
+
+    public getLiveEventID(): number {
+      for (let i = 0; i < this.statusEventList.length; i++) {
+        if (this.statusEventList[i].status == Statuses.LIVE)
+          return this.statusEventList[i].idsystem_status;
+      }
+      return -1;
+    }
+
+    public getLiveEventTotalFlow(): number {
+      for (let i = 0; i < this.statusEventList.length; i++) {
+        if (this.statusEventList[i].status == Statuses.LIVE)
+          return this.statusEventList[i].total_flow;
+      }
+      return -1;
+    }
+
+    public getLiveEventStartTime(): string {
+      for (let i = 0; i < this.statusEventList.length; i++) {
+        if (this.statusEventList[i].status == Statuses.LIVE)
+          return this.statusEventList[i].timestamp;
+      }
+      return "";
+    }
     
     public isOpenEvent(statusEvent: SystemStatusEvent): boolean {
         return statusEvent.status != Statuses.CLOSED;

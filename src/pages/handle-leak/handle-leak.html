@@ -2,30 +2,35 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{HANDLE_LEAK}}</ion-title>
+    <ion-title>{{HANDLE_LEAK | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-
-
 <ion-content padding>
   <ion-list>
-    <ion-item text-center text-wrap> 
-    <p>
-      {{"HANDLE_LEAK_GUIDANCE_LINE_1" | translate}}
-      <br><br>
-      {{"HANDLE_LEAK_GUIDANCE_LINE_2" | translate}} 
-      {{"HANDLE_LEAK_GUIDANCE_LINE_3" | translate}}
-      <br><br>
-      {{"HANDLE_LEAK_GUIDANCE_LINE_4" | translate}}
-      {{"HANDLE_LEAK_GUIDANCE_LINE_5" | translate}}
-      <br><br>
-      {{"HANDLE_LEAK_GUIDANCE_LINE_6" | translate}}
-    </p>
-    <br>
-    <br>
+    <ion-item no-lines text-center>
+      <div id="gauge"></div>
     </ion-item>
-    <ion-item text-center>{{"SUGGEST_TO_TAKE_A_PICTURE" | translate}}
+    <ion-item no-lines text-center>
+      <h1>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent.total_flow}}</h1>
+    </ion-item>
+    <ion-item no-lines text-wrap>
+      <p>
+        {{"HANDLE_LEAK_GUIDANCE_LINE_1" | translate}}
+        <br><br>
+        {{"HANDLE_LEAK_GUIDANCE_LINE_2" | translate}}
+        {{"HANDLE_LEAK_GUIDANCE_LINE_3" | translate}}
+        <br><br>
+        {{"HANDLE_LEAK_GUIDANCE_LINE_4" | translate}}
+        {{"HANDLE_LEAK_GUIDANCE_LINE_5" | translate}}
+        <br><br>
+        {{"HANDLE_LEAK_GUIDANCE_LINE_6" | translate}}
+        <br>
+        <br>
+      </p>
+    </ion-item>
+    <ion-item>
+      <ion-label no-lines item-start>{{"SUGGEST_TO_TAKE_A_PICTURE" | translate}}</ion-label>
       <button (click)="takePicture()" ion-button item-end round>
         <ion-icon name="camera"></ion-icon>
       </button>
@@ -38,7 +43,7 @@
     </button>
     <button ion-button ion-content icon-start (click)="notALeak()" round>
       <ion-icon name="alert"></ion-icon>
-     {{"NOT_A_LEAK_TO_HANDLE" | translate}}
+      {{"NOT_A_LEAK_TO_HANDLE" | translate}}
     </button>
     <button ion-button (click)="openPlumbers()" round>
       <ion-icon name="build"></ion-icon>

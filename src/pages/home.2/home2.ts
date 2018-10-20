@@ -201,8 +201,8 @@ export class HomePage2 {
     });
   }
 
-  openHandleLeakPage(): void {
-    this.navCtrl.push(HandleLeakPage);
+  openHandleLeakPage(e: any): void {
+    this.navCtrl.push(HandleLeakPage, { eventID: e });
   }
 
   ionViewDidLeave(): void {

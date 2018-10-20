@@ -11,6 +11,9 @@ import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { PlumbersPage } from "../plumbers/plumbers";
 import { CameraOptions, Camera } from "@ionic-native/camera";
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
+import { FlowService } from "../../providers/Flow-service";
+
+import { TranslateService } from '@ngx-translate/core';
 
 HighchartsMore(HighCharts);
 SolidGauge(HighCharts);
@@ -27,10 +30,16 @@ export class HandleLeakPage {
   public base64Image: string;
   eventID: number;
   theEvent: SystemStatusEvent;
+  private flowChart: HighCharts.chart;
+  private intervalRefreshGaugeTask: number;
+  private MLright = "Default-MLright";
+  private MLleft = "Default-MLleft";
 
   constructor(private camera: Camera, 
               public navCtrl: NavController, 
-              public navParams: NavParams, 
+              public navParams: NavParams,
+              private flowService: FlowService,
+              public translate: TranslateService,
               private statusEventService: StatusEventService,
               private alertCtrl: AlertController) {
     this.eventID = navParams.get("eventID");
@@ -59,6 +68,81 @@ export class HandleLeakPage {
       case 103:
         return IsALeakPage;
     }
+  }
+
+  ionViewWillEnter(): void {
+    this.translate.get('MILLILITER_SHORT_R').subscribe(value => { this.MLright = value; });
+    this.translate.get('MILLILITER_SHORT_L').subscribe(value => { this.MLleft = value; });
+
+    var gaugeOptions = {
+      chart: {
+        spacing: [0, 0, 0, 0],
+        type: 'solidgauge',
+        height: '40%',
+        backgroundColor: null
+      },
+      title: null,
+      pane: {
+        center: ['50%', '50%'],
+        size: '90%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+          backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
+          innerRadius: '60%',
+          outerRadius: '100%',
+          shape: 'arc'
+        }
+      },
+      tooltip: {
+        enabled: false
+      },
+      // the value axis
+      yAxis: {
+        min: 0,
+        max: 600,
+        title: {
+          text: 'Flow',
+          y: -80
+        },
+        stops: [
+          [0.1, '#55BF3B'], // green
+          [0.5, '#DDDF0D'], // yellow
+          [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        labels: {
+          y: 16,
+          enabled: false
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Consumption',
+        data: [this.flowService.getCurrentFlow()],
+        dataLabels: {
+          format: '<div style="text-align:center"><span style="font-size:20px;color:black">' + this.MLleft + ' {y} ' + this.MLright + '</span><span></span></div>'
+        }
+      }],
+      plotOptions: {
+        solidgauge: {
+          dataLabels: {
+            y: 5,
+            borderWidth: 0,
+            useHTML: true
+          }
+        }
+      }
+    };
+    this.flowChart = HighCharts.chart('gauge', gaugeOptions);
+    this.intervalRefreshGaugeTask = setInterval(() => {
+      this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
+    }, 1000);
+
   }
 
 
@@ -102,4 +186,9 @@ export class HandleLeakPage {
     /*    this.camera.getPicture(this.onSuccess, this.onFail, options);*/
 
   }
+
+  ionViewDidLeave(): void {
+    clearInterval(this.intervalRefreshGaugeTask);
+  }
+
 }

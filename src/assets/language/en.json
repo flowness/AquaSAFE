@@ -49,6 +49,9 @@
   "NOT_IN_SITE": "Away from property?",
   "NOT_A_LEAK_TO_HANDLE": "This is not a leak",
 
+  "LIVE_EVENT_DETECTED": "Live leak event Detected",
+  "EVENT_HAS_STARTED": "Leak event has started",
+  "EVENT_TOTAL_FLOW": "Total water wasted",
   "SUGGEST_TO_TAKE_A_PICTURE": "If leak is visible. Take a picture",
   "HANDLE_LEAK_GUIDANCE_LINE_1": "Basic guidnace for handling water leak:",
   "HANDLE_LEAK_GUIDANCE_LINE_2": "If you see the leak source, close the relevant valve or the main valve to immediately stop the leak",

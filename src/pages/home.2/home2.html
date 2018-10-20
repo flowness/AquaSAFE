@@ -9,32 +9,25 @@
 
 <ion-content>
   <!-- OK status -->
-  <div > <!--*ngIf="modelService.getStatus() != 'leak'; else leak"> -->
-
+  <div>
     <ion-item>
-      <!-- <ion-item *ngIf="modelService.getStatus() === 'good'" no-lines class="header-label good">SYSTEM OK!</ion-item> -->
-      <!-- <ion-item *ngIf="modelService.getStatus() === 'warn'" no-lines class="header-label good">SYSTEM NEEDS ATTENTION</ion-item> -->
-      <!-- <ion-item no-lines class="header-status-alert-ind">
-        Current Flow: {{modelService.getCurrentFlow()}}
-      </ion-item> -->
-      <!-- <ion-item item-end id="gauge" style="width:100px"></ion-item> -->
       <div id="gauge"></div>
     </ion-item>
   </div>
   <!-- LEAK status -->
-  <ng-template #leak>
-    <div>
-      <ion-item>
-        <div id="gauge"></div>
-        <!-- <ion-item no-lines class="header-label">LEAK DETECTED</ion-item> -->
-        <ion-badge color="danger" (click)="openHandleLeakPage()">Handle Leak Event</ion-badge>
-        <ion-item no-lines class="header-status-alert-ind">
-          <br>Current Flow: {{flowService.getCurrentFlow()}} ({{flowService.getCurrentFlow() > 12 ? "Huge Leak" : modelService.getCurrentFlow()
-          > 5 ? "Decent Leak" : "Small Leak"}})
-        </ion-item>
-      </ion-item>
-    </div>
-  </ng-template>
+  <div *ngIf="this.statusEventService.isLiveEventInSystem()">
+    <ion-item no-lines text-warp>
+      <h1 ion-text color="danger">{{"LIVE_EVENT_DETECTED" | translate}}</h1>
+      <p>
+        {{"EVENT_HAS_STARTED" | translate}}: {{this.statusEventService.getLiveEventStartTime()}}
+        <br>
+        {{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()}}
+      </p>
+    </ion-item>
+    <ion-item text-center no-lines class="header-status-alert-ind">
+      <ion-badge color="danger" (click)="openHandleLeakPage(this.statusEventService.getLiveEventID())">Handle Leak Event</ion-badge>
+    </ion-item>
+  </div>
   <div>
     <img id="statusImage" width="100%" style="display:inline-block" src="{{this.systemStatusImageURL}}" />
   </div>
