@@ -4,7 +4,7 @@ import { HomePage2 } from "../../home.2/home2";
 import { EventPage } from "../../event/event";
 import { HandleLeakPage } from "../../handle-leak/handle-leak";
 import { EditEventPage } from "../../edit-event/edit-event";
-import { StatusEventService, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
+import { StatusEventService, Statuses, SystemStatusEvent, GlobalSystemSeverityTypes } from "../../../providers/StatusEvent-service";
 
 @IonicPage()
 @Component({
