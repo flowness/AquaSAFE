@@ -13,6 +13,7 @@ import { StatusEventService, Statuses, SystemStatusEvent } from "../../../provid
 })
 export class EventsPage {
   private unregisterFunc: Function;
+  private imageSource = "";
 
   constructor(
     public navCtrl: NavController,
