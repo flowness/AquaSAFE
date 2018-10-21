@@ -97,6 +97,7 @@
   "USAGE_HOUSE_CLEANING":"נקיונות",
   "USAGE_POOL":"בריכה",
   "USAGE_OTHER":"שימוש אחר במים",
+  "USAGE_OTHER_IMAGE":"assets/imgs/OthersGreen_he.png",
   "NOT_A_LEAK_CLOSE_EVENT": "המשתמש עדכן כי הארוע אינו דליפה אלא...",
   "NOT_AT_HOME_TITLE":"אתה לא במבנה כעת?",
   "NOT_AT_HOME_SUB_TITLE":"זו בעיה, אתה צריך למצוא מישהו שיהיה העיניים והידיים שלך במבנה כדי לתפעל את האירוע",

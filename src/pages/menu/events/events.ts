@@ -77,9 +77,12 @@ export class EventsPage {
   }
 
   openEditEventModal(e: SystemStatusEvent): void {
-    let myModal = this.modalCtrl.create(EditEventPage, {
+    this.navCtrl.push(EditEventPage, {
       eventID: e.idsystem_status
     });
-    myModal.present();
+    // let myModal = this.modalCtrl.create(EditEventPage, {
+    //   eventID: e.idsystem_status
+    // });
+    // myModal.present();
   }
 }

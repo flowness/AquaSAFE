@@ -101,7 +101,7 @@ export class NotALeakPage {
   state5 = "opaque";
   state6 = "opaque";
   numButtons = 7;
-
+  othersImage = "";
   constructor(public alertCtrl: AlertController, 
               public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -110,7 +110,8 @@ export class NotALeakPage {
               public loadingCtrl: LoadingController) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
-                        
+    this.translate.get('USAGE_OTHER_IMAGE').subscribe(value => {this.othersImage = value;});
+                    
 //    this.currentEvent = navParams.get("event");
 //    console.log("navParams = " + this.currentEvent.timestamp);
   }

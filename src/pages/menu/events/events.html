@@ -20,6 +20,7 @@
     <ion-list>
       <ion-item *ngFor="let curSystemEvent of this.statusEventService.getEventList()"> <!-- (click)="itemTapped($event, asEvent)"> -->
           <ion-icon item-start [name]="isLiveEvent(curSystemEvent)? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
+          <img src=/>
           <ion-label>
             {{curSystemEvent.Event_str | translate}} <br> {{curSystemEvent.timestamp}}
           </ion-label>

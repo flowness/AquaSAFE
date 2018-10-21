@@ -97,6 +97,7 @@
   "USAGE_HOUSE_CLEANING:":"House cleaning",
   "USAGE_POOL":"Pool",
   "USAGE_OTHER":"Other water usage",
+  "USAGE_OTHER_IMAGE":"assets/imgs/OthersGreen_en.png",
   "NOT_A_LEAK_CLOSE_EVENT": "The user confirmed this is not a leak, but...",
   "NOT_AT_HOME_TITLE":"Far away from the property?",
   "NOT_AT_HOME_SUB_TITLE":"It's a problem, you need to find someone to handle the leak event. To be your eyes and hands.",

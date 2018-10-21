@@ -66,6 +66,7 @@ export class MyApp {
         // Get a FCM token
         console.log("Getting Token");
         firebaseService.setFirebaseConfigurations();
+        
 /*
         fcm.getToken();
 
