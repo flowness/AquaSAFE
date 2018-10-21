@@ -84,6 +84,30 @@
   "MONTH_NAME_9": "September",
   "MONTH_NAME_10": "October",
   "MONTH_NAME_11": "November",
-  "MONTH_NAME_12": "December"
+  "MONTH_NAME_12": "December",
+
+  "NOT_A_LEAK_TITLE": "This is not a real leak?",
+  "NOT_A_LEAK_MSG_1": "Please help me to improve my alert",
+  "NOT_A_LEAK_MSG_2": "Can you push the icon below describing the usage that made me think it was a real alert",
+  "NOT_A_LEAK_CONFIRM": "Are you sure?",
+  "NOT_A_LEAK_CONFIRM_MESSAGE":"Are you sure that the water usage made me think there is a leak was just the..",
+  "CONFIRM_YES":"Yes i am",
+  "CONFIRM_NO":"Cancel",
+  "USAGE_WASHING_MACHINE": "Washing machine",
+  "USAGE_DISHWASHER":"Dishwasher",
+  "USAGE_IRRIGATION":"Irrigation",
+  "USAGE_SHOWER":"Shower",
+  "USAGE_HOUSE_CLEANING:":"House cleaning",
+  "USAGE_POOL":"Pool",
+  "USAGE_OTHER":"Other water usage",
+  "USAGE_OTHER_IMAGE":"assets/imgs/OthersGreen_en.png",
+  "NOT_A_LEAK_CLOSE_EVENT": "The user confirmed this is not a leak, but...",
+  "NOT_AT_HOME_TITLE":"Far away from the property?",
+  "NOT_AT_HOME_SUB_TITLE":"It's a problem, you need to find someone to handle the leak event. To be your eyes and hands.",
+  "NOT_AT_HOME_OK":"Understood",
+
+  "PLUMBERS_TITLE":"Plumbers list",
+  "PLUMBERS_MSG_1":"If you have a water leak or an indication for a leak which is still hidden, you better call a professional - a Plumber",
+  "PLUMBERS_MSG_2":"The plumbers list below are listed and approved by the insurance company and ordered by geo-location distance"
 
 }

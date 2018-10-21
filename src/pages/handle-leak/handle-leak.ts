@@ -41,6 +41,7 @@ export class HandleLeakPage {
               private flowService: FlowService,
               public translate: TranslateService,
               private statusEventService: StatusEventService,
+              private translate: TranslateService,
               private alertCtrl: AlertController) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
@@ -147,10 +148,15 @@ export class HandleLeakPage {
 
 
   notAtHome(): void {
+    let notAtHomeTitle, notAtHomeSubTitle, notAtHomeOK = "";
+    this.translate.get('NOT_AT_HOME_TITLE').subscribe(value => {notAtHomeTitle = value;});
+    this.translate.get('NOT_AT_HOME_SUB_TITLE').subscribe(value => {notAtHomeSubTitle= value;});
+    this.translate.get('NOT_AT_HOME_OK').subscribe(value => {notAtHomeOK = value;});
+
     let alert = this.alertCtrl.create({
-      title: 'Not at Home?',
-      subTitle: 'Please contact person that can assist controlling the event!',
-      buttons: ['Ok']
+      title: notAtHomeTitle,
+      subTitle: notAtHomeSubTitle,
+      buttons: [notAtHomeOK]
     });
     alert.present();
   }

@@ -1,5 +1,5 @@
-<ion-menu [content]="content">
-  <ion-header>
+<ion-menu [content]="content" type="overlay" [attr.side]="this.platform.dir()==='ltr'? 'left':'right'"  [side]="this.platform.dir()==='ltr'? 'left':'right'">
+    <ion-header>
     <ion-toolbar>
       <ion-title start>{{ "MENU" | translate }}</ion-title>
     </ion-toolbar>
@@ -15,6 +15,7 @@
   </ion-content>
 
 </ion-menu>
+
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

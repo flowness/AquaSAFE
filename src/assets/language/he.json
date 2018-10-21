@@ -63,7 +63,7 @@
   "SUB_EVENTS_TITLE": "התגלגלות הארוע",
 
   "CLOSE_THE_EVENT": "סיים את הארוע",
-  "CLOSING_EVENT_DETAILS_TEXT": "הוסף בטקסט חופשי פרטים נוספים על הארוע והסיבות לסגירתו",
+  "CLOSING_EVENT_DETAILS_TEXT": "הוסף כאן בטקסט חופשי פרטים נוספים רלוונטים שישפכו אור על הארוע והסיבות לסגירתו",
   "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים",
 
   "LIVE_DATA_STATISTICS": "זמן אמת",
@@ -84,8 +84,31 @@
   "MONTH_NAME_9": "ספטמבר",
   "MONTH_NAME_10": "אוקטובר",
   "MONTH_NAME_11": "נובמבר",
-  "MONTH_NAME_12": "דצמבר"
+  "MONTH_NAME_12": "דצמבר",
 
+  "NOT_A_LEAK_TITLE": "זו לא באמת דליפה? ממממ... מצטער",
+  "NOT_A_LEAK_MSG_1": "אבל אני ממש רוצה להשתפר",
+  "NOT_A_LEAK_MSG_2": "אתה תוכל לעזרו לי להשתפר. רק תלחץ על אחת התמונות למטה, זו שמתארת את השימוש שגרם לי לחשוב שיש דליפה  ואני אלמד לעתיד ",
+  "NOT_A_LEAK_CONFIRM": "האם אתה בטוח?",
+  "NOT_A_LEAK_CONFIRM_MESSAGE":"האם אתה בטוח שמה שגרם לי לחשוב שיש דליפה זה בעצם...",
+  "CONFIRM_YES":"כן, בטוח",
+  "CONFIRM_NO":"ביטול",
+  "USAGE_WASHING_MACHINE": "מכונת כביסה",
+  "USAGE_DISHWASHER":"מדיח כלים",
+  "USAGE_IRRIGATION":"השקייה",
+  "USAGE_SHOWER":"מקלחת",
+  "USAGE_HOUSE_CLEANING":"נקיונות",
+  "USAGE_POOL":"בריכה",
+  "USAGE_OTHER":"שימוש אחר במים",
+  "USAGE_OTHER_IMAGE":"assets/imgs/OthersGreen_he.png",
+  "NOT_A_LEAK_CLOSE_EVENT": "המשתמש עדכן כי הארוע אינו דליפה אלא...",
+  "NOT_AT_HOME_TITLE":"אתה לא במבנה כעת?",
+  "NOT_AT_HOME_SUB_TITLE":"זו בעיה, אתה צריך למצוא מישהו שיהיה העיניים והידיים שלך במבנה כדי לתפעל את האירוע",
+  "NOT_AT_HOME_OK":"הבנתי",
+
+  "PLUMBERS_TITLE":"רשימת שרברבים",
+  "PLUMBERS_MSG_1":"אם יש לך דליפת מים או שיש אינדיקציה לדליפה והיא עדיין נסתרת, ההמלצה היא לפנות לבעל מקצוע - השרברב",
+  "PLUMBERS_MSG_2":"להלן רשימת שרברבים מורשים על ידי חברת הביטוח, מסודרים לפי קרבה גיאוגרפית"
 
 
 }

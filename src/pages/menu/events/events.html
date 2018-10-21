@@ -8,26 +8,26 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() != NORMAL" [color]="this.statusEventService.getGlobalSystemSeverity() === ALERT ? 'danger' : 'primary'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
+      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() !== 3" [color]="this.statusEventService.getGlobalSystemSeverity() === 1 ? 'redAlert' : 'yellowAlert'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
     </button>
-    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
-  </ion-navbar>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>  </ion-navbar>
 </ion-header>
 
   <ion-content>
+    <ion-item><h1> {{"EVENT_LIST_TITLE" | translate}}</h1></ion-item>
     <ion-list>
-      <ion-list-header> 
-          <h2> {{"EVENT_LIST_TITLE" | translate}}</h2>
-      </ion-list-header>
       <ion-item *ngFor="let curSystemEvent of this.statusEventService.getEventList()"> <!-- (click)="itemTapped($event, asEvent)"> -->
-          <ion-icon item-start [name]="isLiveEvent(curSystemEvent)? 'close-circle' : 'checkmark-circle'" item-start></ion-icon>
+        <ion-thumbnail item-start width="20px" height="20px">
+            <img src="{{isLiveEvent(curSystemEvent) ? 'assets/imgs/systemAlert.png' : isOpenEvent(curSystemEvent)? 'assets/imgs/systemAlertOpen.png' : 'assets/imgs/systemAlertOK.png'}}" width="20px" height="20px">
+          </ion-thumbnail>
+          <!-- <ion-icon item-start [name]="isLiveEvent(curSystemEvent)? 'close-circle' : 'checkmark-circle'" item-start></ion-icon> -->
           <ion-label>
             {{curSystemEvent.Event_str | translate}} <br> {{curSystemEvent.timestamp}}
           </ion-label>
           <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> 
               
           -->
-            <button  [color]="isLiveEvent(curSystemEvent) ? 'danger' : 'primary'" (click)="handleAsEvent(curSystemEvent);$event.stopPropagation()" ion-button round item-end>
+            <button  [color]="isLiveEvent(curSystemEvent) ? 'redAlert' : isOpenEvent(curSystemEvent)? 'yellowAlert' : 'greenOK'" (click)="handleAsEvent(curSystemEvent);$event.stopPropagation()" ion-button round item-end>
               <!-- {{isLiveEvent(curSystemEvent) ? "Handle" : isOpenEvent(curSystemEvent)? "Close" : "View"}} -->
               {{getActionButtonTitle(curSystemEvent) | translate}}
             </button>

@@ -9,6 +9,7 @@ import {
   transition
 } from "@angular/animations";
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../../providers/StatusEvent-service";
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: "page-notaleak",
@@ -100,15 +101,17 @@ export class NotALeakPage {
   state5 = "opaque";
   state6 = "opaque";
   numButtons = 7;
-
+  othersImage = "";
   constructor(public alertCtrl: AlertController, 
               public navCtrl: NavController, 
               public navParams: NavParams, 
               private statusEventService: StatusEventService,
+              private translate: TranslateService,
               public loadingCtrl: LoadingController) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
-                        
+    this.translate.get('USAGE_OTHER_IMAGE').subscribe(value => {this.othersImage = value;});
+                    
 //    this.currentEvent = navParams.get("event");
 //    console.log("navParams = " + this.currentEvent.timestamp);
   }
@@ -119,21 +122,34 @@ export class NotALeakPage {
         this["state" + index] = this["state" + index] === "transparent" ? "opaque" : "transparent";
       }
     }
+
+    let notALeakConfirm, notALeakConfirmMessage, waterUsageSTR, confirmNo, confirmYes, notALeakCloseEvent = "";
+    
+    this.translate.get('NOT_A_LEAK_CONFIRM').subscribe(value => {notALeakConfirm = value;});
+    this.translate.get('CONFIRM_NO').subscribe(value => {confirmNo = value;});
+    this.translate.get('CONFIRM_YES').subscribe(value => {confirmYes = value;});
+    this.translate.get('NOT_A_LEAK_CONFIRM_MESSAGE').subscribe(value => {notALeakConfirmMessage = value;});
+    this.translate.get(waterUsage).subscribe(value => {waterUsageSTR = value;});
+    this.translate.get("NOT_A_LEAK_CLOSE_EVENT").subscribe(value => {notALeakCloseEvent = value;});
+
+    
+    notALeakConfirmMessage += waterUsageSTR + "?";
+
     let alert = this.alertCtrl.create({
-      title: "Confirmation",
-      message: "Did the water usage detection done by the " + waterUsage + "?",
+      title: notALeakConfirm,
+      message: notALeakConfirmMessage,
       buttons: [
         {
-          text: "No",
+          text: confirmNo,
           handler: () => {
             console.log("No clicked");
           }
         },
         {
-          text: "Yes",
+          text: confirmYes,
           handler: () => {
             console.log("Yes clicked");
-            this.statusEventService.closeStatusEvent (this.eventID,"Not a leak - Its " + waterUsage)
+            this.statusEventService.closeStatusEvent (this.eventID,notALeakCloseEvent + waterUsageSTR);
             //this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
             this.navCtrl.pop();

@@ -7,9 +7,9 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-buttons start>
+<!--     <ion-buttons start>
       <button ion-button (click)="dismiss()">{{"BACK_FROM_EVENT_DETAILS" | translate}}</button>
-    </ion-buttons>
+    </ion-buttons> -->
     <ion-title>{{getStatusActionString(statusEventService.isOpenEvent(theEvent)) | translate}}</ion-title>
   </ion-navbar>
 </ion-header>
@@ -20,9 +20,9 @@
   <h4>{{"EVENT_DATE" | translate}}: {{theEvent.timestamp}}</h4>
   <h4>{{"EVENT_STATUS" | translate}}: {{getStatusEventString(statusEventService.isOpenEvent(theEvent)) | translate}}</h4>
   <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
-    <ion-list-header>
-      <h3> {{"SUB_EVENTS_TITLE" | translate}}</h3>
-    </ion-list-header>
+  
+      <hr><br>
+      <h4> {{"SUB_EVENTS_TITLE" | translate}}</h4>
     <ion-item *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
       <ion-label>
         {{curRollingEvent.Event_str | translate}} <br> {{curRollingEvent.timestamp}}
@@ -30,12 +30,14 @@
 
     </ion-item>
   </ion-list>
+  <hr>
   <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
-    <H4 color="primary">{{"CLOSING_EVENT_DETAILS_TEXT" | translate}}</H4>
-    <ion-item>
-      <ion-input placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input>
+      <H6  color="primary">{{"CLOSING_EVENT_DETAILS_TEXT" | translate}}</H6>
+    <ion-item  no-lines>
+      <ion-input start placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input>
     </ion-item>
-    <ion-item>
+    <br>
+    <ion-item no-lines>
       <button color="primary" (click)="closeEvent()" ion-button round
               item-end>
         {{"CLOSE_THE_EVENT" | translate}}

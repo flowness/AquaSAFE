@@ -10,34 +10,35 @@
 
 <ion-content>
     <ion-item text-wrap text-center>
-        <h1>The detected water usage is not a leak?</h1><h2>AquaSAFE Leak Detection gets improved by your input.<br>Please specify the water consumer that caused the irregular water flow that was detected on {{theEvent.timestamp}}:</h2>
+        <h1>{{"NOT_A_LEAK_TITLE" | translate}}</h1>
+        <h2>{{"NOT_A_LEAK_MSG_1" | translate}}<br><br>{{"NOT_A_LEAK_MSG_2" | translate}}</h2>
       </ion-item>
   <ion-grid>
     <ion-row align-items-center>
       <ion-col align-self-center>
-        <img class="img-show" src='assets/imgs/Washing-Machine_green.png' item-start (click)="doConfirm('Washing Machine', 0)"  [@elementState0]="state0"/>
+        <img class="img-show" src='assets/imgs/Washing-Machine_green.png' item-start (click)="doConfirm('USAGE_WASHING_MACHINE', 0)"  [@elementState0]="state0"/>
       </ion-col>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/dishwasher_green.png' item-start  (click)="doConfirm('Dishwasher', 1)" [@elementState1]="state1"/>
+          <img class="img-show" src='assets/imgs/dishwasher_green.png' item-start  (click)="doConfirm('USAGE_DISHWASHER', 1)" [@elementState1]="state1"/>
       </ion-col>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Hose_Green.png' item-start  (click)="doConfirm('Hose',2)"  [@elementState2]="state2"/>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/shower_Green.png' item-start  (click)="doConfirm('Shower', 3)"  [@elementState3]="state3"/>
-      </ion-col>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/cleaning-house_green.png' item-start  (click)="doConfirm('House Cleaning', 4)"  [@elementState4]="state4"/>
-      </ion-col>
-      <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/Pool_Green.png' item-start (click)="doConfirm('Pool', 5)"  [@elementState5]="state5"/>
+          <img class="img-show" src='assets/imgs/Hose_Green.png' item-start  (click)="doConfirm('USAGE_IRRIGATION',2)"  [@elementState2]="state2"/>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col align-self-center>
-          <img class="img-show" src='assets/imgs/OthersGreen.png' item-start  (click)="doConfirm('Other', 6)"  [@elementState6]="state6"/>
+          <img class="img-show" src='assets/imgs/shower_Green.png' item-start  (click)="doConfirm('USAGE_SHOWER', 3)"  [@elementState3]="state3"/>
+      </ion-col>
+      <ion-col align-self-center>
+          <img class="img-show" src='assets/imgs/cleaning-house_green.png' item-start  (click)="doConfirm('USAGE_HOUSE_CLEANING', 4)"  [@elementState4]="state4"/>
+      </ion-col>
+      <ion-col align-self-center>
+          <img class="img-show" src='assets/imgs/Pool_Green.png' item-start (click)="doConfirm('USAGE_POOL', 5)"  [@elementState5]="state5"/>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col align-self-center>
+          <img class="img-show" src='{{"USAGE_OTHER_IMAGE" | translate}}' item-start  (click)="doConfirm('USAGE_OTHER', 6)"  [@elementState6]="state6"/>
       </ion-col>
     </ion-row>
   </ion-grid>
