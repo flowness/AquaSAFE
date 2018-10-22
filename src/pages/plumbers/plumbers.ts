@@ -61,7 +61,7 @@ export class PlumbersPage {
 
   preparePlumbersList(): void {
     this.closerPlumbers = [
-      { name: "האינסטלטור האלטרנטיבי", phone: "054-4771881", lat: 32.467770, lon: 34.959740 },
+      { name: "האינסטלטור", phone: "054-4771881", lat: 32.467770, lon: 34.959740 },
       { name: "עופר - יצאת צדיק", phone: "052-9116345", lat: 32.567126, lon: 34.961520 },
       { name: "דוידי שרברבים", phone: "052-3716000", lat: 32.567126, lon: 34.961520 },
       { name: "משה צינורות", phone: "054-4275844", lat: 32.447451, lon: 34.978796 },

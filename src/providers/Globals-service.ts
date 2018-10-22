@@ -27,6 +27,12 @@ export class GlobalsService {
         }); 
     }
 
+    public doneReading = false;
+    public async readyDoneReading () {
+        //while (this.doneReading != true) {}
+        return await this.doneReading;
+    }
+
     public Email: string = "";
     public Phone: string = "";
     public Language: string = "en";
@@ -63,6 +69,7 @@ export class GlobalsService {
           this.storage.get('Language').then((data) => {
             this.translate.use(data)
             this.Language = data
+            this.doneReading = true;
           });
     });
 

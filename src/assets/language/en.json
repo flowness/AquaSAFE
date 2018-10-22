@@ -3,10 +3,10 @@
   "SYSTEM_ALERT": "Alert",
   "SYSTEM_TROUBLE": "Trouble",
 
-  "MILLILITER_SHORT_R": "ml",
+  "MILLILITER_SHORT_R": "ml/s",
   "MILLILITER_SHORT_L": "",
 
-  "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized.png",
+  "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized_Connecting_en.png",
   "STATUS_IMG_OK": "assets/imgs/front_resized_OK.png",
   "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble.png",
   "STATUS_IMG_ALERT": "assets/imgs/front_resized_Leak.png",
@@ -48,6 +48,7 @@
   "HANDLE_LEAK": "Handle leak",
   "NOT_IN_SITE": "Away from property?",
   "NOT_A_LEAK_TO_HANDLE": "This is not a leak",
+  "GET_LEAK_GUIDANCE":"Leak handling guidance",
 
   "LIVE_EVENT_DETECTED": "Live leak event Detected",
   "EVENT_HAS_STARTED": "Leak event has started",
@@ -59,7 +60,7 @@
   "HANDLE_LEAK_GUIDANCE_LINE_4": "If the leak is not visible, verify first that all the taps are fully closed and check the water meter",
   "HANDLE_LEAK_GUIDANCE_LINE_5": "If leak continues, take a tour around the property (inside and out) and try to find the leak",
   "HANDLE_LEAK_GUIDANCE_LINE_6": "Its always recommanded to close the main valve in evenry suspicios of leakage",
-
+  "LITERS":"Liters",
   "SUB_EVENTS_TITLE": "Event progress",
 
   "CLOSE_THE_EVENT": "Close event",
@@ -105,7 +106,7 @@
   "NOT_AT_HOME_TITLE":"Far away from the property?",
   "NOT_AT_HOME_SUB_TITLE":"It's a problem, you need to find someone to handle the leak event. To be your eyes and hands.",
   "NOT_AT_HOME_OK":"Understood",
-
+  "NOT_A_LEAK_PLUMBER":"Plumber",
   "PLUMBERS_TITLE":"Plumbers list",
   "PLUMBERS_MSG_1":"If you have a water leak or an indication for a leak which is still hidden, you better call a professional - a Plumber",
   "PLUMBERS_MSG_2":"The plumbers list below are listed and approved by the insurance company and ordered by geo-location distance"

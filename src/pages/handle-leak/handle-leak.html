@@ -6,48 +6,38 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content padding>
-  <ion-list>
-    <ion-item no-lines text-center>
-      <div id="gauge"></div>
-    </ion-item>
-    <ion-item no-lines text-center>
-      <h1>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent.total_flow}}</h1>
-    </ion-item>
-    <ion-item no-lines text-wrap>
-      <p>
-        {{"HANDLE_LEAK_GUIDANCE_LINE_1" | translate}}
-        <br><br>
-        {{"HANDLE_LEAK_GUIDANCE_LINE_2" | translate}}
-        {{"HANDLE_LEAK_GUIDANCE_LINE_3" | translate}}
-        <br><br>
-        {{"HANDLE_LEAK_GUIDANCE_LINE_4" | translate}}
-        {{"HANDLE_LEAK_GUIDANCE_LINE_5" | translate}}
-        <br><br>
-        {{"HANDLE_LEAK_GUIDANCE_LINE_6" | translate}}
-        <br>
-        <br>
-      </p>
-    </ion-item>
-    <ion-item>
-      <ion-label no-lines item-start>{{"SUGGEST_TO_TAKE_A_PICTURE" | translate}}</ion-label>
-      <button (click)="takePicture()" ion-button item-end round>
-        <ion-icon name="camera"></ion-icon>
-      </button>
-    </ion-item>
-  </ion-list>
-  <ion-item ion-center style="position: absolute; bottom: 0px">
-    <button ion-button ion-content icon-start (click)="notAtHome()" round>
-      <ion-icon name="alert"></ion-icon>
-      {{"NOT_IN_SITE" | translate}}
-    </button>
-    <button ion-button ion-content icon-start (click)="notALeak()" round>
-      <ion-icon name="alert"></ion-icon>
-      {{"NOT_A_LEAK_TO_HANDLE" | translate}}
-    </button>
-    <button ion-button (click)="openPlumbers()" round>
-      <ion-icon name="build"></ion-icon>
-    </button>
+<ion-content padding >
+  <ion-item block no-lines no-padding no-margin (click)="takePicture()" style="background-color:aliceblue">
+      <img class="img-show2" src='assets/imgs/Camera1.png' item-start   />
+      <ion-label text-center>{{"SUGGEST_TO_TAKE_A_PICTURE" | translate}}</ion-label>
   </ion-item>
 
+  <ion-grid center no-padding no-margin style="border-top-right-radius: 20px;">
+      <ion-row align-items-center >
+
+        <ion-col align-self-center>
+            <ion-label text-center>{{"GET_LEAK_GUIDANCE" | translate}}</ion-label>
+            <img class="img-show" src='assets/imgs/help1.png' item-start  (click)="openLeakGuidance()" />
+        </ion-col>
+        <ion-col align-self-center>
+            <ion-label text-center>{{"NOT_A_LEAK_PLUMBER" | translate}}</ion-label>
+            <img class="img-show" src='assets/imgs/plumber1.png' item-start  (click)="openPlumbers()" />
+        </ion-col>
+        <br>
+      </ion-row>
+      <br>
+      <ion-row>
+        <ion-col align-self-center>
+          <ion-label text-center>{{"NOT_A_LEAK_TO_HANDLE" | translate}}</ion-label>
+          <img class="img-show" src='assets/imgs/NotALeak1.png' item-start (click)="notALeak()"  />
+        </ion-col>      
+      </ion-row>
+  </ion-grid>
+
+
+    <ion-item no-lines text-center no-margin no-padding>
+      <p>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent.total_flow/1000}}</p>
+    </ion-item>
+  
+    <div id="gauge"></div>
 </ion-content>

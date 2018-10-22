@@ -4,9 +4,9 @@
   "SYSTEM_TROUBLE": "בעיית מערכת",
 
   "MILLILITER_SHORT_R": "",
-  "MILLILITER_SHORT_L": "מיליליטר",
+  "MILLILITER_SHORT_L": "מ'ל לשניה",
 
-  "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized.png",
+  "STATUS_IMG_UNKNOWN": "assets/imgs/front_resized_Connecting_he.png",
   "STATUS_IMG_OK": "assets/imgs/front_resized_OK_he.png",
   "STATUS_IMG_TROUBLE": "assets/imgs/front_resized_Trouble_he.png",
   "STATUS_IMG_ALERT": "assets/imgs/front_resized_Leak_he.png",
@@ -47,18 +47,20 @@
 
   "HANDLE_LEAK": "טיפול בדליפה",
   "NOT_IN_SITE": "אני לא במבנה",
-  "NOT_A_LEAK_TO_HANDLE": "זו לא דליפת מים",
+  "NOT_A_LEAK_TO_HANDLE": "זו לא דליפה, זה שימוש במים",
+  "GET_LEAK_GUIDANCE":"טיפול בדליפות מים",
 
-  "LIVE_EVENT_DETECTED": "זוהתה דליפה בזמן אמת",
-  "EVENT_HAS_STARTED": "דלפיה התחילה ב",
-  "EVENT_TOTAL_FLOW": "סה\"כ מים שבוזבזו",
-  "SUGGEST_TO_TAKE_A_PICTURE": "רואה את דליפת המים? צלם תמונה",
+  "LIVE_EVENT_DETECTED": "המערכת זיהתה דליפה",
+  "EVENT_HAS_STARTED": "הדליפה החלה",
+  "EVENT_TOTAL_FLOW": "כמות המים שנמדדה במהלך הדליפה",
+  "SUGGEST_TO_TAKE_A_PICTURE": "תעד את הדליפה בתמונות",
   "HANDLE_LEAK_GUIDANCE_LINE_1": "הדרכה בסיסית לטיפול בדליפת מים:",
   "HANDLE_LEAK_GUIDANCE_LINE_2": "אם הדליפה גלויה לעין, סגור את המגוף הרלוונטי או את המגוף הראשי כדי להפסיק באופן מיידי את הדליפה",
   "HANDLE_LEAK_GUIDANCE_LINE_3": "אם הדליפה אינה גלויה לעין, וודא כי כל הברזים המבנה סגורים, ואין צרכני מים פעילים",
   "HANDLE_LEAK_GUIDANCE_LINE_4": "שעון המים הוא אינדיקטור טוב לקיום דליפות הגדולות מטפטוף, כל עוד שהשעון רץ - המים זורמים",
   "HANDLE_LEAK_GUIDANCE_LINE_5": "אם הדליפה נמשכת יש לבדוק בכל תחומי המבנה וסביבתו ולנסות לאתר את הדליפה",
   "HANDLE_LEAK_GUIDANCE_LINE_6": "ההמלצה היא שגם אם לא נמצא מקור הנזילה, כדאי לסגור את המגוף הראשי ולהזמין בעל מקצוע",
+  "LITERS":"ליטרים",
 
   "SUB_EVENTS_TITLE": "התגלגלות הארוע",
 
@@ -105,6 +107,7 @@
   "NOT_AT_HOME_TITLE":"אתה לא במבנה כעת?",
   "NOT_AT_HOME_SUB_TITLE":"זו בעיה, אתה צריך למצוא מישהו שיהיה העיניים והידיים שלך במבנה כדי לתפעל את האירוע",
   "NOT_AT_HOME_OK":"הבנתי",
+  "NOT_A_LEAK_PLUMBER":"קרא לשרברב",
 
   "PLUMBERS_TITLE":"רשימת שרברבים",
   "PLUMBERS_MSG_1":"אם יש לך דליפת מים או שיש אינדיקציה לדליפה והיא עדיין נסתרת, ההמלצה היא לפנות לבעל מקצוע - השרברב",

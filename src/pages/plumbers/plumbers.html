@@ -15,12 +15,12 @@
 
 
 <ion-content padding>
-  <ion-item text-wrap text-center>
+  <ion-item text-wrap text-center no-padding no-margin>
     <h1>{{"PLUMBERS_TITLE" | translate}}</h1>
     <h2>{{"PLUMBERS_MSG_1" | translate}}<br><br>{{"PLUMBERS_MSG_2" | translate}}</h2>
   </ion-item>
   <ion-list>
-    <ion-item *ngFor="let plumber of closerPlumbers" (click)="call($event, plumber)">
+    <ion-item block no-padding no-margin *ngFor="let plumber of closerPlumbers" (click)="call($event, plumber)">
       <ion-icon [name]="water" item-start></ion-icon>
       <ion-label>{{plumber.name}}</ion-label>
       <ion-label class="item-note" item-end>{{plumber.phone}}</ion-label>

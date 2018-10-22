@@ -20,6 +20,7 @@ import { CantseeLeakPage } from "../pages/events/cantseeleak/cantseeleak";
 import { IsALeakPage } from "../pages/events/isaleak/isaleak";
 import { NotALeakPage } from "../pages/events/notaleak/notaleak";
 import { NotathomePage } from "../pages/events/notathome/notathome";
+import { LeakGuidance } from "../pages/events/leakGuidance/leakGuidance";
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 // import { BrowserModule } from "@angular/platform-browser";
@@ -79,6 +80,7 @@ import { FirebaseService } from "../providers/Firebase-service";
     NotathomePage,
     CantseeLeakPage,
     PlumbersPage,
+    LeakGuidance,
     EventPage,
     HandleLeakPage,
     EditEventPage
@@ -120,6 +122,7 @@ import { FirebaseService } from "../providers/Firebase-service";
     NotathomePage,
     CantseeLeakPage,
     PlumbersPage,
+    LeakGuidance,
     EventPage,
     HandleLeakPage,
     EditEventPage

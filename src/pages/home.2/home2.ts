@@ -82,15 +82,14 @@ export class HomePage2 {
   ngAfterViewInit  () {
   }
 
-  ionViewWillEnter(): void {
-    console.log("ionViewWillEnter home");
-
-    this.translate.get('MILLILITER_SHORT_R').subscribe(value => {this.MLright = value;});
-    this.translate.get('MILLILITER_SHORT_L').subscribe(value => {this.MLleft = value;});
-
-    var gaugeOptions = {
+  private setGauge () {
+      var gaugeOptions = {
         chart: {
-          spacing: [0, 0, 0, 0],
+          //spacing: [0, 0, 0, 0],
+          spacingBottom: 0,
+          spacingTop: 10,
+          spacingLeft: 10,
+          spacingRight: 10,
           type: 'solidgauge',
           height: '50%',
           backgroundColor: null
@@ -152,10 +151,29 @@ export class HomePage2 {
           }
         }
       };
-      this.flowChart = HighCharts.chart('gauge', gaugeOptions);
+    if (this.statusEventService.isLiveEventInSystem()!=false){
+        
+        this.flowChart = HighCharts.chart('gauge', gaugeOptions);
+        this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
+    }
     this.updateStatusImage();
-    this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
     this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
+
+  }
+
+  ionViewWillEnter(): void {
+    console.log("ionViewWillEnter home");
+
+    this.translate.get('MILLILITER_SHORT_R').subscribe(value => {this.MLright = value;});
+    this.translate.get('MILLILITER_SHORT_L').subscribe(value => {this.MLleft = value;});
+
+    this.globalsService.readyDoneReading().then(() => { 
+      console.log("********^^^^^**** DONE READING = " + this.globalsService.doneReading);
+
+    this.setGauge();
+
+ 
+  });
 
   }
 
@@ -165,6 +183,7 @@ export class HomePage2 {
 
       this.GlobalSystemSeverity = tempGlobalSystemSeverity;
       this.updateStatusImage();
+      this.setGauge();
     }
   }
 
@@ -191,7 +210,9 @@ export class HomePage2 {
   }
 
   private refreshDataGauge() { 
-    this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
+    if (this.statusEventService.isLiveEventInSystem()!=false)
+      if (this.flowChart && this.flowChart.series)
+        this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
    }
 
   moduleTapped(event: any, module: any): void {
@@ -202,6 +223,7 @@ export class HomePage2 {
   }
 
   openHandleLeakPage(e: any): void {
+    console.log("$$$$$$ HER HERE HERE");
     this.navCtrl.push(HandleLeakPage, { eventID: e });
   }
 

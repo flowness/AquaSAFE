@@ -1,0 +1,33 @@
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item text-wrap>
+        <h2>{{"HANDLE_LEAK_GUIDANCE_LINE_1" | translate}}</h2>
+        <p>
+          
+          <br><br>
+          {{"HANDLE_LEAK_GUIDANCE_LINE_2" | translate}}
+          {{"HANDLE_LEAK_GUIDANCE_LINE_3" | translate}}
+          <br><br>
+          {{"HANDLE_LEAK_GUIDANCE_LINE_4" | translate}}
+          {{"HANDLE_LEAK_GUIDANCE_LINE_5" | translate}}
+          <br><br>
+          {{"HANDLE_LEAK_GUIDANCE_LINE_6" | translate}}
+        </p>
+      </ion-item>
+      <br>
+      <ion-item text-center>
+      <button ion-button ion-content (click)="this.notAtHome()" round>
+          <ion-icon name="alert"></ion-icon>
+          {{"NOT_IN_SITE" | translate}}
+      </button> 
+    </ion-item>
+</ion-content>

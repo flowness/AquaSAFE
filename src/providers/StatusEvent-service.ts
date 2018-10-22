@@ -40,7 +40,7 @@ export class StatusEventService {
     private intervalReceiveStatusEvents;
     private intervalReceiveSubEvents;
 
-    private globalSystemSeverity: GlobalSystemSeverityTypes;
+    private globalSystemSeverity: GlobalSystemSeverityTypes = GlobalSystemSeverityTypes.NORMAL;
     private statusEventList: SystemStatusEvent[] = [];
     private lastStatusEventID: number;
 
@@ -53,6 +53,8 @@ export class StatusEventService {
     public setLastEventID (newEventID: number) { this.lastStatusEventID = newEventID;}
 
     public isLiveEventInSystem(): boolean {
+      if (this.statusEventList.length == 0)
+        return null;
       for (let i = 0; i < this.statusEventList.length; i++) {
         if (this.statusEventList[i].status == Statuses.LIVE)
           return true;

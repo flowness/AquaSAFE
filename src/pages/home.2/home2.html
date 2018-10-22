@@ -2,33 +2,56 @@
     <ion-navbar>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
-        <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() != 3" [color]="this.statusEventService.getGlobalSystemSeverity() === 1 ? 'redAlert' : 'yellowAlert'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
+        <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() !== 3 && statusEventService.getCountOpenStatusEvents() && statusEventService.getCountOpenStatusEvents() > 0" [color]="this.statusEventService.getGlobalSystemSeverity() === 1 ? 'redAlert' : 'yellowAlert'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
       </button>
       <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>
     </ion-navbar>
   </ion-header>
-<ion-content>
+<ion-content no-padding no-margin>
   <!-- OK status -->
-  <div>
-    <ion-item>
-      <div id="gauge"></div>
-    </ion-item>
-  </div>
+
+  <div id="gauge" hidden="this.statusEventService.isLiveEventInSystem()!==false"></div>
+
   <!-- LEAK status -->
-  <div *ngIf="this.statusEventService.isLiveEventInSystem()">
-    <ion-item no-lines text-warp>
-      <h1 ion-text color="danger">{{"LIVE_EVENT_DETECTED" | translate}}</h1>
-      <p>
-        {{"EVENT_HAS_STARTED" | translate}}: {{this.statusEventService.getLiveEventStartTime()}}
-        <br>
-        {{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()}}
-      </p>
+  <div start *ngIf="this.statusEventService.isLiveEventInSystem()">      
+    <ion-label text-center ion-text color="redAlert"><h1>{{"LIVE_EVENT_DETECTED" | translate}}</h1></ion-label>
+
+
+    <ion-grid center no-padding no-margin bulk>
+        <ion-row align-items-center >
+  
+          <!-- <ion-col >
+              <img item-start src="assets/imgs/Tap.gif" />
+          </ion-col> -->
+          <ion-col >
+              <ion-item no-lines text-center>
+                  <ion-label>
+                    {{"EVENT_HAS_STARTED" | translate}}: {{this.statusEventService.getLiveEventStartTime()}}
+                  <br>
+                    {{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()/1000}}
+                  <!-- <ion-item text-center no-lines class="header-status-alert-ind"> -->
+                  </ion-label>
+               </ion-item>        
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+  
+
+
+    <ion-item no-lines start>
+      <img item-start src="assets/imgs/Tap.gif" width="50%" height="50%"/>
     </ion-item>
-    <ion-item text-center no-lines class="header-status-alert-ind">
+ 
+    <!-- <ion-item no-lines>
+    <ion-label>
       <ion-badge color="danger" (click)="openHandleLeakPage(this.statusEventService.getLiveEventID())">Handle Leak Event</ion-badge>
-    </ion-item>
+    </ion-label>
+    </ion-item> -->
   </div>
   <div>
-    <img id="statusImage" width="100%" style="display:inline-block" src="{{this.systemStatusImageURL}}" />
-  </div>
+      <button  (click)="this.openHandleLeakPage(this.statusEventService.getLiveEventID())">
+
+    <img id="statusImage" width="100%" style="position: absolute; display:inline-block; margin: 0 auto;bottom: 10px;" src="{{this.systemStatusImageURL}}"  />
+      </button>
+    </div>
 </ion-content>

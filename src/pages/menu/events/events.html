@@ -8,7 +8,7 @@
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() !== 3" [color]="this.statusEventService.getGlobalSystemSeverity() === 1 ? 'redAlert' : 'yellowAlert'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
+      <ion-badge *ngIf="this.statusEventService.getGlobalSystemSeverity() !== 3 && statusEventService.getCountOpenStatusEvents() && statusEventService.getCountOpenStatusEvents() > 0" [color]="this.statusEventService.getGlobalSystemSeverity() === 1 ? 'redAlert' : 'yellowAlert'">{{statusEventService.getCountOpenStatusEvents()}}</ion-badge>
     </button>
     <img width="170px" style="display:inline-block" height="50px" src="assets/imgs/AS_logo.png"/>  </ion-navbar>
 </ion-header>

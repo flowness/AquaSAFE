@@ -9,6 +9,7 @@ import * as HighCharts from "highcharts";
 import * as HighchartsMore from "highcharts/highcharts-more";
 import * as SolidGauge from "highcharts/modules/solid-gauge";
 import { PlumbersPage } from "../plumbers/plumbers";
+import { LeakGuidance } from "../events/leakGuidance/leakGuidance";
 import { CameraOptions, Camera } from "@ionic-native/camera";
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
 import { FlowService } from "../../providers/Flow-service";
@@ -39,7 +40,6 @@ export class HandleLeakPage {
               public navCtrl: NavController, 
               public navParams: NavParams,
               private flowService: FlowService,
-              public translate: TranslateService,
               private statusEventService: StatusEventService,
               private translate: TranslateService,
               private alertCtrl: AlertController) {
@@ -77,7 +77,12 @@ export class HandleLeakPage {
 
     var gaugeOptions = {
       chart: {
-        spacing: [0, 0, 0, 0],
+        //spacing: [0, 0, 0, 0]       ,
+        spacingBottom: 0,
+        spacingTop: 10,
+        spacingLeft: 10,
+        spacingRight: 10,
+
         type: 'solidgauge',
         height: '40%',
         backgroundColor: null
@@ -107,9 +112,8 @@ export class HandleLeakPage {
           y: -80
         },
         stops: [
-          [0.1, '#55BF3B'], // green
-          [0.5, '#DDDF0D'], // yellow
-          [0.9, '#DF5353'] // red
+
+          [1, '#FF0000'] // red
         ],
         lineWidth: 0,
         minorTickInterval: null,
@@ -147,19 +151,6 @@ export class HandleLeakPage {
   }
 
 
-  notAtHome(): void {
-    let notAtHomeTitle, notAtHomeSubTitle, notAtHomeOK = "";
-    this.translate.get('NOT_AT_HOME_TITLE').subscribe(value => {notAtHomeTitle = value;});
-    this.translate.get('NOT_AT_HOME_SUB_TITLE').subscribe(value => {notAtHomeSubTitle= value;});
-    this.translate.get('NOT_AT_HOME_OK').subscribe(value => {notAtHomeOK = value;});
-
-    let alert = this.alertCtrl.create({
-      title: notAtHomeTitle,
-      subTitle: notAtHomeSubTitle,
-      buttons: [notAtHomeOK]
-    });
-    alert.present();
-  }
 
   notALeak(): void {
     this.navCtrl.push(NotALeakPage, {
@@ -169,6 +160,12 @@ export class HandleLeakPage {
 
   openPlumbers(): void {
     this.navCtrl.push(PlumbersPage, {
+      eventID: this.eventID
+    });
+  }
+
+  openLeakGuidance(): void {
+    this.navCtrl.push(LeakGuidance, {
       eventID: this.eventID
     });
   }
