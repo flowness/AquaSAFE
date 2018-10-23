@@ -284,16 +284,25 @@ export class StatisticsPage {
           legend: {
             enabled: false
           },
+          tooltip: {
+            shared: true,
+            useHTML: true,
+            headerFormat: '<table>',
+            pointFormat: '<tr><td>{series.name}: </td>' +
+            '<td style="text-align: right"><b>{point.y}</b></td></tr>',
+            footerFormat: '</table>',
+            valueDecimals: 2
+          },
           series: [
             {
-              name: "Usage",
+              name: "",
               data: preparedData,
               dataLabels: {
                 enabled: false,
                 rotation: -90,
                 color: "#FFFFFF",
                 align: "right",
-                format: "{point.y:.1f}", // one decimal
+                format: "{.1f}", // one decimal
                 y: 10, // 10 pixels down from the top
                 style: {
                   fontSize: "13px",
@@ -303,6 +312,9 @@ export class StatisticsPage {
             }
           ]
         };
+
+        this.translate.get("GRAPH_USAGE").subscribe(value => { this.chart.series[0].name = value; });
+
 
         this.chart = HighCharts.chart("container", this.chart);
         this.loading.dismiss();
@@ -323,6 +335,7 @@ export class StatisticsPage {
       if (dataValue < 0) {
         dataValue = 0;
       }
+      dataValue=Math.round(dataValue /= 1000);
       ret.push([jsonBody[index][dataXAxisKey], dataValue]);
       this.eraOfChart = this.months[parseInt(jsonBody[index]["month"]) - 1];
       if (this.chartType === "daily") {

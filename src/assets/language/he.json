@@ -48,7 +48,7 @@
   "HANDLE_LEAK": "טיפול בדליפה",
   "NOT_IN_SITE": "אני לא במבנה",
   "NOT_A_LEAK_TO_HANDLE": "זו לא דליפה, זה שימוש במים",
-  "GET_LEAK_GUIDANCE":"טיפול בדליפות מים",
+  "GET_LEAK_GUIDANCE": "טיפול בדליפות מים",
 
   "LIVE_EVENT_DETECTED": "המערכת זיהתה דליפה",
   "EVENT_HAS_STARTED": "הדליפה החלה",
@@ -60,7 +60,7 @@
   "HANDLE_LEAK_GUIDANCE_LINE_4": "שעון המים הוא אינדיקטור טוב לקיום דליפות הגדולות מטפטוף, כל עוד שהשעון רץ - המים זורמים",
   "HANDLE_LEAK_GUIDANCE_LINE_5": "אם הדליפה נמשכת יש לבדוק בכל תחומי המבנה וסביבתו ולנסות לאתר את הדליפה",
   "HANDLE_LEAK_GUIDANCE_LINE_6": "ההמלצה היא שגם אם לא נמצא מקור הנזילה, כדאי לסגור את המגוף הראשי ולהזמין בעל מקצוע",
-  "LITERS":"ליטרים",
+  "LITERS": "ליטרים",
 
   "SUB_EVENTS_TITLE": "התגלגלות הארוע",
 
@@ -74,6 +74,7 @@
   "REAL_TIME_GRAPH_TITLE": "זרימת מים מ'ל לשניה",
   "DAY_GRAPH_TITLE": "סך הצריכה היומית",
   "MONTH_GRAPH_TITLE": "סך הצריכה החודשית",
+  "GRAPH_USAGE": "צריכה בליטרים",
 
   "MONTH_NAME_1": "ינואר",
   "MONTH_NAME_2": "פברואר",
@@ -92,26 +93,26 @@
   "NOT_A_LEAK_MSG_1": "אבל אני ממש רוצה להשתפר",
   "NOT_A_LEAK_MSG_2": "אתה תוכל לעזרו לי להשתפר. רק תלחץ על אחת התמונות למטה, זו שמתארת את השימוש שגרם לי לחשוב שיש דליפה  ואני אלמד לעתיד ",
   "NOT_A_LEAK_CONFIRM": "האם אתה בטוח?",
-  "NOT_A_LEAK_CONFIRM_MESSAGE":"האם אתה בטוח שמה שגרם לי לחשוב שיש דליפה זה בעצם...",
-  "CONFIRM_YES":"כן, בטוח",
-  "CONFIRM_NO":"ביטול",
+  "NOT_A_LEAK_CONFIRM_MESSAGE": "האם אתה בטוח שמה שגרם לי לחשוב שיש דליפה זה בעצם...",
+  "CONFIRM_YES": "כן, בטוח",
+  "CONFIRM_NO": "ביטול",
   "USAGE_WASHING_MACHINE": "מכונת כביסה",
-  "USAGE_DISHWASHER":"מדיח כלים",
-  "USAGE_IRRIGATION":"השקייה",
-  "USAGE_SHOWER":"מקלחת",
-  "USAGE_HOUSE_CLEANING":"נקיונות",
-  "USAGE_POOL":"בריכה",
-  "USAGE_OTHER":"שימוש אחר במים",
-  "USAGE_OTHER_IMAGE":"assets/imgs/OthersGreen_he.png",
+  "USAGE_DISHWASHER": "מדיח כלים",
+  "USAGE_IRRIGATION": "השקייה",
+  "USAGE_SHOWER": "מקלחת",
+  "USAGE_HOUSE_CLEANING": "נקיונות",
+  "USAGE_POOL": "בריכה",
+  "USAGE_OTHER": "שימוש אחר במים",
+  "USAGE_OTHER_IMAGE": "assets/imgs/OthersGreen_he.png",
   "NOT_A_LEAK_CLOSE_EVENT": "המשתמש עדכן כי הארוע אינו דליפה אלא...",
-  "NOT_AT_HOME_TITLE":"אתה לא במבנה כעת?",
-  "NOT_AT_HOME_SUB_TITLE":"זו בעיה, אתה צריך למצוא מישהו שיהיה העיניים והידיים שלך במבנה כדי לתפעל את האירוע",
-  "NOT_AT_HOME_OK":"הבנתי",
-  "NOT_A_LEAK_PLUMBER":"קרא לשרברב",
+  "NOT_AT_HOME_TITLE": "אתה לא במבנה כעת?",
+  "NOT_AT_HOME_SUB_TITLE": "זו בעיה, אתה צריך למצוא מישהו שיהיה העיניים והידיים שלך במבנה כדי לתפעל את האירוע",
+  "NOT_AT_HOME_OK": "הבנתי",
+  "NOT_A_LEAK_PLUMBER": "קרא לשרברב",
 
-  "PLUMBERS_TITLE":"רשימת שרברבים",
-  "PLUMBERS_MSG_1":"אם יש לך דליפת מים או שיש אינדיקציה לדליפה והיא עדיין נסתרת, ההמלצה היא לפנות לבעל מקצוע - השרברב",
-  "PLUMBERS_MSG_2":"להלן רשימת שרברבים מורשים על ידי חברת הביטוח, מסודרים לפי קרבה גיאוגרפית"
+  "PLUMBERS_TITLE": "רשימת שרברבים",
+  "PLUMBERS_MSG_1": "אם יש לך דליפת מים או שיש אינדיקציה לדליפה והיא עדיין נסתרת, ההמלצה היא לפנות לבעל מקצוע - השרברב",
+  "PLUMBERS_MSG_2": "להלן רשימת שרברבים מורשים על ידי חברת הביטוח, מסודרים לפי קרבה גיאוגרפית"
 
 
 }

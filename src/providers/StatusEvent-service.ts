@@ -73,7 +73,7 @@ export class StatusEventService {
     public getLiveEventTotalFlow(): number {
       for (let i = 0; i < this.statusEventList.length; i++) {
         if (this.statusEventList[i].status == Statuses.LIVE)
-          return this.statusEventList[i].total_flow;
+          return Math.round(this.statusEventList[i].total_flow/1000);
       }
       return -1;
     }

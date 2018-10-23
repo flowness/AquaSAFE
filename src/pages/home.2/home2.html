@@ -25,12 +25,12 @@
           </ion-col> -->
           <ion-col >
               <ion-item no-lines text-center>
-                  <ion-label>
-                    {{"EVENT_HAS_STARTED" | translate}}: {{this.statusEventService.getLiveEventStartTime()}}
+                <ion-label>
+                  {{"EVENT_HAS_STARTED" | translate}}: {{this.statusEventService.getLiveEventStartTime()}}
                   <br>
-                    {{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()/1000}}
+                  {{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()}} {{"LITERS" | translate}}
                   <!-- <ion-item text-center no-lines class="header-status-alert-ind"> -->
-                  </ion-label>
+                </ion-label>
                </ion-item>        
           </ion-col>
         </ion-row>

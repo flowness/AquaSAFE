@@ -36,7 +36,7 @@
 
 
     <ion-item no-lines text-center no-margin no-padding>
-      <p>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent.total_flow/1000}}</p>
+      <p>{{"EVENT_TOTAL_FLOW" | translate}}: {{this.statusEventService.getLiveEventTotalFlow()}} {{"LITERS" | translate}}</p>
     </ion-item>
   
     <div id="gauge"></div>
