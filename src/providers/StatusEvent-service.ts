@@ -53,13 +53,19 @@ export class StatusEventService {
     public setLastEventID (newEventID: number) { this.lastStatusEventID = newEventID;}
 
     public isLiveEventInSystem(): boolean {
-      if (this.statusEventList.length == 0)
+        if (this.globalSystemSeverity == GlobalSystemSeverityTypes.ALERT)
+            return true;
+        else
+            return false;
+
+/*       if (this.statusEventList.length == 0)
         return null;
       for (let i = 0; i < this.statusEventList.length; i++) {
         if (this.statusEventList[i].status == Statuses.LIVE)
           return true;
       }
-      return false;
+      return false; */
+
     }
 
     public getLiveEventID(): number {
@@ -152,9 +158,13 @@ export class StatusEventService {
                                     this.pushNewStatusEvent(JSON.parse(data.body[index]));
                                 }
                           if (data.body.length > 0) {
-                                  this.lastStatusEventID = JSON.parse(data.body[0]).idsystem_status;
-                                    this.GenerateGlobalSystemStatus();
-                                }
+                            this.lastStatusEventID = JSON.parse(data.body[0]).idsystem_status;
+                            if (JSON.parse(data.body[0]).liveEvent == 1)
+                                this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.ALERT);
+                            else
+                                this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.NORMAL);
+                            //this.GenerateGlobalSystemStatus();
+                          }
                         }
                     }        
         );      
@@ -187,11 +197,16 @@ export class StatusEventService {
                                 data.body != undefined &&
                                 data.body != null
                             ) {  
+                                if (data.body.length > 0)
+                                    if (JSON.parse(data.body[0]).liveEvent == 1)
+                                        this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.ALERT);
+                                    else
+                                        this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.NORMAL);
                                 for (let index = 0; index < data.body.length; index++) { 
                                     //console.log('data[index] = ' + data.body[index] );                             
                                     this.checkUpdateOnCurrentStatuEvent(JSON.parse(data.body[index]));
                                 }
-                                this.GenerateGlobalSystemStatus();
+                                //this.GenerateGlobalSystemStatus();
                         }
                     }        
         );      
@@ -211,7 +226,7 @@ export class StatusEventService {
             this.PollingSubEventsPerSystemStatus(curSystemStatusEvent);
     }
 
-    private GenerateGlobalSystemStatus(){
+/*     private GenerateGlobalSystemStatus(){
         let currentSystemSeverity = SeverityTypes.NORMAL;
 
         for (let index = 0; index < this.statusEventList.length; index++) { 
@@ -235,7 +250,7 @@ export class StatusEventService {
                 this.globalSystemSeverity = GlobalSystemSeverityTypes.ALERT; break;
 
         }
-    }
+    } */
 
     private pushNewStatusEvent (JSONStatusEvent: any) {
         let newStatusEvent: SystemStatusEvent = {
