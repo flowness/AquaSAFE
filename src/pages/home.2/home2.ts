@@ -97,12 +97,12 @@ ionViewDidLoad(): void {
             marginBottom: 0,
             marginLeft: 0,
             marginRight: 0,
-            marginTop: 0,
+            marginTop: this.statusEventService.isLiveEventInSystem()!=false?0:10,
 
            // height: 80,
             //width: 100,
             type: 'solidgauge',
-            height: this.statusEventService.isLiveEventInSystem()!=false?'33%':'50%',
+            height: this.statusEventService.isLiveEventInSystem()!=false?'33%':'75%',
             //height:100,
             backgroundColor: '#FFFFFF'
           },
@@ -195,7 +195,7 @@ ionViewDidLoad(): void {
 
       this.GlobalSystemSeverity = tempGlobalSystemSeverity;
       this.updateStatusImage();
-      this.setGauge();
+      //this.setGauge();
     }
   }
 
