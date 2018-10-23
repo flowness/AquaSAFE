@@ -95,11 +95,11 @@ ionViewDidLoad(): void {
           chart: {
             //spacing: [0, 0, 0, 0],
             spacingBottom: 0,
-            spacingTop: 10,
+            spacingTop: 15, 
             spacingLeft: 0,
             spacingRight: 0,
             type: 'solidgauge',
-            height: this.statusEventService.isLiveEventInSystem()!=false?'50%':'50%',
+            height: this.statusEventService.isLiveEventInSystem()!=false?'60%':'50%',
             backgroundColor: null
           },
           title: null,
