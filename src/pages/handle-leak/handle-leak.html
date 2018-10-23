@@ -36,8 +36,8 @@
 
 
     <ion-item no-lines text-center no-margin no-padding>
-      <p>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent.total_flow/1000}}</p>
+      <p>{{"EVENT_TOTAL_FLOW" | translate}}: {{theEvent? theEvent.total_flow/1000:0}}</p>
     </ion-item>
   
-    <div id="gauge"></div>
+    <div id="gauge1"></div>
 </ion-content>

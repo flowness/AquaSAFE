@@ -71,9 +71,8 @@ export class HandleLeakPage {
     }
   }
 
-  ionViewWillEnter(): void {
-    this.translate.get('MILLILITER_SHORT_R').subscribe(value => { this.MLright = value; });
-    this.translate.get('MILLILITER_SHORT_L').subscribe(value => { this.MLleft = value; });
+
+  private setGauge () {
 
     var gaugeOptions = {
       chart: {
@@ -142,11 +141,23 @@ export class HandleLeakPage {
           }
         }
       }
-    };
-    this.flowChart = HighCharts.chart('gauge', gaugeOptions);
+    };        
+    if (this.statusEventService.isLiveEventInSystem()!=false)
+      if (! this.flowChart)
+        this.flowChart = HighCharts.chart('gauge1', gaugeOptions);
+    
     this.intervalRefreshGaugeTask = setInterval(() => {
-      this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
+      if (this.statusEventService.isLiveEventInSystem()!=false)
+        if (this.flowChart && this.flowChart.series) 
+          this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
     }, 1000);
+  }
+
+  ionViewWillEnter(): void {
+    this.translate.get('MILLILITER_SHORT_R').subscribe(value => { this.MLright = value; });
+    this.translate.get('MILLILITER_SHORT_L').subscribe(value => { this.MLleft = value; });
+   
+    this.setGauge();
 
   }
 

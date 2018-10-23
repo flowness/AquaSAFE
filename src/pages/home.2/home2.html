@@ -10,7 +10,7 @@
 <ion-content no-padding no-margin>
   <!-- OK status -->
 
-  <div id="gauge" hidden="this.statusEventService.isLiveEventInSystem()!==false"></div>
+  
 
   <!-- LEAK status -->
   <div start *ngIf="this.statusEventService.isLiveEventInSystem()">      
@@ -35,23 +35,24 @@
           </ion-col>
         </ion-row>
     </ion-grid>
-  
-
-
-    <ion-item no-lines start>
-      <img item-start src="assets/imgs/Tap.gif" width="50%" height="50%"/>
-    </ion-item>
- 
-    <!-- <ion-item no-lines>
+      <!-- <ion-item no-lines>
     <ion-label>
       <ion-badge color="danger" (click)="openHandleLeakPage(this.statusEventService.getLiveEventID())">Handle Leak Event</ion-badge>
     </ion-label>
     </ion-item> -->
-  </div>
-  <div>
-      <button  (click)="this.openHandleLeakPage(this.statusEventService.getLiveEventID())">
+  </div>    
+<ion-grid center no-padding no-margin bulk>
+  <ion-row>
 
-    <img id="statusImage" width="100%" style="position: absolute; display:inline-block; margin: 0 auto;bottom: 10px;" src="{{this.systemStatusImageURL}}"  />
-      </button>
-    </div>
+    <ion-col *ngIf="this.statusEventService.isLiveEventInSystem()" item-start>
+      <img item-start src="assets/imgs/Tap.gif" width="100%" height="100%"/>
+   </ion-col>
+   <ion-col>  
+      <div style="vertical-align: center;" id="gauge"></div>
+    </ion-col>
+  </ion-row>
+</ion-grid>    
+  <button  (click)="this.openHandleLeakPage(this.statusEventService.getLiveEventID())">
+  <img id="statusImage" width="100%" style="position: absolute; display:inline-block; margin: 0 auto;bottom: 10px;" src="{{this.systemStatusImageURL}}"  />
+  </button>
 </ion-content>

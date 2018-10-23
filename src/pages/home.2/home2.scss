@@ -1,5 +1,12 @@
 page-home {
 
+    .hide {
+        display: none;
+     }
+     .show {
+        display: block;
+     }
+
     .ion-content {
         background: #283147 !important;
     }

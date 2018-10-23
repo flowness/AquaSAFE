@@ -65,9 +65,17 @@ export class HomePage2 {
     } else {
       //desktop browser only code
     }
+    
+
   }
 
-  ionViewDidLoad(): void { 
+  
+private setHiddenGauge() {
+  return this.statusEventService.isLiveEventInSystem();
+      
+}
+
+ionViewDidLoad(): void { 
 /*     console.log("ionViewDidLoad home");     
     console.log("AccountName1 = " + this.globalsService.getAccountName());
     console.log("ionViewDidLoad 2 home");     
@@ -83,82 +91,83 @@ export class HomePage2 {
   }
 
   private setGauge () {
-      var gaugeOptions = {
-        chart: {
-          //spacing: [0, 0, 0, 0],
-          spacingBottom: 0,
-          spacingTop: 10,
-          spacingLeft: 10,
-          spacingRight: 10,
-          type: 'solidgauge',
-          height: '50%',
-          backgroundColor: null
-        },
-        title: null,
-        pane: {
-          center: ['50%', '50%'],
-          size: '90%',
-          startAngle: -90,
-          endAngle: 90,
-          background: {
-            backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
-            innerRadius: '60%',
-            outerRadius: '100%',
-            shape: 'arc'
-          }
-        },
-        tooltip: {
-          enabled: false
-        },
-        // the value axis
-        yAxis: {
-          min: 0,
-          max: 600,
-          title: {
-            text: 'Flow',
-            y: -80
+        var gaugeOptions = {
+          chart: {
+            //spacing: [0, 0, 0, 0],
+            spacingBottom: 0,
+            spacingTop: 10,
+            spacingLeft: 0,
+            spacingRight: 0,
+            type: 'solidgauge',
+            height: this.statusEventService.isLiveEventInSystem()!=false?'50%':'50%',
+            backgroundColor: null
           },
-          stops: [
-            [0.1, '#55BF3B'], // green
-            [0.5, '#DDDF0D'], // yellow
-            [0.9, '#DF5353'] // red
-          ],
-          lineWidth: 0,
-          minorTickInterval: null,
-          tickAmount: 2,
-          labels: {
-            y: 16,
+          title: null,
+          pane: {
+            center: ['50%', '50%'],
+            size: '90%',
+            startAngle: -90,
+            endAngle: 90,
+            background: {
+              backgroundColor: (HighCharts.theme && HighCharts.theme.background2) || '#EEE',
+              innerRadius: '60%',
+              outerRadius: '100%',
+              shape: 'arc'
+            }
+          },
+          tooltip: {
             enabled: false
-          }
-        },
-        credits: {
-          enabled: false
-        },
-        series: [{
-          name: 'Consumption',
-          data: [this.flowService.getCurrentFlow()],
-          dataLabels: {
-            format: '<div style="text-align:center"><span style="font-size:20px;color:black">' + this.MLleft + ' {y} ' + this.MLright + '</span><span></span></div>'
-          }
-        }],
-        plotOptions: {
-          solidgauge: {
+          },
+          // the value axis
+          yAxis: {
+            min: 0,
+            max: 600,
+            title: {
+              text: 'Flow',
+              y: -80
+            },
+            stops: [
+              [0.1, '#55BF3B'], // green
+              [0.5, '#DDDF0D'], // yellow
+              [0.9, '#DF5353'] // red
+            ],
+            lineWidth: 0,
+            minorTickInterval: null,
+            tickAmount: 2,
+            labels: {
+              y: 16,
+              enabled: false
+            }
+          },
+          credits: {
+            enabled: false
+          },
+          series: [{
+            name: 'Consumption',
+            data: [this.flowService.getCurrentFlow()],
             dataLabels: {
-              y: 5,
-              borderWidth: 0,
-              useHTML: true
+              format: '<div style="text-align:center"><span style="' + this.getGaugeLabelStyle() + '">' + this.MLleft + ' {y} ' + this.MLright + '</span><span></span></div>'
+            }
+          }],
+          plotOptions: {
+            solidgauge: {
+              dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+              }
             }
           }
-        }
-      };
-    if (this.statusEventService.isLiveEventInSystem()!=false){
-        
-        this.flowChart = HighCharts.chart('gauge', gaugeOptions);
-        this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
-    }
-    this.updateStatusImage();
-    this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
+        };        
+      this.flowChart = HighCharts.chart('gauge', gaugeOptions);
+      
+  }
 
+  private getGaugeLabelStyle () {
+    if(this.statusEventService.isLiveEventInSystem()==false)
+      return 'font-size:20px;color:black;';
+    else
+      return 'font-size:14px;color:black;';
   }
 
   ionViewWillEnter(): void {
@@ -171,6 +180,9 @@ export class HomePage2 {
       console.log("********^^^^^**** DONE READING = " + this.globalsService.doneReading);
 
     this.setGauge();
+    this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
+    this.updateStatusImage();
+    this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
 
  
   });
@@ -224,7 +236,8 @@ export class HomePage2 {
 
   openHandleLeakPage(e: any): void {
     console.log("$$$$$$ HER HERE HERE");
-    this.navCtrl.push(HandleLeakPage, { eventID: e });
+    if (this.statusEventService.isLiveEventInSystem()!=false)
+      this.navCtrl.push(HandleLeakPage, { eventID: e });
   }
 
   ionViewDidLeave(): void {
