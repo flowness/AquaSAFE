@@ -195,7 +195,10 @@ ionViewDidLoad(): void {
 
       this.GlobalSystemSeverity = tempGlobalSystemSeverity;
       this.updateStatusImage();
-      //this.setGauge();
+      let active = this.navCtrl.last().instance instanceof HomePage2;
+      //console.log ("ACTIVE = " + active);
+      if (active)
+        this.setGauge();
     }
   }
 
@@ -222,7 +225,6 @@ ionViewDidLoad(): void {
   }
 
   private refreshDataGauge() { 
-    if (this.statusEventService.isLiveEventInSystem()!=false)
       if (this.flowChart && this.flowChart.series)
         this.flowChart.series[0].points[0].update(this.flowService.getCurrentFlow());
    }
