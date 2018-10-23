@@ -84,10 +84,12 @@ export class StatusEventService {
       return -1;
     }
 
-    public getLiveEventStartTime(): string {
+  public getLiveEventStartTime(): string {
+    var timeoptions = { hourCycle: 'h24', year: '2-digit', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit' };
+
       for (let i = 0; i < this.statusEventList.length; i++) {
         if (this.statusEventList[i].status == Statuses.LIVE)
-          return this.statusEventList[i].timestamp;
+          return new Date(this.statusEventList[i].epoch_timestamp).toLocaleDateString(this.globalsService.Language, timeoptions)
       }
       return "";
     }

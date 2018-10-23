@@ -21,9 +21,9 @@
             <img src="{{isLiveEvent(curSystemEvent) ? 'assets/imgs/systemAlert.png' : isOpenEvent(curSystemEvent)? 'assets/imgs/systemAlertOpen.png' : 'assets/imgs/systemAlertOK.png'}}" width="20px" height="20px">
           </ion-thumbnail>
           <!-- <ion-icon item-start [name]="isLiveEvent(curSystemEvent)? 'close-circle' : 'checkmark-circle'" item-start></ion-icon> -->
-          <ion-label>
-            {{curSystemEvent.Event_str | translate}} <br> {{curSystemEvent.timestamp}}
-          </ion-label>
+        <ion-label>
+          {{curSystemEvent.Event_str | translate}} <br> {{localTimeStamp(curSystemEvent)}}
+        </ion-label>
           <!-- <ion-badge *ngIf="isLiveEvent(asEvent)" item-end color="danger">sss</ion-badge> 
               
           -->

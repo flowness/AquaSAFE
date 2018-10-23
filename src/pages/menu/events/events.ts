@@ -5,6 +5,7 @@ import { EventPage } from "../../event/event";
 import { HandleLeakPage } from "../../handle-leak/handle-leak";
 import { EditEventPage } from "../../edit-event/edit-event";
 import { StatusEventService, Statuses, SystemStatusEvent, GlobalSystemSeverityTypes } from "../../../providers/StatusEvent-service";
+import { GlobalsService } from "../../../providers/Globals-service";
 
 @IonicPage()
 @Component({
@@ -19,6 +20,7 @@ export class EventsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     platform: Platform,
+    private globalsService: GlobalsService,
     //public modelService: ModelService,
     private statusEventService: StatusEventService,
     public modalCtrl: ModalController
@@ -64,6 +66,11 @@ export class EventsPage {
 
   isOpenEvent(e: SystemStatusEvent): boolean {
     return e.status != Statuses.CLOSED;
+  }
+
+  localTimeStamp(e: SystemStatusEvent): string {
+    var timeoptions = { hourCycle: 'h24', year: '2-digit', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit' };
+    return new Date(e.epoch_timestamp).toLocaleDateString(this.globalsService.Language, timeoptions)
   }
 
   handleAsEvent(e: SystemStatusEvent): void {
