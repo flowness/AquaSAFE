@@ -10,13 +10,11 @@
 <ion-content no-padding no-margin>
   <!-- OK status -->
 
-  
+
 
   <!-- LEAK status -->
   <div start *ngIf="this.statusEventService.isLiveEventInSystem()">      
-    <ion-label text-center ion-text color="redAlert"><h1>{{"LIVE_EVENT_DETECTED" | translate}}</h1></ion-label>
-
-
+    <ion-label  no-padding no-margin text-center ion-text color="redAlert"><h1 style="margin: 0; padding: 0;">{{"LIVE_EVENT_DETECTED" | translate}}</h1></ion-label>
     <ion-grid center no-padding no-margin bulk>
         <ion-row align-items-center >
   
@@ -41,7 +39,7 @@
     </ion-label>
     </ion-item> -->
   </div>    
-<ion-grid center no-padding no-margin bulk>
+<!-- <ion-grid center no-padding no-margin bulk>
   <ion-row>
 
     <ion-col col-7 *ngIf="this.statusEventService.isLiveEventInSystem()" item-start>
@@ -51,7 +49,28 @@
       <div style="vertical-align: center;" id="gauge"></div>
     </ion-col>
   </ion-row>
-</ion-grid>    
+</ion-grid>     -->        
+<!-- <ion-item no-lines center style="margin:0 auto;" >
+  <div  id="gauge" style="margin:0 auto;"></div>
+</ion-item> -->  
+
+<ion-grid center no-padding no-margin bulk>
+    <ion-row>
+      <ion-col>
+          <div  id="gauge" style="margin:0;"></div>
+      </ion-col>
+
+    </ion-row>
+    <ion-row>
+      
+      <ion-col col-12 *ngIf="this.statusEventService.isLiveEventInSystem()" item-start>
+                <img item-start src="assets/imgs/Rain.gif" style="z-index:0;" width="100%" height="100%"/>
+     </ion-col>
+    </ion-row>
+  </ion-grid>  
+
+
+
   <button  (click)="this.openHandleLeakPage(this.statusEventService.getLiveEventID())">
   <img id="statusImage" width="100%" style="position: absolute; display:inline-block; margin: 0 auto;bottom: 10px;" src="{{this.systemStatusImageURL}}"  />
   </button>
