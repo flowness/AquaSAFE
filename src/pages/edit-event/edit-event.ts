@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
+import { GlobalsService } from "../../providers/Globals-service";
 
 @IonicPage()
 @Component({
@@ -14,7 +15,8 @@ export class EditEventPage {
 
   constructor(public viewCtrl: ViewController, 
               public navCtrl: NavController, 
-              public navParams: NavParams, 
+              public navParams: NavParams,
+              private globalsService: GlobalsService, 
               private statusEventService: StatusEventService) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
@@ -43,6 +45,11 @@ export class EditEventPage {
       return "OPEN_EVENT"
     else
       return "CLOSED_EVENT"
+  }
+
+  localTimeStamp(e: SystemStatusEvent): string {
+    var timeoptions = { hourCycle: 'h24', year: '2-digit', month: '2-digit', day: '2-digit', hour: 'numeric', minute: '2-digit' };
+    return new Date(e.epoch_timestamp).toLocaleDateString(this.globalsService.Language, timeoptions)
   }
 
   getStatusActionString(isOpen): string{

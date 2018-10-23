@@ -17,15 +17,15 @@
 
 <ion-content padding>
   <h4>{{"EVENT_TYPE" | translate}}: {{theEvent.Event_str | translate}}</h4>
-  <h4>{{"EVENT_DATE" | translate}}: {{theEvent.timestamp}}</h4>
+  <h4>{{"EVENT_DATE" | translate}}: {{localTimeStamp(theEvent)}}</h4>
   <h4>{{"EVENT_STATUS" | translate}}: {{getStatusEventString(statusEventService.isOpenEvent(theEvent)) | translate}}</h4>
   <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
   
       <hr><br>
       <h4> {{"SUB_EVENTS_TITLE" | translate}}</h4>
-    <ion-item *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
+    <ion-item text-wrap *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
       <ion-label>
-        {{curRollingEvent.Event_str | translate}} <br> {{curRollingEvent.timestamp}}
+        {{curRollingEvent.Event_str | translate}} <br> {{localTimeStamp(curRollingEvent)}}
       </ion-label>
 
     </ion-item>
