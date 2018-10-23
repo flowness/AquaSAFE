@@ -25,6 +25,8 @@
 
   "Continues flow": "זרימה ממושכת",
   "Continues flow stopped": "זרימה ממושכת הפסיקה",
+  "No flow between hours":"זרימה בשעות אסורות",
+  "No flow between hours - closed":"זרימה בשעות אסורות הפסיקה",
 
   "SAVE_SETTINGS": "שמור הגדרות",
   "ENABLE_FREEZE_ALERT_SETTING": "התראה על קפיאה",

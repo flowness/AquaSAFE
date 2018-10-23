@@ -25,6 +25,8 @@
 
   "Continues flow": "Continues flow",
   "Continues flow stopped": "Continues flow stopped",
+  "No flow between hours":"No flow between hours",
+  "No flow between hours - closed":"No flow between hours - closed",
 
   "SAVE_SETTINGS": "Save settings",
   "ENABLE_FREEZE_ALERT_SETTING": "Enable freeze alert",

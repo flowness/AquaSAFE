@@ -93,14 +93,18 @@ ionViewDidLoad(): void {
   private setGauge () {
         var gaugeOptions = {
           chart: {
-            //spacing: [0, 0, 0, 0],
-            spacingBottom: 0,
-            spacingTop: 15, 
-            spacingLeft: 0,
-            spacingRight: 0,
+//            spacing: [0, 0, 0, 0],
+            marginBottom: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginTop: 0,
+
+           // height: 80,
+            //width: 100,
             type: 'solidgauge',
-            height: this.statusEventService.isLiveEventInSystem()!=false?'60%':'50%',
-            backgroundColor: null
+            height: this.statusEventService.isLiveEventInSystem()!=false?'33%':'50%',
+            //height:100,
+            backgroundColor: '#FFFFFF'
           },
           title: null,
           pane: {
@@ -122,10 +126,6 @@ ionViewDidLoad(): void {
           yAxis: {
             min: 0,
             max: 600,
-            title: {
-              text: 'Flow',
-              y: -80
-            },
             stops: [
               [0.1, '#55BF3B'], // green
               [0.5, '#DDDF0D'], // yellow
@@ -152,7 +152,7 @@ ionViewDidLoad(): void {
           plotOptions: {
             solidgauge: {
               dataLabels: {
-                y: 5,
+                y: 8,
                 borderWidth: 0,
                 useHTML: true
               }
@@ -167,7 +167,7 @@ ionViewDidLoad(): void {
     if(this.statusEventService.isLiveEventInSystem()==false)
       return 'font-size:20px;color:black;';
     else
-      return 'font-size:14px;color:black;';
+      return 'font-size:16px;color:black;';
   }
 
   ionViewWillEnter(): void {
