@@ -27,6 +27,10 @@
   "Continues flow stopped": "זרימה ממושכת הפסיקה",
   "No flow between hours":"זרימה בשעות אסורות",
   "No flow between hours - closed":"זרימה בשעות אסורות הפסיקה",
+  "Continues flow_IMG": "assets/imgs/Leak.png",
+  "Continues flow stopped_IMG": "assets/imgs/LeakEnded.png",
+  "No flow between hours_IMG":"assets/imgs/Leak.png",
+  "No flow between hours - closed_IMG":"assets/imgs/LeakEnded.png",
 
   "SAVE_SETTINGS": "שמור הגדרות",
   "ENABLE_FREEZE_ALERT_SETTING": "התראה על קפיאה",
@@ -64,10 +68,10 @@
   "HANDLE_LEAK_GUIDANCE_LINE_6": "ההמלצה היא שגם אם לא נמצא מקור הנזילה, כדאי לסגור את המגוף הראשי ולהזמין בעל מקצוע",
   "LITERS": "ליטרים",
 
-  "SUB_EVENTS_TITLE": "התגלגלות הארוע",
+  "SUB_EVENTS_TITLE": "דו'ח פרטי הארוע",
 
   "CLOSE_THE_EVENT": "סיים את הארוע",
-  "CLOSING_EVENT_DETAILS_TEXT": "הוסף כאן בטקסט חופשי פרטים נוספים רלוונטים שישפכו אור על הארוע והסיבות לסגירתו",
+  "CLOSING_EVENT_DETAILS_TEXT": "הדליפה הסתיימה אך הארוע עדיין פתוח. למה? כדי שאפשר ללמוד ממנו. האם זו היתה דליפה אמיתי או שמא שימוש במים?",
   "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים",
 
   "LIVE_DATA_STATISTICS": "זמן אמת",

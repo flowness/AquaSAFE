@@ -16,32 +16,83 @@
 
 
 <ion-content padding>
-  <h4>{{"EVENT_TYPE" | translate}}: {{theEvent.Event_str | translate}}</h4>
-  <h4>{{"EVENT_DATE" | translate}}: {{localTimeStamp(theEvent)}}</h4>
-  <h4>{{"EVENT_STATUS" | translate}}: {{getStatusEventString(statusEventService.isOpenEvent(theEvent)) | translate}}</h4>
-  <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
+  <ion-grid no-padding no-margin>
+      <ion-row>
+        <ion-col col-3>
+          <ion-thumbnail item-start width="30px" height="30px">
+             <img src="{{this.statusEventService.isLiveEvent(theEvent) ? 'assets/imgs/systemAlert.png' : this.statusEventService.isOpenEvent(theEvent)? 'assets/imgs/systemAlertOpen.png' : 'assets/imgs/systemAlertOK.png'}}">
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col align-self-center>
+          <p style="padding:0; margin:0;font-size: 22px"><b>{{"EVENT_TYPE" | translate}}:</b> {{theEvent.Event_str | translate}}</p>
+          <p style="padding:0; margin:0"><b>{{"EVENT_DATE" | translate}}:</b> {{localTimeStamp(theEvent)}}</p>
+          <p style="padding:0; margin:0"><b>{{"EVENT_STATUS" | translate}}:</b> {{getStatusEventString(statusEventService.isOpenEvent(theEvent)) | translate}}</p>
+        </ion-col>
+      </ion-row>
+  </ion-grid>   
+  <br> 
+
+  <ion-grid *ngIf="statusEventService.isOpenEvent(theEvent)">
+      <ion-row>
+        <ion-col col-12>
+           <ion-label wrap-text>  
+             {{"CLOSING_EVENT_DETAILS_TEXT" | translate}}
+           </ion-label> 
+           <!-- <ion-input start placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input> -->
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-label>{{"CLOSE_THE_EVENT" | translate}}</ion-label> 
+          <button color="primary" (click)="closeEvent()" start >
+            <img class="img-show" src='assets/imgs/Close.png' item-start height="20px" />
+          </button>
+        </ion-col>
+        <ion-col>
+            <ion-label>{{"NOT_A_LEAK_TO_HANDLE" | translate}}</ion-label> 
+            <button color="primary" (click)="notALeak()" item-end>
+                <img class="img-show" src='assets/imgs/NotALeak1.png' item-start height="20px" />
+            </button>
+      
+          </ion-col>
   
-      <hr><br>
-      <h4> {{"SUB_EVENTS_TITLE" | translate}}</h4>
+      </ion-row>
+  </ion-grid>
+  <br>
+
+
+  <ion-item text-center>
+      <ion-label text-center>
+        <p style="padding:0; margin:0;font-size: 22px"><b>{{"SUB_EVENTS_TITLE" | translate}}</b></p>
+      </ion-label>
+  </ion-item>
+
+  <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
+    <br>
+    <hr>
+    
     <ion-item text-wrap *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
+      <ion-thumbnail item-start width="20px" height="20px">
+        <img src="{{curRollingEvent.initiator==2? 'User.png' :  curRollingEvent.Event_str + '_IMG' | translate}}" width="20px" height="20px">
+      </ion-thumbnail>
+
       <ion-label>
         {{curRollingEvent.Event_str | translate}} <br> {{localTimeStamp(curRollingEvent)}}
       </ion-label>
 
     </ion-item>
   </ion-list>
-  <hr>
-  <ion-content *ngIf="statusEventService.isOpenEvent(theEvent)">
-      <H6  color="primary">{{"CLOSING_EVENT_DETAILS_TEXT" | translate}}</H6>
-    <ion-item  no-lines>
-      <ion-input start placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input>
-    </ion-item>
-    <br>
-    <ion-item no-lines>
-      <button color="primary" (click)="closeEvent()" ion-button round
-              item-end>
-        {{"CLOSE_THE_EVENT" | translate}}
-      </button>
-    </ion-item>
-  </ion-content>
+
+  <ion-item text-wrap *ngIf=theEvent.rollingSubEvents.length > 0">
+      <ion-thumbnail item-start width="20px" height="20px">
+        <img src="{{theEvent.Event_str + '_IMG' | translate}}" width="20px" height="20px">
+      </ion-thumbnail>
+
+      <ion-label>
+          {{theEvent.Event_str | translate}} <br> {{localTimeStamp(theEvent)}}
+      </ion-label>
+  </ion-item>
+
+
+
 </ion-content>

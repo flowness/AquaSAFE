@@ -98,6 +98,11 @@ export class StatusEventService {
         return statusEvent.status != Statuses.CLOSED;
       }
 
+    public isLiveEvent(statusEvent: SystemStatusEvent): boolean {
+        return statusEvent.status == Statuses.LIVE;
+    }
+
+
     public getSystemStatusEventIndexByID (statusEventID: number){
         for (let i = 0; i < this.statusEventList.length; i++) { 
             if (this.statusEventList[i].idsystem_status == statusEventID)

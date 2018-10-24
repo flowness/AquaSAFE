@@ -27,6 +27,11 @@
   "Continues flow stopped": "Continues flow stopped",
   "No flow between hours":"No flow between hours",
   "No flow between hours - closed":"No flow between hours - closed",
+  "Continues flow_IMG": "assets/imgs/Leak.png",
+  "Continues flow stopped_IMG": "assets/imgs/LeakEnded.png",
+  "No flow between hours_IMG":"assets/imgs/Leak.png",
+  "No flow between hours - closed_IMG":"assets/imgs/LeakEnded.png",
+
 
   "SAVE_SETTINGS": "Save settings",
   "ENABLE_FREEZE_ALERT_SETTING": "Enable freeze alert",
