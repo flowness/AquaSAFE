@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
 import { GlobalsService } from "../../providers/Globals-service";
 import { NotALeakPage } from "../events/notaleak/notaleak";
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ export class EditEventPage {
               public navCtrl: NavController, 
               public navParams: NavParams,
               private globalsService: GlobalsService, 
+              private translate: TranslateService,
               private statusEventService: StatusEventService) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
@@ -32,6 +34,9 @@ export class EditEventPage {
   }
 
   private closeEvent(): void {
+    if (this.text == "")
+      this.translate.get("DEFAULT_CLOSE_EVENT_STRING").subscribe(value => {this.text = value;});
+
     console.log ('@@@@@@ Closing event. EventID = ' + this.eventID + ', text = ' + this.text);
     this.statusEventService.closeStatusEvent(this.eventID, this.text);
     this.dismiss();

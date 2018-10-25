@@ -73,6 +73,7 @@
   "CLOSE_THE_EVENT": "Close event",
   "CLOSING_EVENT_DETAILS_TEXT": "Please share text details describing the event and the reason for closure",
   "EVENT_DETAILS_PLACEHOLDER": "Add extra free text details here",
+  "DEFAULT_CLOSE_EVENT_STRING":"User closed the event",
 
   "LIVE_DATA_STATISTICS": "Live flow data",
   "DAY_DATA_STATISTICS": "Today's statistics",

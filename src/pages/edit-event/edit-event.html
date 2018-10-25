@@ -51,7 +51,7 @@
       </ion-row>
       <ion-row align-self-center>
         <ion-col col-6 align-self-center>
-            <img src='assets/imgs/Close.png'  height="50px" (click)="this.loseEvent()"/>
+            <img src='assets/imgs/Close.png'  height="50px" (click)="this.closeEvent()"/>
         </ion-col>
         <ion-col col-6 align-self-center>
            <img src='assets/imgs/NotALeak1.png'  height="50px" (click)="this.notALeak()" />
@@ -69,21 +69,19 @@
   </ion-item>
 
   <br>
-  <hr>
-
   <ion-grid *ngIf="theEvent.rollingSubEvents.length > 0" no-paddings no-margin>
     <ion-row *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents; let curIndex =  index ">
-      <ion-col col-1 align-self-center >
+      <ion-col col-2 align-self-center  no-paddings no-margin>
           <ion-thumbnail item-start >
             <img src="assets/imgs/{{this.theEvent.rollingSubEvents.length - curIndex + 1 + '.png' | translate   }}" height="20px" />
           </ion-thumbnail>
       </ion-col>
-      <ion-col col3 align-self-center>
+      <ion-col col3 align-self-center  no-paddings no-margin>
           <ion-thumbnail item-start >
               <img src="{{curRollingEvent.initiator==2? 'assets/imgs/User.png' :  curRollingEvent.Event_str + '_IMG' | translate}}" height="50px"/>
             </ion-thumbnail>     
       </ion-col>
-      <ion-col col-8 align-self-center>
+      <ion-col col-7 align-self-center no-paddings no-margin >
           <ion-label text-wrap>
               {{curRollingEvent.Event_str | translate}} <br> {{localTimeStamp(curRollingEvent)}}
             </ion-label>
@@ -110,17 +108,17 @@
 
 <ion-grid *ngIf="theEvent.rollingSubEvents.length > 0" no-paddings no-margin>
     <ion-row>
-          <ion-col col-1 align-self-center >
+          <ion-col col-2 align-self-center no-paddings no-margin >
             <ion-thumbnail item-start >
               <img src="assets/imgs/1.png" height="20px" />
             </ion-thumbnail>
           </ion-col>
-          <ion-col col-3 align-self-center>
+          <ion-col col-3 align-self-center no-paddings no-margin>
               <ion-thumbnail item-start >
                   <img src="{{theEvent.Event_str + '_IMG' | translate}}" height="50px">
                 </ion-thumbnail>     
           </ion-col>
-          <ion-col col-8 align-self-center>
+          <ion-col col-7 align-self-center no-paddings no-margin>
               <ion-label text-wrap>
                   {{theEvent.Event_str | translate}} <br> {{localTimeStamp(theEvent)}}
                 </ion-label>
