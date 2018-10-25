@@ -300,15 +300,17 @@ export class StatusEventService {
         return openEventCounter;
     }
 
-    public closeStatusEvent (idsystem_status: number, closeDescription: string) {
-        console.log('Cosing event at status service');
-        this.postEventToParent (idsystem_status, closeDescription, true, Statuses.CLOSED);
+    public closeStatusEvent (idsystem_status: number, closeDescription: string, isLeak: string = "",classUsage : string = "") {
+        console.log('Closing event at status service');
+        this.postEventToParent (idsystem_status, closeDescription, true, Statuses.CLOSED, isLeak, classUsage);
     }
 
     public postEventToParent (idsystem_status: number, 
                             description: string, 
                             setNewStatus:boolean, 
-                            newStatus: Statuses = Statuses.CLOSED) {
+                            newStatus: Statuses = Statuses.CLOSED,
+                            isLeak: string,
+                            classUsage: string) {
         let parentEventID = this.statusEventList[this.getSystemStatusEventIndexByID(idsystem_status)].event_ID;
         let postEventData : any = { 
                     eventSTR: description,
@@ -316,7 +318,9 @@ export class StatusEventService {
                     systemStatus: setNewStatus == true ? "SetStatus" : "Existing",
                     newSystemStatus: newStatus,
                     SN: this.accountName,
-                    parent_eventID: parentEventID 
+                    parent_eventID: parentEventID,
+                    isALeak: isLeak,
+                    waterUsage: classUsage
                     }
 
         //console.log('data = ' + JSON.parse(postEventData));

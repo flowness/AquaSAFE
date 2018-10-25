@@ -149,7 +149,7 @@ export class NotALeakPage {
           text: confirmYes,
           handler: () => {
             console.log("Yes clicked");
-            this.statusEventService.closeStatusEvent (this.eventID,notALeakCloseEvent + waterUsageSTR);
+            this.statusEventService.closeStatusEvent (this.eventID,notALeakCloseEvent + waterUsageSTR, "No", waterUsageSTR);
             //this.modelService.updateEventNotALeak(this.currentEvent);
             this.navCtrl.pop();
             this.navCtrl.pop();
