@@ -69,8 +69,8 @@
   "LITERS": "ליטרים",
 
   "SUB_EVENTS_TITLE": "דו'ח פרטי הארוע",
-
-  "CLOSE_THE_EVENT": "סיים את הארוע",
+  "EVENT_START":"תחילת הארוע",
+  "CLOSE_THE_EVENT": "פשוט סיים את הארוע",
   "CLOSING_EVENT_DETAILS_TEXT": "הדליפה הסתיימה אך הארוע עדיין פתוח. למה? כדי שאפשר ללמוד ממנו. האם זו היתה דליפה אמיתי או שמא שימוש במים?",
   "EVENT_DETAILS_PLACEHOLDER": "הכנס כאן פרטים נוספים",
 

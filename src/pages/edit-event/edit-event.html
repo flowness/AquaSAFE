@@ -32,48 +32,69 @@
   </ion-grid>   
   <br> 
 
-  <ion-grid *ngIf="statusEventService.isOpenEvent(theEvent)">
+  <ion-grid center no-padding no-margin *ngIf="statusEventService.isOpenEvent(theEvent)" >
       <ion-row>
-        <ion-col col-12>
-           <ion-label wrap-text>  
+        <ion-col>
+           <ion-label text-wrap>  
              {{"CLOSING_EVENT_DETAILS_TEXT" | translate}}
            </ion-label> 
            <!-- <ion-input start placeholder='{{"EVENT_DETAILS_PLACEHOLDER" | translate}}' [(ngModel)]="text"></ion-input> -->
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-label>{{"CLOSE_THE_EVENT" | translate}}</ion-label> 
-          <button color="primary" (click)="closeEvent()" start >
-            <img class="img-show" src='assets/imgs/Close.png' item-start height="20px" />
-          </button>
+      <ion-row text-center>
+        <ion-col text-center>
+          <ion-label>{{"CLOSE_THE_EVENT" | translate}}</ion-label>
         </ion-col>
-        <ion-col>
-            <ion-label>{{"NOT_A_LEAK_TO_HANDLE" | translate}}</ion-label> 
-            <button color="primary" (click)="notALeak()" item-end>
-                <img class="img-show" src='assets/imgs/NotALeak1.png' item-start height="20px" />
-            </button>
-      
+        <ion-col text-center>
+            <ion-label >{{"NOT_A_LEAK_TO_HANDLE" | translate}}</ion-label> 
           </ion-col>
-  
       </ion-row>
-  </ion-grid>
+      <ion-row align-self-center>
+        <ion-col col-6 align-self-center>
+            <img src='assets/imgs/Close.png'  height="50px" (click)="this.loseEvent()"/>
+        </ion-col>
+        <ion-col col-6 align-self-center>
+           <img src='assets/imgs/NotALeak1.png'  height="50px" (click)="this.notALeak()" />
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
   <br>
 
 
-  <ion-item text-center>
+  <ion-item text-center no-padding no-margin>
       <ion-label text-center>
         <p style="padding:0; margin:0;font-size: 22px"><b>{{"SUB_EVENTS_TITLE" | translate}}</b></p>
       </ion-label>
   </ion-item>
 
-  <ion-list *ngIf="theEvent.rollingSubEvents.length > 0">
-    <br>
-    <hr>
-    
-    <ion-item text-wrap *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents.slice().reverse() ">
+  <br>
+  <hr>
+
+  <ion-grid *ngIf="theEvent.rollingSubEvents.length > 0" no-paddings no-margin>
+    <ion-row *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents; let curIndex =  index ">
+      <ion-col col-1 align-self-center >
+          <ion-thumbnail item-start >
+            <img src="assets/imgs/{{this.theEvent.rollingSubEvents.length - curIndex + 1 + '.png' | translate   }}" height="20px" />
+          </ion-thumbnail>
+      </ion-col>
+      <ion-col col3 align-self-center>
+          <ion-thumbnail item-start >
+              <img src="{{curRollingEvent.initiator==2? 'assets/imgs/User.png' :  curRollingEvent.Event_str + '_IMG' | translate}}" height="50px"/>
+            </ion-thumbnail>     
+      </ion-col>
+      <ion-col col-8 align-self-center>
+          <ion-label text-wrap>
+              {{curRollingEvent.Event_str | translate}} <br> {{localTimeStamp(curRollingEvent)}}
+            </ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+<!--   <ion-list>
+    <ion-item text-wrap *ngFor="let curRollingEvent of this.theEvent.rollingSubEvents; let curIndex =  index " >
+      <ion-label no-padding no-margins>{{ this.theEvent.rollingSubEvents.length - curIndex + 1}}</ion-label>
       <ion-thumbnail item-start width="20px" height="20px">
-        <img src="{{curRollingEvent.initiator==2? 'User.png' :  curRollingEvent.Event_str + '_IMG' | translate}}" width="20px" height="20px">
+        <img src="{{curRollingEvent.initiator==2? 'assets/imgs/User.png' :  curRollingEvent.Event_str + '_IMG' | translate}}" width="20px" height="20px">
       </ion-thumbnail>
 
       <ion-label>
@@ -81,17 +102,44 @@
       </ion-label>
 
     </ion-item>
-  </ion-list>
+</ion-list> -->
 
-  <ion-item text-wrap *ngIf=theEvent.rollingSubEvents.length > 0">
+<ion-item text-align-center>
+    <b>{{"EVENT_START" | translate}}</b>
+</ion-item>
+
+<ion-grid *ngIf="theEvent.rollingSubEvents.length > 0" no-paddings no-margin>
+    <ion-row>
+          <ion-col col-1 align-self-center >
+            <ion-thumbnail item-start >
+              <img src="assets/imgs/1.png" height="20px" />
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col col-3 align-self-center>
+              <ion-thumbnail item-start >
+                  <img src="{{theEvent.Event_str + '_IMG' | translate}}" height="50px">
+                </ion-thumbnail>     
+          </ion-col>
+          <ion-col col-8 align-self-center>
+              <ion-label text-wrap>
+                  {{theEvent.Event_str | translate}} <br> {{localTimeStamp(theEvent)}}
+                </ion-label>
+          </ion-col>
+    
+    </ion-row>
+  </ion-grid>
+
+
+<!--   <ion-item text-wrap *ngIf="theEvent.rollingSubEvents.length > 0"> 
       <ion-thumbnail item-start width="20px" height="20px">
         <img src="{{theEvent.Event_str + '_IMG' | translate}}" width="20px" height="20px">
       </ion-thumbnail>
-
       <ion-label>
-          {{theEvent.Event_str | translate}} <br> {{localTimeStamp(theEvent)}}
+        <b>{{"EVENT_START" | translate}}</b>
+        <br>
+        {{theEvent.Event_str | translate}} <br> {{localTimeStamp(theEvent)}}
       </ion-label>
-  </ion-item>
+  </ion-item> -->
 
 
 

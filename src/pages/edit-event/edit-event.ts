@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers/StatusEvent-service";
 import { GlobalsService } from "../../providers/Globals-service";
+import { NotALeakPage } from "../events/notaleak/notaleak";
 
 @IonicPage()
 @Component({
@@ -30,7 +31,7 @@ export class EditEventPage {
     console.log('ionViewDidLoad EditEventPage');
   }
 
-  closeEvent(): void {
+  private closeEvent(): void {
     console.log ('@@@@@@ Closing event. EventID = ' + this.eventID + ', text = ' + this.text);
     this.statusEventService.closeStatusEvent(this.eventID, this.text);
     this.dismiss();
@@ -58,5 +59,9 @@ export class EditEventPage {
     else
       return "VIEW_EVENT_DETAILS"
   }
-
+  private notALeak(): void {
+    this.navCtrl.push(NotALeakPage, {
+      eventID: this.eventID
+    });
+  }
 }
