@@ -181,8 +181,11 @@ ionViewDidLoad(): void {
 
     this.setGauge();
     this.intervalRefreshGaugeTask = setInterval(() => { this.refreshDataGauge(); }, 1000);
-    this.updateStatusImage();
+    this.updateGlobalSystemSeverity();
+
     this.intervalUpdateSystemSeverity = setInterval(() => { this.updateGlobalSystemSeverity(); }, 1000);
+    //if (! this.GlobalSystemSeverity || this.GlobalSystemSeverity == GlobalSystemSeverityTypes.UNKNOWN)
+    this.updateStatusImage();
 
  
   });
