@@ -301,16 +301,22 @@ export class StatusEventService {
     }
 
     public closeStatusEvent (idsystem_status: number, closeDescription: string, isLeak: string = "",classUsage : string = "") {
-        console.log('Closing event at status service');
+        console.log('Closing event at status event service');
         this.postEventToParent (idsystem_status, closeDescription, true, Statuses.CLOSED, isLeak, classUsage);
     }
 
+    public addPictureEvent (idsystem_status: number, base64Image: string) {
+        console.log('Add image event at status event service');
+        this.postEventToParent (idsystem_status, "", false, 0, "", "", base64Image);
+    }
+    
     public postEventToParent (idsystem_status: number, 
                             description: string, 
                             setNewStatus:boolean, 
-                            newStatus: Statuses = Statuses.CLOSED,
-                            isLeak: string,
-                            classUsage: string) {
+                            newStatus: Statuses = -1,
+                            isLeak: string = "",
+                            classUsage: string = "",
+                            image64Base: string = "") {
         let parentEventID = this.statusEventList[this.getSystemStatusEventIndexByID(idsystem_status)].event_ID;
         let postEventData : any = { 
                     eventSTR: description,
@@ -320,7 +326,8 @@ export class StatusEventService {
                     SN: this.accountName,
                     parent_eventID: parentEventID,
                     isALeak: isLeak,
-                    waterUsage: classUsage
+                    waterUsage: classUsage,
+                    image: image64Base
                     }
 
         //console.log('data = ' + JSON.parse(postEventData));
