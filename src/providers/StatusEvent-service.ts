@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AsyncJSONService } from "./Async-JSON-service";
 import { GlobalsService} from "./Globals-service";
+import { IsALeakPage } from "../pages/events/isaleak/isaleak";
+import { resolveDefinition } from "@angular/core/src/view/util";
 
 export enum GlobalSystemSeverityTypes{
     ALERT = 1, WARNING = 2, NORMAL = 3, UNKNOWN = 4
@@ -25,6 +27,9 @@ export interface SystemStatusEvent {
     total_flow: number,
     parent_eventID: number,
     initiator: string,
+    isLeak: string,
+    realUsage: string,
+    S3Link: string,
     status: Statuses, 
     severity: SeverityTypes,
     rollingSubEvents: SystemStatusEvent[]
@@ -35,6 +40,7 @@ export class StatusEventService {
     private statusURL: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/status?";
     private subEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event?parentEventID=";
     private postNewEventsUrl: string = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/event";
+    private getImageByLinkURL = "https://yg8rvhiiq0.execute-api.eu-west-1.amazonaws.com/poc/image?imageLink=";
     private accountName: string = "";
 
     private intervalReceiveStatusEvents;
@@ -149,32 +155,32 @@ export class StatusEventService {
             curStatusURL += 'lastEventID=' + this.lastStatusEventID;
         }
 
-        this.asyncJASONRequests.getJSONDataAsync(curStatusURL).then(
-            data => {
-                        //console.log('curStatusURL = ' + curStatusURL);
-                        let lastFlow: number = 0;
-                        if (
-                                data != undefined &&
-                                data["statusCode"] != undefined &&
-                                data["statusCode"] == 200 &&
-                                data.body != undefined &&
-                                data.body != null
-                            ) {  
-                          for (let index = data.body.length-1; index >= 0 ; index--) { 
-                                    //console.log('data[index] = ' + data.body[index] );                             
-                                    this.pushNewStatusEvent(JSON.parse(data.body[index]));
-                                }
-                          if (data.body.length > 0) {
-                            this.lastStatusEventID = JSON.parse(data.body[0]).idsystem_status;
-                            if (JSON.parse(data.body[0]).liveEvent == 1)
-                                this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.ALERT);
-                            else
-                                this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.NORMAL);
-                            //this.GenerateGlobalSystemStatus();
-                          }
-                        }
-                    }        
-        );      
+            this.asyncJASONRequests.getJSONDataAsync(curStatusURL).then(
+                data => {
+                            //console.log('curStatusURL = ' + curStatusURL);
+                            let lastFlow: number = 0;
+                            if (
+                                    data != undefined &&
+                                    data["statusCode"] != undefined &&
+                                    data["statusCode"] == 200 &&
+                                    data.body != undefined &&
+                                    data.body != null
+                                ) {  
+                            for (let index = data.body.length-1; index >= 0 ; index--) { 
+                                        //console.log('data[index] = ' + data.body[index] );                             
+                                        this.pushNewStatusEvent(JSON.parse(data.body[index]));
+                                    }
+                            if (data.body.length > 0) {
+                                this.lastStatusEventID = JSON.parse(data.body[0]).idsystem_status;
+                                if (JSON.parse(data.body[0]).liveEvent == 1)
+                                    this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.ALERT);
+                                else
+                                    this.setGlobalSystemSeverity(GlobalSystemSeverityTypes.NORMAL);
+                                //this.GenerateGlobalSystemStatus();
+                            }
+                            }
+                        }        
+            );      
 
 
         let currentStatusIDs = '';
@@ -271,6 +277,9 @@ export class StatusEventService {
             total_flow: JSONStatusEvent.total_flow,
             parent_eventID: null,
             initiator: JSONStatusEvent.initiator,
+            isLeak: JSONStatusEvent.isALeak,
+            realUsage: JSONStatusEvent.waterUsage,
+            S3Link: JSONStatusEvent.external_link,
             status: this.setStatusENUM(JSONStatusEvent.status), 
             severity: JSONStatusEvent.severity,
             rollingSubEvents: []
@@ -298,6 +307,30 @@ export class StatusEventService {
             }
         }
         return openEventCounter;
+    }
+
+    public getEventPictureByLink (imageS3Link) {
+
+        let curGetImageByLinkURL = this.getImageByLinkURL + imageS3Link;
+        return this.asyncJASONRequests.getJSONDataAsync(curGetImageByLinkURL).then(
+            data => {
+                        //console.log('curStatusURL = ' + curStatusURL);
+                        let lastFlow: number = 0;
+                        if (
+                                data != undefined &&
+                                data["statusCode"] != undefined &&
+                                data["statusCode"] == 200 &&
+                                data.body != undefined &&
+                                data.body != null
+                            ) {  
+                          
+                           return data.body;
+                        }
+                    }        
+        );      
+
+
+
     }
 
     public closeStatusEvent (idsystem_status: number, closeDescription: string, isLeak: string = "",classUsage : string = "") {
@@ -377,6 +410,9 @@ export class StatusEventService {
             total_flow: JSONStatusEvent.total_flow,
             parent_eventID: null,
             initiator: JSONStatusEvent.initiator,
+            isLeak: JSONStatusEvent.isALeak,
+            realUsage: JSONStatusEvent.waterUsage,
+            S3Link: JSONStatusEvent.external_link,
             status: this.setStatusENUM(JSONStatusEvent.status), 
             severity: JSONStatusEvent.severity,
             rollingSubEvents: []

@@ -85,6 +85,10 @@
           <ion-label text-wrap>
               {{curRollingEvent.Event_str | translate}} <br> {{localTimeStamp(curRollingEvent)}}
             </ion-label>
+            <ion-item *ngIf="curRollingEvent.S3Link !== ''" >
+              <img src="{{this.imageList[curRollingEvent.S3Link]}}"/>
+            </ion-item>
+
       </ion-col>
     </ion-row>
   </ion-grid>

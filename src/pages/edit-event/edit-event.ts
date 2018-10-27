@@ -4,6 +4,7 @@ import { StatusEventService, Statuses, SystemStatusEvent } from "../../providers
 import { GlobalsService } from "../../providers/Globals-service";
 import { NotALeakPage } from "../events/notaleak/notaleak";
 import { TranslateService } from '@ngx-translate/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -14,19 +15,22 @@ export class EditEventPage {
   eventID: number;
   public text: string = "";
   theEvent: SystemStatusEvent;
+  imageList: {};
 
   constructor(public viewCtrl: ViewController, 
               public navCtrl: NavController, 
               public navParams: NavParams,
+              private _DomSanitizationService: DomSanitizer,
               private globalsService: GlobalsService, 
               private translate: TranslateService,
               private statusEventService: StatusEventService) {
     this.eventID = navParams.get("eventID");
     this.theEvent = statusEventService.getEventList()[statusEventService.getSystemStatusEventIndexByID(this.eventID)];
-
-    for (let i=0;i<this.theEvent.rollingSubEvents.length;i++)
+    this.imageList = {};
+    for (let i=0;i<this.theEvent.rollingSubEvents.length;i++){
+      this.getImageSrc(this.theEvent.rollingSubEvents[i].S3Link);
       console.log('###### ' + this.theEvent.rollingSubEvents[i].Event_str)
-
+    }
   }
 
   ionViewDidLoad() {
@@ -69,4 +73,12 @@ export class EditEventPage {
       eventID: this.eventID
     });
   }
+
+  private getImageSrc (S3Link) {
+    this.statusEventService.getEventPictureByLink (S3Link).then (body => {
+      this.imageList[S3Link] = body;
+    });
+
+  }
+
 }
